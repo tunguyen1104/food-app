@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base -->
+    <color name="transparent">#00000000</color>"
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Highlight -->
+    <color name="highlight_darkest">#006FFD</color>
+    <color name="highlight_dark">#2897FF</color>
+    <color name="highlight_medium">#6FB9FF</color>
+    <color name="highlight_light">#B3DAFF</color>
+    <color name="highlight_lightest">#EAF2FF</color>
+
+    <!-- Light -->
+    <color name="light_darkest">#C5C6CC</color>
+    <color name="light_dark">#D4D6DD</color>
+    <color name="light_medium">#E8E9F1</color>
+    <color name="light_light">#F8F9FE</color>
+    <color name="light_lightest">#FFFFFF</color>
+
+    <!-- Dark -->
+    <color name="dark_darkest">#1E1E1E</color>
+    <color name="dark_dark">#2F3036</color>
+    <color name="dark_medium">#494A50</color>
+    <color name="dark_light">#71727A</color>
+    <color name="dark_lightest">#8F9098</color>
+
+    <!-- Success -->
+    <color name="success_dark">#1A5D47</color>
+    <color name="success_medium">#2A8E73</color>
+    <color name="success_light">#45594E</color>
+
+    <!-- Warning -->
+    <color name="warning_dark">#C1532F</color>
+    <color name="warning_medium">#C78557</color>
+    <color name="warning_light">#615447</color>
+
+    <!-- Error -->
+    <color name="error_dark">#B2202F</color>
+    <color name="error_medium">#BB4553</color>
+    <color name="error_light">#5C3A3D</color>
+
+    <!-- Tag -->
+    <color name="tag_assignment">@color/warning_dark</color>
+    <color name="tag_exam">@color/error_dark</color>
+    <color name="tag_meeting">#ffcc00</color>
+    <color name="tag_course_material">@color/success_dark</color>
+    <color name="tag_other">@color/highlight_dark</color>
+    <color name="tag_spam">@color/dark_dark</color>
+</resources>
