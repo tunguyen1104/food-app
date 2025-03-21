@@ -44,20 +44,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         // Check if the token valid
         final String token = authHeader.substring(7);
-        String email;
+        String phone;
         try {
-            email = jwtTokenUtil.extractPhone(token);
+            phone = jwtTokenUtil.extractPhone(token);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
             return;
         }
-        if (email != null
+        if (phone != null
                 && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = (User) userDetailsService.loadUserByUsername(email);
+            User user = (User) userDetailsService.loadUserByUsername(phone);
             if (!jwtTokenUtil.validateToken(token, user)) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
             }
-            var authentication = new UsernamePasswordAuthenticationToken(email, user.getAuthorities());
+            var authentication = new UsernamePasswordAuthenticationToken(phone, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response); // Enable bypass
