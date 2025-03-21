@@ -4,4 +4,8 @@
     <string name="title_orders">Orders</string>
     <string name="title_message">Message</string>
     <string name="title_account">Account</string>
+
+    <!-- Define a dynamic string to replace the number into -->
+    <string name="resend_timer_message">Please wait %1$d seconds to resend.</string>
+    <string name="user_phone_number">0395996482</string>
 </resources>
