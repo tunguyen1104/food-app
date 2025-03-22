@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_lightest"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Accounts"
+        android:textAlignment="center"
+        android:textAppearance="@style/heading_l"
+        android:textColor="@color/dark_darkest"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addNewAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:layout_gravity="end"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:cornerRadius="10dp"
+        android:text="Add new account"
+        android:textAppearance="@style/action_l"
+        android:textColor="@color/light_lightest"
+        android:backgroundTint="@color/success_medium"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/account_list_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="20dp"/>
+</LinearLayout>
