@@ -6,15 +6,29 @@
     android:background="@color/light_lightest"
     android:orientation="vertical">
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Accounts"
-        android:textAlignment="center"
-        android:textAppearance="@style/heading_l"
-        android:textColor="@color/dark_darkest"/>
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/buttonBack"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center|start"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_chevron_left"
+            app:tint="@color/highlight_darkest" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Accounts"
+            android:textAlignment="center"
+            android:textAppearance="@style/heading_l"
+            android:textColor="@color/dark_darkest"/>
+    </FrameLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/addNewAccount"
