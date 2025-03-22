@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_lightest">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center|start"
+            android:src="@drawable/ic_chevron_left"
+            app:tint="@color/highlight_darkest"
+            android:background="?android:attr/selectableItemBackground"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter Verification Code"
+            android:paddingStart="30dp"
+            android:textAppearance="@style/heading_l"
+            android:textColor="@color/dark_darkest"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/sent_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your verification code is sent to"
+        android:textAppearance="@style/body_m"
+        android:textColor="@color/dark_light"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/user_phone_number"
+        android:textAlignment="center"
+        android:textAppearance="@style/body_xl"
+        android:textColor="@color/dark_darkest"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:weightSum="6"
+        android:paddingHorizontal="8dp">
+
+        <EditText
+            android:id="@+id/code_digit_1"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:textAppearance="@style/body_xl"
+            android:maxLength="1"
+            android:text="2"
+            android:importantForAccessibility="yes" />
+
+        <EditText
+            android:id="@+id/code_digit_2"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAppearance="@style/body_xl"
+            android:importantForAccessibility="yes" />
+
+        <EditText
+            android:id="@+id/code_digit_3"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAppearance="@style/body_xl"
+            android:importantForAccessibility="yes" />
+
+        <EditText
+            android:id="@+id/code_digit_4"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAppearance="@style/body_xl"
+            android:importantForAccessibility="yes" />
+
+        <EditText
+            android:id="@+id/code_digit_5"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAppearance="@style/body_xl"
+            android:importantForAccessibility="yes" />
+
+        <EditText
+            android:id="@+id/code_digit_6"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAppearance="@style/body_xl"
+            android:importantForAccessibility="yes" />
+    </LinearLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="Next"
+        android:textAppearance="@style/action_l"
+        android:textColor="@color/light_lightest"
+        android:backgroundTint="@color/highlight_darkest" />
+
+    <TextView
+        android:id="@+id/resend_timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/resend_timer_message"
+        android:textAppearance="@style/body_m"
+        android:textColor="@color/tag_exam"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>
