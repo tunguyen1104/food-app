@@ -4,8 +4,9 @@
     <string name="title_orders">Orders</string>
     <string name="title_message">Message</string>
     <string name="title_account">Account</string>
-
+    <string name="branch_name">Branch name</string>
     <!-- Define a dynamic string to replace the number into -->
     <string name="resend_timer_message">Please wait %1$d seconds to resend.</string>
     <string name="user_phone_number">0395996482</string>
+    <string name="new_branch_account_description">Create new branch account</string>
 </resources>

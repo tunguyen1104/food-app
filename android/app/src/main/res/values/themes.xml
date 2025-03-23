@@ -8,5 +8,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:windowLightStatusBar">true</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/highlight_darkest</item>
+        <item name="colorSecondaryVariant">@color/highlight_darkest</item>
+        <item name="colorOnSecondary">@color/highlight_darkest</item>
     </style>
 </resources>
