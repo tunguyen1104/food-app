@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/light_lightest"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center|start"
+            android:src="@drawable/ic_chevron_left"
+            app:tint="@color/highlight_darkest"
+            android:background="?android:attr/selectableItemBackground"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textAlignment="center"
+            android:textAppearance="@style/heading_l"
+            android:textColor="@color/dark_darkest"/>
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:text="Theme"
+        android:textAppearance="@style/heading_m"
+        android:textColor="@color/dark_darkest"/>
+
+    <RadioGroup
+        android:id="@+id/theme_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/light_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Light"
+            android:textAppearance="@style/body_m"
+            android:textColor="@color/dark_darkest"
+            app:buttonTint="@color/dark_darkest"/>
+
+        <RadioButton
+            android:id="@+id/dark_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dark"
+            android:textAppearance="@style/body_m"
+            android:textColor="@color/dark_darkest"
+            app:buttonTint="@color/dark_darkest"/>
+
+        <RadioButton
+            android:id="@+id/system_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="System"
+            android:textAppearance="@style/body_m"
+            android:textColor="@color/dark_darkest"
+            app:buttonTint="@color/dark_darkest"/>
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:text="Notification"
+        android:textAppearance="@style/heading_m"
+        android:textColor="@color/dark_darkest"/>
+
+    <RadioGroup
+        android:id="@+id/reminder_notification_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/notification_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On"
+            android:textAppearance="@style/body_m"
+            android:textColor="@color/dark_darkest"
+            app:buttonTint="@color/dark_darkest"/>
+
+        <RadioButton
+            android:id="@+id/notification_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Off"
+            android:textAppearance="@style/body_m"
+            android:textColor="@color/dark_darkest"
+            app:buttonTint="@color/dark_darkest"/>
+    </RadioGroup>
+
+</LinearLayout>
