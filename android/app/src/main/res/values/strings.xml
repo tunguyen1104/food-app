@@ -9,4 +9,5 @@
     <string name="resend_timer_message">Please wait %1$d seconds to resend.</string>
     <string name="user_phone_number">0395996482</string>
     <string name="new_branch_account_description">Create new branch account</string>
+    <string name="image_profile_desc">User Profile Picture</string>
 </resources>
