@@ -1,53 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/light_lightest"
-    android:orientation="vertical">
+    android:background="@color/light_lightest">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/buttonBack"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center|start"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_chevron_left"
-            app:tint="@color/highlight_darkest" />
-
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Accounts"
-            android:textAlignment="center"
-            android:textAppearance="@style/heading_l"
-            android:textColor="@color/dark_darkest"/>
-    </FrameLayout>
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/addNewAccount"
+            <ImageView
+                android:id="@+id/buttonBack"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center|start"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_chevron_left"
+                app:tint="@color/highlight_darkest" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Accounts"
+                android:textAlignment="center"
+                android:textAppearance="@style/heading_l"
+                android:textColor="@color/dark_darkest" />
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/accountRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/new_branch_account"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
         android:layout_margin="20dp"
-        android:layout_gravity="end"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        app:cornerRadius="10dp"
-        android:text="Add new account"
-        android:textAppearance="@style/action_l"
-        android:textColor="@color/light_lightest"
-        android:backgroundTint="@color/success_medium"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/account_list_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginHorizontal="20dp"/>
-</LinearLayout>
+        android:backgroundTint="@color/light_light"
+        android:contentDescription="@string/new_branch_account_description"
+        android:src="@drawable/ic_branch_account_add"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
