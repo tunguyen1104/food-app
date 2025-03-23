@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/chat_message_received_background"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/chatMessageReceived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hey there 👋, Welcome to my video"
+        android:textAppearance="@style/body_m"
+        android:textColor="@color/chat_message_received_text_background"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/chatMessageReceivedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:text="11:57 am"
+        android:textAppearance="@style/body_s"
+        android:textColor="@color/message_time"
+        tools:ignore="HardcodedText" />
+</LinearLayout>

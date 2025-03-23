@@ -48,4 +48,11 @@
     <color name="tag_course_material">@color/success_dark</color>
     <color name="tag_other">@color/highlight_dark</color>
     <color name="tag_spam">@color/dark_dark</color>
+
+    <!-- Message -->
+    <color name="chat_message_send_background">#005d4a</color>
+    <color name="chat_message_send_text_background">#dcf2f5</color>
+    <color name="message_time">#87c3b9</color>
+    <color name="chat_message_received_text_background">#DCF2F5</color>
+    <color name="chat_message_received_background">#1f2c34</color>
 </resources>
