@@ -13,44 +13,44 @@
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
         android:paddingHorizontal="2dp"
-        android:paddingBottom="5dp"
-        android:paddingTop="2dp">
+        android:paddingTop="2dp"
+        android:paddingBottom="5dp">
 
         <ImageView
             android:id="@+id/buttonBack"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center|start"
-            android:layout_marginEnd="10dp"
             android:layout_marginStart="5dp"
-            android:src="@drawable/ic_back"
-            app:tint="@color/dark_darkest"
-            android:contentDescription="@string/search_icon_desc"
+            android:layout_marginEnd="10dp"
             android:background="?android:attr/selectableItemBackground"
-            android:visibility="visible"/>
+            android:contentDescription="@string/search_icon_desc"
+            android:src="@drawable/ic_back"
+            android:visibility="visible"
+            app:tint="@color/dark_darkest" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            app:cardCornerRadius="25dp"
             android:layout_marginStart="10dp"
+            app:cardCornerRadius="25dp"
             app:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/imageProfile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/image_profile_desc"
                 android:scaleType="centerCrop"
-                android:src="@drawable/avatar_default"
-                android:contentDescription="@string/image_profile_desc" />
+                android:src="@drawable/avatar_default" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="16dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -73,11 +73,11 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:scaleType="centerCrop"
             android:layout_gravity="center"
-            app:tint="@color/dark_darkest"
+            android:contentDescription="@string/more_vert_desc"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_more_vert"
-            android:contentDescription="@string/more_vert_desc" />
+            app:tint="@color/dark_darkest" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -91,29 +91,50 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/newMessageEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="15dp"
             android:background="@color/light_medium"
             android:hint="@string/hint_message"
             android:importantForAutofill="no"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLines="6"
             android:minLines="1"
+            android:padding="15dp"
             android:scrollbarStyle="outsideInset"
             android:scrollbars="vertical" />
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="centerCrop"
+            android:id="@+id/btnAttachFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            app:tint="@color/highlight_darkest"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_send"
+            android:layout_marginEnd="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/attach_file_icon_desc"
+            android:focusable="true"
+            android:rotation="-45"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_attach_file"
+            android:visibility="visible"
+            app:tint="@color/dark_medium" />
+
+        <ImageView
+            android:id="@+id/btnSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:contentDescription="@string/send_icon_desc"
-            android:visibility="visible"/>
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_send"
+            android:visibility="visible"
+            app:tint="@color/highlight_darkest" />
     </FrameLayout>
 </LinearLayout>

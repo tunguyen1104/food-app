@@ -16,4 +16,5 @@
     <string name="more_vert_desc">More vertical description</string>
     <string name="search_icon_desc">Search icon description</string>
     <string name="send_icon_desc">Send icon description</string>
+    <string name="attach_file_icon_desc">Attach file icon description</string>
 </resources>
