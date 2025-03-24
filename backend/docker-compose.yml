@@ -1,0 +1,54 @@
+services:
+  mysql-container:
+    container_name: mysql-container
+    image: mysql:8.2.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: food_app
+    ports:
+      - "3306:3306"
+    networks:
+      - food-app-network
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    restart: always
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "--appendonly", "yes" ]
+    volumes:
+      - ./redis-data:/data
+    networks:
+      - food-app-network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql-container
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - food-app-network
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    restart: always
+    environment:
+      REDIS_HOSTS: local:redis_container:6379
+    ports:
+      - "8078:8081"
+    networks:
+      - food-app-network
+
+networks:
+  food-app-network:
+    name: food-app-network
+    driver: bridge
