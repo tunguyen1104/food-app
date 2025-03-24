@@ -17,4 +17,6 @@
     <string name="search_icon_desc">Search icon description</string>
     <string name="send_icon_desc">Send icon description</string>
     <string name="attach_file_icon_desc">Attach file icon description</string>
+    <string name="hint_search">Search</string>
+    <string name="add_new_food_description">Provide a description for the new food item</string>
 </resources>
