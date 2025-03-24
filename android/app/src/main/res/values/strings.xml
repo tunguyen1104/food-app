@@ -19,4 +19,7 @@
     <string name="attach_file_icon_desc">Attach file icon description</string>
     <string name="hint_search">Search</string>
     <string name="add_new_food_description">Provide a description for the new food item</string>
+    <string name="edit_desc">Edit the selected item</string>
+    <string name="delete_desc">Delete the selected item from the list</string>
+    <string name="add_to_order_list_desc">Add the selected item to your order</string>
 </resources>

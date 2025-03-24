@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/light_lightest">
 
     <LinearLayout
@@ -43,13 +44,14 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/search_icon_desc"
                 android:src="@drawable/ic_search"
-                app:tint="@color/dark_darkest" />
+                app:tint="@color/highlight_darkest" />
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/foodRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            tools:listitem="@layout/item_food_home"
             android:layout_weight="1" />
     </LinearLayout>
 
