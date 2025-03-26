@@ -47,6 +47,101 @@
                 app:tint="@color/highlight_darkest" />
         </androidx.cardview.widget.CardView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/category_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Banh mi"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_medium"
+                    android:gravity="center"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/tag_exam"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Xoi"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_medium"
+                    android:gravity="center"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/dark_lightest"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Pho"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_medium"
+                    android:gravity="center"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/dark_lightest"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="28dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/btnAllCategory"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/all_category_button_desc"
+                    android:src="@drawable/ic_chevron_down"
+                    app:tint="@color/dark_light" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/dark_lightest"/>
+            </FrameLayout>
+
+
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/foodRecyclerView"
             android:layout_width="match_parent"
