@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/light_lightest">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_home_border"
+                android:hint="@string/hint_search"
+                android:importantForAutofill="no"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="2"
+                android:minLines="1"
+                android:padding="12dp"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="vertical" />
+
+            <ImageView
+                android:id="@+id/btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="15dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/search_icon_desc"
+                android:src="@drawable/ic_search"
+                app:tint="@color/highlight_darkest" />
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="2dp">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/category_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Banh mi"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_medium"
+                    android:gravity="center"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/tag_exam"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Xoi"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_medium"
+                    android:gravity="center"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/dark_lightest"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Pho"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_medium"
+                    android:gravity="center"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/dark_lightest"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="28dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <ImageView
+                    android:id="@+id/btnAllCategory"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/all_category_button_desc"
+                    android:src="@drawable/ic_chevron_down"
+                    app:tint="@color/dark_light" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/dark_lightest"/>
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/foodRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            tools:listitem="@layout/item_food_home"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addNewFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/light_light"
+        android:contentDescription="@string/add_new_food_description"
+        android:src="@drawable/ic_branch_account_add"
+        android:visibility="visible"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
