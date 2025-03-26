@@ -23,4 +23,5 @@
     <string name="delete_desc">Delete the selected item from the list</string>
     <string name="add_to_order_list_desc">Add the selected item to your order</string>
     <string name="all_category_button_desc">See all categories</string>
+    <string name="clock_desc">Cooking Time</string>
 </resources>
