@@ -51,12 +51,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="5dp">
+            android:layout_marginTop="2dp">
 
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
 
                 <TextView
                     android:id="@+id/category_text"
@@ -69,7 +71,7 @@
                     android:gravity="center"/>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2dp"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="32dp"
                     android:background="@color/tag_exam"/>
@@ -78,7 +80,9 @@
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -99,7 +103,9 @@
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,7 +125,9 @@
 
             <FrameLayout
                 android:layout_width="28dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
 
                 <ImageView
                     android:id="@+id/btnAllCategory"
