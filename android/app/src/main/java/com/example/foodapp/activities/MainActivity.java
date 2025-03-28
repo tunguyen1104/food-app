@@ -12,12 +12,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.foodapp.R;
+import com.example.foodapp.adapters.ScreenSlidePagerAdapter;
 import com.example.foodapp.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private ViewPager2 viewPager;
+    private BottomNavigationView navView;
     private static final int REQUEST_CODE_POST_NOTIFICATION = 101;
 
     @Override
@@ -26,9 +32,66 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        initializeViews();
+        setupViewPager();
         loadTheme();
         initializeViewModels();
         checkAndRequestNotificationPermission();
+    }
+
+    private void initializeViews() {
+        navView = binding.navView;
+        viewPager = binding.viewPager;
+    }
+
+    private void setupViewPager() {
+        viewPager.setOffscreenPageLimit(4);
+        viewPager.setAdapter(new ScreenSlidePagerAdapter(this));
+
+        navView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.navigation_home) {
+                viewPager.setCurrentItem(0);
+                return true;
+            } else if (id == R.id.navigation_orders) {
+                viewPager.setCurrentItem(1);
+                return true;
+            } else if (id == R.id.navigation_message) {
+                viewPager.setCurrentItem(2);
+                return true;
+            } else if (id == R.id.navigation_account) {
+                viewPager.setCurrentItem(3);
+                return true;
+            }
+
+            return false;
+        });
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                updateNavigationBarSelection(position);
+            }
+        });
+    }
+
+    private void updateNavigationBarSelection(int position) {
+        switch (position) {
+            case 0:
+                navView.setSelectedItemId(R.id.navigation_home);
+                break;
+            case 1:
+                navView.setSelectedItemId(R.id.navigation_orders);
+                break;
+            case 2:
+                navView.setSelectedItemId(R.id.navigation_message);
+                break;
+            case 3:
+                navView.setSelectedItemId(R.id.navigation_account);
+                break;
+        }
     }
 
     private void loadTheme() {
