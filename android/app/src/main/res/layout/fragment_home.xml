@@ -12,40 +12,28 @@
         android:layout_marginHorizontal="10dp"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp">
+            android:hint="@string/hint_search"
+            app:endIconDrawable="@drawable/ic_search"
+            app:endIconMode="custom"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:boxStrokeColor="@color/text_input_color"
+            app:hintTextColor="@color/highlight_darkest">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/searchEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/search_home_border"
-                android:hint="@string/hint_search"
-                android:importantForAutofill="no"
-                android:inputType="textCapSentences|textMultiLine"
-                android:maxLines="2"
-                android:minLines="1"
-                android:padding="12dp"
-                android:scrollbarStyle="outsideInset"
-                android:scrollbars="vertical" />
-
-            <ImageView
-                android:id="@+id/btnSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:layout_marginEnd="15dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="@string/search_icon_desc"
-                android:src="@drawable/ic_search"
-                app:tint="@color/highlight_darkest" />
-        </androidx.cardview.widget.CardView>
+                android:inputType="textCapSentences"
+                android:textAppearance="@style/body_m"
+                android:textColor="@color/dark_darkest" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Banh mi"
-                    android:textAppearance="@style/body_m"
+                    android:textAppearance="@style/heading_s"
                     android:textColor="@color/dark_medium"
                     android:gravity="center"/>
                 <View
