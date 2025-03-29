@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.foodapp.fragments.account.AccountContainer;
 import com.example.foodapp.fragments.home.HomeContainer;
 
 public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
@@ -19,6 +20,7 @@ public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
             case 1:
             case 2:
             case 3:
+                return new AccountContainer();
             default:
                 return new HomeContainer();
         }
