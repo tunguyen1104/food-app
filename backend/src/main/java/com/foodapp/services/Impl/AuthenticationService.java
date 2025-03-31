@@ -18,8 +18,8 @@ import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,12 +40,18 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public LoginResponse authenticate(String phone, String password) {
-        User user = myUserService.loadUserByUsername(phone);
-        if (user == null) {
+        User user;
+        try {
+            user = myUserService.loadUserByUsername(phone);
+        } catch (UsernameNotFoundException exception) {
             throw new AppException(ErrorCode.USER_NOT_FOUND);
         }
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new AppException(ErrorCode.USERNAME_OR_PASSWORD_INCORRECT);
+        }
+        if (!user.getEnabled()) {
+            logger.info("User account disabled {}", phone);
+            throw new AppException(ErrorCode.ACCOUNT_DISABLED);
         }
         var token = LoginResponse.builder()
                 .accessToken(jwtTokenUtils.generateToken(user))
@@ -53,8 +59,7 @@ public class AuthenticationService implements IAuthenticationService {
                 .build();
         // Save refresh token to redis with Key = refresh token, Value = userId
         redisTemplate.opsForValue().set(String.valueOf(user.getId()), token.getRefreshToken(), 30, TimeUnit.DAYS);
-        var authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken); // set user to security context for further use
+        logger.info("User logged in {}", phone);
         return token;
     }
 
@@ -71,6 +76,7 @@ public class AuthenticationService implements IAuthenticationService {
                 .fullName(String.format("%s %s", request.getFirstName(), request.getLastName()))
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(role)
+                .enabled(false)
                 .build();
         userRepository.save(user);
         return RegisterResponse.builder()
