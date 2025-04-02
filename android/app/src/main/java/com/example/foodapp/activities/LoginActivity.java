@@ -56,15 +56,13 @@ public class LoginActivity extends AppCompatActivity {
                 new AuthRepository.LoginCallback() {
                     @Override
                     public void onSuccess(AuthResponse authResponse) {
-                        // Store tokens securely (e.g., in SharedPreferences)
-                        System.out.println(authResponse);
                         saveTokens(authResponse.getAccessToken(),
                                 authResponse.getRefreshToken());
                         Toast.makeText(LoginActivity.this,
                                 "Login successful",
                                 Toast.LENGTH_SHORT).show();
                         // Navigate to next screen
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        navigateToMain();
                     }
 
                     @Override
@@ -72,9 +70,13 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this,
                                 errorMessage,
                                 Toast.LENGTH_SHORT).show();
-                        System.out.println(errorMessage);
                     }
                 });
+    }
+
+    private void navigateToMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void saveTokens(String accessToken, String refreshToken) {

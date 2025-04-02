@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import com.example.foodapp.activities.LoginActivity;
 import com.example.foodapp.dto.request.LoginRequest;
 import com.example.foodapp.dto.request.RefreshTokenRequest;
+import com.example.foodapp.dto.response.ApiResponse;
 import com.example.foodapp.dto.response.AuthResponse;
 import com.example.foodapp.network.ApiClient;
 import com.example.foodapp.services.AuthService;
+
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,20 +33,37 @@ public class AuthRepository {
 
     public void loginUser(String phoneNumber, String password, final LoginCallback callback) {
         LoginRequest loginRequest = new LoginRequest(phoneNumber, password);
-        Call<AuthResponse> call = authService.login(loginRequest);
+        Call<ApiResponse<AuthResponse>> call = authService.login(loginRequest);
 
-        call.enqueue(new Callback<AuthResponse>() {
+        call.enqueue(new Callback<ApiResponse<AuthResponse>>() {
             @Override
-            public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
+            public void onResponse(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Response<ApiResponse<AuthResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
+                    ApiResponse<AuthResponse> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        callback.onSuccess(response.body().getData());
+                    }
                 } else {
-                    callback.onError("Login failed: " + response.message());
+                    // Try to extract error message from response body
+                    String errorMessage = "Login failed: " + response.code();
+                    if (response.errorBody() != null) {
+                        try {
+                            String errorJson = response.errorBody().string();
+                            // Assuming your API returns error messages in a JSON format like: {"message": "Invalid credentials"}
+                            JSONObject jsonObject = new JSONObject(errorJson);
+                            if (jsonObject.has("message")) {
+                                errorMessage = jsonObject.getString("message");
+                            }
+                        } catch (Exception e) {
+                            errorMessage = "Error parsing response";
+                        }
+                    }
+                    callback.onError("Login failed:" + errorMessage);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<AuthResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Throwable t) {
                 callback.onError("Network error: " + t.getMessage());
             }
         });
@@ -57,13 +77,13 @@ public class AuthRepository {
         }
 
         RefreshTokenRequest request = new RefreshTokenRequest(refreshToken);
-        authService.refreshToken(request).enqueue(new Callback<AuthResponse>() {
+        authService.refreshToken(request).enqueue(new Callback<ApiResponse<AuthResponse>>() {
             @Override
-            public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
+            public void onResponse(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Response<ApiResponse<AuthResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
-                    ApiClient.updateAccessToken(response.body().getAccessToken());
-                    callback.onSuccess(response.body().getAccessToken());
+                    saveTokens(response.body().getData().getAccessToken(), response.body().getData().getRefreshToken());
+                    ApiClient.updateAccessToken(response.body().getData().getAccessToken());
+                    callback.onSuccess(response.body().getData().getAccessToken());
                 } else {
                     forceLogout();
                     callback.onFailure();
@@ -71,7 +91,7 @@ public class AuthRepository {
             }
 
             @Override
-            public void onFailure(@NonNull Call<AuthResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Throwable t) {
                 forceLogout();
                 callback.onFailure();
             }

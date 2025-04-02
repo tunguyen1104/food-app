@@ -32,7 +32,7 @@ public class AuthController {
         var result = authenticationService.authenticate(request.getPhone(), request.getPassword());
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(result)
-                .status("Success")
+                .status(ApiResponse.Status.SUCCESS)
                 .build());
     }
 
@@ -41,7 +41,7 @@ public class AuthController {
         var result = authenticationService.register(request);
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(result)
-                .status("Success")
+                .status(ApiResponse.Status.SUCCESS)
                 .build());
     }
 
@@ -51,7 +51,7 @@ public class AuthController {
         var result = authenticationService.refreshToken(request.getRefreshToken());
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(result)
-                .status("Success")
+                .status(ApiResponse.Status.SUCCESS)
                 .build());
     }
 

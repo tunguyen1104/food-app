@@ -24,7 +24,7 @@ public class UserController {
         userService.enableEmployeeAccount(id);
         return ResponseEntity.ok(
                 ApiResponse.builder()
-                        .status("Success")
+                        .status(ApiResponse.Status.SUCCESS)
                         .build());
     }
 }
