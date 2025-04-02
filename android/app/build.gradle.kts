@@ -44,4 +44,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    // Retrofit
+    implementation(libs.retrofit)
+    // Gson Converter (for JSON serialization)
+    implementation(libs.converter.gson)
+    // OkHttp Logging Interceptor (for debugging API requests)
+    implementation(libs.logging.interceptor)
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
 }

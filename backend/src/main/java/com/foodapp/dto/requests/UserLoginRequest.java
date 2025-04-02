@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLoginRequest {
-    @NotBlank(message = "Email must not be blank")
+    @NotBlank(message = "Phone number must not be blank")
     @Pattern(regexp = "^0[3-9][0-9]{8}", message = "Phone number is not valid")
     private String phone;
     @NotBlank(message = "Password must not be blank")
-    @Size(min = 6)
+    @Size(min = 6, max = 64)
     private String password;
 }

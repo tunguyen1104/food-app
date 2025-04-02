@@ -19,22 +19,22 @@ public class GlobalExceptionHandler {
         ApiResponse<?> apiResponse = new ApiResponse<>();
 
         apiResponse.setErrorCode(errorCode.getCode());
-        apiResponse.setErrorMessage(errorCode.getMessage());
-
+        apiResponse.setMessage(errorCode.getMessage());
+        apiResponse.setStatus(ApiResponse.Status.ERROR);
         return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiResponse<?>> handleValidationException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
 
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage()));
 
-        ApiResponse<Map<String, String>> apiResponse = new ApiResponse<>();
-        apiResponse.setErrorMessage("Validation failed");
-        apiResponse.setData(errors);
-
+        ApiResponse<?> apiResponse = new ApiResponse<>();
+        apiResponse.setErrors(errors);
+        apiResponse.setStatus(ApiResponse.Status.ERROR);
+        apiResponse.setMessage("Validation Failed");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
 }

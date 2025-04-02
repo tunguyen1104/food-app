@@ -41,7 +41,7 @@
             android:layout_gravity="center|start"
             android:src="@drawable/ic_phone" />
         <EditText
-            android:id="@+id/editTextEmailAddress"
+            android:id="@+id/editTextPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -50,7 +50,7 @@
             android:textAppearance="@style/body_l"
             android:backgroundTint="@color/dark_lightest"
             android:hint="Phone number"
-            android:inputType="textEmailAddress" />
+            android:inputType="phone" />
     </FrameLayout>
 
     <FrameLayout

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Map;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,6 +16,10 @@ public class ApiResponse<T> {
     private T data;
     private String message;
     private Integer errorCode;
-    private String errorMessage;
-    private String status;
+    private Map<String, String> errors;
+    private Status status;
+
+    public enum Status {
+        SUCCESS, ERROR
+    }
 }

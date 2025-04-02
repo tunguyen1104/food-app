@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthController {
@@ -32,7 +32,7 @@ public class AuthController {
         var result = authenticationService.authenticate(request.getPhone(), request.getPassword());
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(result)
-                .status("Success")
+                .status(ApiResponse.Status.SUCCESS)
                 .build());
     }
 
@@ -41,7 +41,7 @@ public class AuthController {
         var result = authenticationService.register(request);
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(result)
-                .status("Success")
+                .status(ApiResponse.Status.SUCCESS)
                 .build());
     }
 
@@ -51,7 +51,7 @@ public class AuthController {
         var result = authenticationService.refreshToken(request.getRefreshToken());
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(result)
-                .status("Success")
+                .status(ApiResponse.Status.SUCCESS)
                 .build());
     }
 
