@@ -3,6 +3,7 @@ package com.foodapp.services.Impl;
 import com.foodapp.constants.ErrorCode;
 import com.foodapp.domain.Role;
 import com.foodapp.domain.User;
+import com.foodapp.dto.response.UserSettingsResponse;
 import com.foodapp.exceptions.AppException;
 import com.foodapp.repositories.UserRepository;
 import com.foodapp.utils.AuthenticationFacade;
@@ -13,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +39,26 @@ public class UserService implements UserDetailsService {
         }
         var user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         user.setEnabled(true);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User findByIdOrThrow(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public void updateUserSettings(UserSettingsResponse request) {
+        User user = authenticationFacade.getAuthenticatedUser();
+        user.setTheme(request.getTheme());
+        user.setNotification(request.getNotification());
+        userRepository.save(user);
+    }
+
+    public UserSettingsResponse getUserSettings() {
+        User user = authenticationFacade.getAuthenticatedUser();
+        return new UserSettingsResponse(user.getTheme(), user.getNotification());
     }
 }

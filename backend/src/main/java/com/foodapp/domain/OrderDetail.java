@@ -1,7 +1,6 @@
 package com.foodapp.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -12,4 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class OrderDetail extends BaseEntity {
+    private Double unitPrice;
+    private Integer quantity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
 }
