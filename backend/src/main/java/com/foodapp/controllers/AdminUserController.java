@@ -3,8 +3,10 @@ package com.foodapp.controllers;
 import com.foodapp.domain.User;
 import com.foodapp.dto.response.ApiResponse;
 import com.foodapp.dto.response.UserResponse;
+import com.foodapp.dto.response.UserSettingsResponse;
 import com.foodapp.mapper.UserMapper;
 import com.foodapp.services.Impl.UserService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +54,27 @@ public class AdminUserController {
         User user = userService.findByIdOrThrow(id);
 
         UserResponse response = userMapper.toUserResponse(user);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
+                        .data(response)
+                        .build()
+        );
+    }
+
+    @PutMapping("/settings")
+    public ResponseEntity<?> updateSettings(@RequestBody @Valid UserSettingsResponse request) {
+        userService.updateUserSettings(request);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
+                        .build()
+        );
+    }
+
+    @GetMapping("/settings")
+    public ResponseEntity<?> getSettings() {
+        UserSettingsResponse response = userService.getUserSettings();
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .status(ApiResponse.Status.SUCCESS)

@@ -24,6 +24,15 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
     private Boolean enabled;
 
+    @Enumerated(EnumType.STRING)
+    private Theme theme;
+
+    public enum Theme {
+        LIGHT, DARK
+    }
+
+    private Boolean notification = true;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;

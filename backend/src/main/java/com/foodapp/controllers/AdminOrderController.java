@@ -22,7 +22,7 @@ public class AdminOrderController {
     OrderService orderService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getOrdersByBranch(@PathVariable Long userId) {
+    public ResponseEntity<?> getOrdersByUserId(@PathVariable Long userId) {
         var orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.ok(
                 ApiResponse.builder()
