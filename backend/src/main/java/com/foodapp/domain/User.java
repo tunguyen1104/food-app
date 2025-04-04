@@ -35,6 +35,9 @@ public class User extends BaseEntity implements UserDetails {
         return authorityList;
     }
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
+
     @Override
     public String getPassword() {
         return password;

@@ -1,10 +1,7 @@
 package com.foodapp.controllers;
 
-import com.foodapp.domain.User;
 import com.foodapp.dto.response.ApiResponse;
-import com.foodapp.dto.response.UserResponse;
-import com.foodapp.mapper.UserMapper;
-import com.foodapp.utils.AuthenticationFacade;
+import com.foodapp.services.Impl.OrderDetailService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,25 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/orders")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class UserController {
-    UserMapper userMapper;
-    AuthenticationFacade authenticationFacade;
+public class OrderDetailController {
 
-    @GetMapping("/profile")
-    public ResponseEntity<?> getProfile() {
-        User currentUser = authenticationFacade.getAuthenticatedUser();
+    OrderDetailService orderDetailService;
 
-        UserResponse response = userMapper.toUserResponse(currentUser);
+    @GetMapping("/{orderId}/details")
+    public ResponseEntity<?> getOrderDetails(@PathVariable Long orderId) {
+        var detailResponses = orderDetailService.getDetailsByOrderId(orderId);
 
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .status(ApiResponse.Status.SUCCESS)
-                        .data(response)
+                        .data(detailResponses)
                         .build()
         );
     }
-
 }
