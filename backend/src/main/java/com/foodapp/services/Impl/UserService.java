@@ -3,6 +3,7 @@ package com.foodapp.services.Impl;
 import com.foodapp.constants.ErrorCode;
 import com.foodapp.domain.Role;
 import com.foodapp.domain.User;
+import com.foodapp.dto.response.UserSettingsResponse;
 import com.foodapp.exceptions.AppException;
 import com.foodapp.repositories.UserRepository;
 import com.foodapp.utils.AuthenticationFacade;
@@ -49,4 +50,15 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 
+    public void updateUserSettings(UserSettingsResponse request) {
+        User user = authenticationFacade.getAuthenticatedUser();
+        user.setTheme(request.getTheme());
+        user.setNotification(request.getNotification());
+        userRepository.save(user);
+    }
+
+    public UserSettingsResponse getUserSettings() {
+        User user = authenticationFacade.getAuthenticatedUser();
+        return new UserSettingsResponse(user.getTheme(), user.getNotification());
+    }
 }
