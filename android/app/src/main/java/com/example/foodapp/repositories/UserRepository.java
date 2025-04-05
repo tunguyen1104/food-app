@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.example.foodapp.dto.request.CreateUserRequest;
 import com.example.foodapp.dto.response.ApiResponse;
 import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.network.ApiClient;
@@ -67,6 +68,25 @@ public class UserRepository {
         });
     }
 
+    public void createUser(CreateUserRequest request, final CreateUserCallback callback) {
+        Call<ApiResponse<UserResponse>> call = userService.createUser(request);
+        call.enqueue(new Callback<ApiResponse<UserResponse>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<UserResponse>> call, @NonNull Response<ApiResponse<UserResponse>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    callback.onSuccess(response.body().getData());
+                } else {
+                    callback.onError(parseError(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<UserResponse>> call, @NonNull Throwable t) {
+                callback.onError("Connect error: " + t.getMessage());
+            }
+        });
+    }
+
     private String parseError(Response<?> response) {
         String errorMessage = "Failed";
         if (response.errorBody() != null) {
@@ -93,5 +113,10 @@ public class UserRepository {
     public interface UserListCallback {
         void onSuccess(List<UserResponse> users);
         void onError(String message);
+    }
+
+    public interface CreateUserCallback {
+        void onSuccess(UserResponse newUser);
+        void onError(String errorMessage);
     }
 }

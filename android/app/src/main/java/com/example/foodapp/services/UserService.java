@@ -1,5 +1,6 @@
 package com.example.foodapp.services;
 
+import com.example.foodapp.dto.request.CreateUserRequest;
 import com.example.foodapp.dto.response.ApiResponse;
 import com.example.foodapp.dto.response.UserResponse;
 
@@ -16,5 +17,7 @@ public interface UserService {
     @GET("/api/admin/users")
     Call<ApiResponse<List<UserResponse>>> getAllUsers();
 
+    @POST("/api/admin/users")
+    Call<ApiResponse<UserResponse>> createUser(@Body CreateUserRequest request);
 }
 

@@ -1,5 +1,7 @@
 package com.example.foodapp.dto.response;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +13,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+public class UserResponse implements Serializable {
     private Long id;
     private String fullName;
     private String phone;

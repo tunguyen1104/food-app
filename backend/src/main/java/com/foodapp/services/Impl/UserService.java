@@ -3,8 +3,12 @@ package com.foodapp.services.Impl;
 import com.foodapp.constants.ErrorCode;
 import com.foodapp.domain.Role;
 import com.foodapp.domain.User;
+import com.foodapp.dto.requests.CreateUserRequest;
+import com.foodapp.dto.response.UserResponse;
 import com.foodapp.dto.response.UserSettingsResponse;
 import com.foodapp.exceptions.AppException;
+import com.foodapp.mapper.UserMapper;
+import com.foodapp.repositories.RoleRepository;
 import com.foodapp.repositories.UserRepository;
 import com.foodapp.utils.AuthenticationFacade;
 import lombok.AccessLevel;
@@ -13,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +28,9 @@ import java.util.List;
 public class UserService implements UserDetailsService {
     UserRepository userRepository;
     AuthenticationFacade authenticationFacade;
+    RoleRepository roleRepository;
+    UserMapper userMapper;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public User loadUserByUsername(String phone) throws UsernameNotFoundException {
@@ -60,5 +68,27 @@ public class UserService implements UserDetailsService {
     public UserSettingsResponse getUserSettings() {
         User user = authenticationFacade.getAuthenticatedUser();
         return new UserSettingsResponse(user.getTheme(), user.getNotification());
+    }
+
+    public UserResponse createUser(CreateUserRequest request) {
+        if (userRepository.existsMyUserByPhone(request.getPhone())) {
+            throw new AppException(ErrorCode.USED_PHONE);
+        }
+
+        var role = roleRepository.findByName(Role.EMPLOYEE).orElseThrow(
+                () -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+
+        var user = User.builder()
+                .userName(request.getUserName())
+                .phone(request.getPhone())
+                .fullName(String.format("%s %s", request.getFirstName(), request.getLastName()))
+                .password(passwordEncoder.encode(request.getPassword()))
+                .location(request.getLocation())
+                .role(role)
+                .enabled(true)
+                .build();
+
+        userRepository.save(user);
+        return userMapper.toUserResponse(user);
     }
 }

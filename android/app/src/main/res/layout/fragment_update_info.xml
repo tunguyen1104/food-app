@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Branch information"
+            android:text="Create Account"
             android:textAlignment="center"
             android:textAppearance="@style/heading_l"
             android:textColor="@color/dark_darkest" />
@@ -94,13 +94,18 @@
                 </androidx.cardview.widget.CardView>
             </FrameLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
-                android:layout_marginTop="20dp"
-                android:hint="Branch name"
+                android:layout_weight="1"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp"
+                android:hint="First name"
                 app:boxCornerRadiusBottomEnd="15dp"
                 app:boxCornerRadiusBottomStart="15dp"
                 app:boxCornerRadiusTopEnd="15dp"
@@ -110,7 +115,7 @@
                 app:hintTextColor="@color/highlight_darkest">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextBranchName"
+                    android:id="@+id/editTextFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clickable="true"
@@ -120,6 +125,32 @@
                     android:textColor="@color/dark_darkest" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="30dp"
+                android:hint="Last name"
+                app:boxCornerRadiusBottomEnd="15dp"
+                app:boxCornerRadiusBottomStart="15dp"
+                app:boxCornerRadiusTopEnd="15dp"
+                app:boxCornerRadiusTopStart="15dp"
+                app:boxStrokeColor="@color/text_input_color"
+                app:cursorColor="@color/dark_darkest"
+                app:hintTextColor="@color/highlight_darkest">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:inputType="textPersonName"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_darkest" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -144,13 +175,12 @@
                     android:textAppearance="@style/body_m"
                     android:textColor="@color/dark_darkest" />
             </com.google.android.material.textfield.TextInputLayout>
-
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Email"
+                android:hint="Username"
                 app:boxCornerRadiusBottomEnd="15dp"
                 app:boxCornerRadiusBottomStart="15dp"
                 app:boxCornerRadiusTopEnd="15dp"
@@ -160,7 +190,7 @@
                 app:hintTextColor="@color/highlight_darkest">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextEmail"
+                    android:id="@+id/editUserName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clickable="true"
@@ -200,77 +230,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Birthdate"
+                android:hint="Confirm Password"
                 app:boxCornerRadiusBottomEnd="15dp"
                 app:boxCornerRadiusBottomStart="15dp"
                 app:boxCornerRadiusTopEnd="15dp"
                 app:boxCornerRadiusTopStart="15dp"
                 app:boxStrokeColor="@color/text_input_color"
                 app:cursorColor="@color/dark_darkest"
-                app:endIconDrawable="@drawable/ic_calendar_search"
-                app:endIconMode="custom"
-                app:endIconTint="@color/highlight_darkest"
                 app:hintTextColor="@color/highlight_darkest">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textViewBirthday"
+                    android:id="@+id/editTextConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clickable="true"
-                    android:focusable="false"
+                    android:focusable="true"
+                    android:inputType="textPassword"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_darkest" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Location"
+                app:boxCornerRadiusBottomEnd="15dp"
+                app:boxCornerRadiusBottomStart="15dp"
+                app:boxCornerRadiusTopEnd="15dp"
+                app:boxCornerRadiusTopStart="15dp"
+                app:boxStrokeColor="@color/text_input_color"
+                app:cursorColor="@color/dark_darkest"
+                app:hintTextColor="@color/highlight_darkest">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:inputType="text"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_darkest" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Enable"
+                app:boxCornerRadiusTopStart="15dp"
+                app:boxCornerRadiusTopEnd="15dp"
+                app:boxCornerRadiusBottomStart="15dp"
+                app:boxCornerRadiusBottomEnd="15dp"
+                app:boxStrokeColor="@color/text_input_color"
+                app:hintTextColor="@color/highlight_darkest"
+                app:cursorColor="@color/dark_darkest">
+
+                <AutoCompleteTextView
+                    android:id="@+id/enable"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="@style/body_m"
+                    android:textColor="@color/dark_darkest"
                     android:inputType="none"
-                    android:textAppearance="@style/body_m"
-                    android:textColor="@color/dark_darkest" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Address"
-                app:boxCornerRadiusBottomEnd="15dp"
-                app:boxCornerRadiusBottomStart="15dp"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:boxStrokeColor="@color/text_input_color"
-                app:cursorColor="@color/dark_darkest"
-                app:hintTextColor="@color/highlight_darkest">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:inputType="text"
-                    android:textAppearance="@style/body_m"
-                    android:textColor="@color/dark_darkest" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="..."
-                app:boxCornerRadiusBottomEnd="15dp"
-                app:boxCornerRadiusBottomStart="15dp"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:boxStrokeColor="@color/text_input_color"
-                app:cursorColor="@color/dark_darkest"
-                app:hintTextColor="@color/highlight_darkest">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:inputType="text"
-                    android:textAppearance="@style/body_m"
-                    android:textColor="@color/dark_darkest" />
+                    android:focusable="true"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </ScrollView>
@@ -279,7 +306,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
@@ -308,4 +336,16 @@
             android:textColor="@color/light_lightest"
             app:cornerRadius="15dp" />
     </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:cornerRadius="15dp"
+        android:text="Add"
+        android:textAppearance="@style/action_l"
+        android:textColor="@color/light_lightest"
+        android:backgroundTint="@color/highlight_darkest"/>
 </LinearLayout>

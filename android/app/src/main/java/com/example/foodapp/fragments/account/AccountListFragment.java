@@ -10,12 +10,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.foodapp.R;
 import com.example.foodapp.adapters.admin.AccountAdapter;
 import com.example.foodapp.databinding.FragmentAccountListBinding;
 import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.repositories.UserRepository;
+import com.example.foodapp.utils.NavigationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,12 @@ public class AccountListFragment extends Fragment {
         fetchAccountList();
 
         // Handle back button
-        binding.buttonBack.setOnClickListener(v -> requireActivity().onBackPressed());
+        NavigationUtil.setupBackNavigation(this, binding.buttonBack);
+
+        binding.newBranchAccount.setOnClickListener(v -> {
+            FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+            ft.replace(R.id.accountContainer, new UpdateAccountFragment()).addToBackStack(null).commit();
+        });
 
         return binding.getRoot();
     }
