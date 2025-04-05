@@ -10,11 +10,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
 import com.example.foodapp.databinding.FragmentAccountAdminBinding;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.fragments.setting.SettingsFragment;
 import com.example.foodapp.repositories.UserRepository;
 
 public class AdminAccountFragment extends Fragment {
@@ -83,6 +85,8 @@ public class AdminAccountFragment extends Fragment {
     }
 
     private void openSettings() {
+        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+        ft.replace(R.id.accountContainer, new SettingsFragment()).addToBackStack(null).commit();
     }
 
     @Override
