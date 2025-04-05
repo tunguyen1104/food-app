@@ -18,4 +18,5 @@ public class UserResponse {
     private String userName;
     private Boolean enabled;
     private String role;
+    private String avatarUrl;
 }
