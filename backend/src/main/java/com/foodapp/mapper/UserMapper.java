@@ -19,6 +19,7 @@ public class UserMapper {
                 .enabled(user.getEnabled())
                 .role(user.getRole().getName())
                 .avatarUrl(user.getAvatarUrl())
+                .location(user.getLocation())
                 .build();
     }
 }

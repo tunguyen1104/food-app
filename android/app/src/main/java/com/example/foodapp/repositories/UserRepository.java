@@ -11,6 +11,8 @@ import com.example.foodapp.services.UserService;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,7 +33,7 @@ public class UserRepository {
         call.enqueue(new Callback<ApiResponse<UserResponse>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<UserResponse>> call, @NonNull Response<ApiResponse<UserResponse>> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().getStatus().equals("SUCCESS")) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
                     callback.onSuccess(response.body().getData());
                 } else {
                     callback.onError(parseError(response));
@@ -40,6 +42,26 @@ public class UserRepository {
 
             @Override
             public void onFailure(@NonNull Call<ApiResponse<UserResponse>> call, @NonNull Throwable t) {
+                callback.onError("Connect error: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getAllUsers(final UserListCallback callback) {
+        Call<ApiResponse<List<UserResponse>>> call = userService.getAllUsers();
+
+        call.enqueue(new Callback<ApiResponse<List<UserResponse>>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<List<UserResponse>>> call, @NonNull Response<ApiResponse<List<UserResponse>>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    callback.onSuccess(response.body().getData());
+                } else {
+                    callback.onError(parseError(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<List<UserResponse>>> call, @NonNull Throwable t) {
                 callback.onError("Connect error: " + t.getMessage());
             }
         });
@@ -65,6 +87,11 @@ public class UserRepository {
 
     public interface UserProfileCallback {
         void onSuccess(UserResponse user);
+        void onError(String message);
+    }
+
+    public interface UserListCallback {
+        void onSuccess(List<UserResponse> users);
         void onError(String message);
     }
 }

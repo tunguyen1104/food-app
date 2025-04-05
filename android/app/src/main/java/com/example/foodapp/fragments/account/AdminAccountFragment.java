@@ -79,6 +79,8 @@ public class AdminAccountFragment extends Fragment {
     }
 
     private void openAccountList() {
+        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+        ft.replace(R.id.accountContainer, new AccountListFragment()).addToBackStack(null).commit();
     }
 
     private void openOrdersHistory() {

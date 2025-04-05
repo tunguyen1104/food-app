@@ -24,6 +24,7 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
     private Boolean enabled;
     private String avatarUrl;
+    private String location;
 
     @Enumerated(EnumType.STRING)
     private Theme theme;
