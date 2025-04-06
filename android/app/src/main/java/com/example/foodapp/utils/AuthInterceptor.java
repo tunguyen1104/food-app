@@ -2,8 +2,12 @@ package com.example.foodapp.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 
 import java.io.IOException;
 
@@ -45,5 +49,12 @@ public class AuthInterceptor implements Interceptor {
         accessToken = newAccessToken;
         SharedPreferences prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
         prefs.edit().putString("access_token", newAccessToken).apply();
+    }
+
+    public static GlideUrl getAuthorizedGlideUrl(String url) {
+        Log.e("TokenCheck", "Token = " + accessToken);
+        return new GlideUrl(url, new LazyHeaders.Builder()
+                .addHeader("Authorization", "Bearer " + accessToken)
+                .build());
     }
 }

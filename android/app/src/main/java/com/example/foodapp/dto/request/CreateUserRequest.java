@@ -1,4 +1,4 @@
-package com.foodapp.dto.response;
+package com.example.foodapp.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +11,14 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
-    private Long id;
-    private String fullName;
-    private String phone;
+public class CreateUserRequest {
+    private String firstName;
+    private String lastName;
     private String userName;
-    private Boolean enabled;
-    private String role;
-    private String avatarUrl;
+    private String phone;
+    private String password;
+    private String confirmPassword;
     private String location;
+    private Boolean enabled;
+    private String avatarUrl;
 }

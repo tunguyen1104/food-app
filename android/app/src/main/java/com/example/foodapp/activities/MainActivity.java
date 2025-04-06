@@ -146,4 +146,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(ev);
     }
+
+    public interface PermissionCallback {
+        void onPermissionResult(boolean isGranted);
+    }
 }

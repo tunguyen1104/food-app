@@ -1,6 +1,7 @@
 package com.foodapp.controllers;
 
 import com.foodapp.domain.User;
+import com.foodapp.dto.requests.CreateUserRequest;
 import com.foodapp.dto.response.ApiResponse;
 import com.foodapp.dto.response.UserResponse;
 import com.foodapp.dto.response.UserSettingsResponse;
@@ -58,6 +59,38 @@ public class AdminUserController {
                 ApiResponse.builder()
                         .status(ApiResponse.Status.SUCCESS)
                         .data(response)
+                        .build()
+        );
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody @Valid CreateUserRequest request) {
+        UserResponse userResponse = userService.createUser(request);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
+                        .data(userResponse)
+                        .build()
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable @NotNull Long id, @RequestBody @Valid CreateUserRequest request) {
+        UserResponse userResponse = userService.updateUser(id, request);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
+                        .data(userResponse)
+                        .build()
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable @NotNull Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
                         .build()
         );
     }
