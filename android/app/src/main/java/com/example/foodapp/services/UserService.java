@@ -19,5 +19,11 @@ public interface UserService {
 
     @POST("/api/admin/users")
     Call<ApiResponse<UserResponse>> createUser(@Body CreateUserRequest request);
+
+    @PUT("api/admin/users/{id}")
+    Call<ApiResponse<UserResponse>> updateUser(@Path("id") Long id, @Body CreateUserRequest request);
+
+    @DELETE("api/admin/users/{id}")
+    Call<ApiResponse<Void>> deleteUser(@Path("id") Long id);
 }
 

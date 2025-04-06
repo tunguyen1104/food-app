@@ -27,13 +27,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.foodapp.R;
 import com.example.foodapp.activities.MainActivity;
+import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.FragmentUpdateInfoBinding;
 import com.example.foodapp.dto.request.CreateUserRequest;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.enums.EditMode;
 import com.example.foodapp.enums.EnableStatus;
 import com.example.foodapp.repositories.UploadRepository;
 import com.example.foodapp.repositories.UserRepository;
+import com.example.foodapp.utils.AuthInterceptor;
 import com.example.foodapp.utils.FileUtil;
 import com.example.foodapp.utils.NavigationUtil;
 import com.google.android.material.snackbar.Snackbar;
@@ -63,16 +67,74 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
         setupCamera();
         NavigationUtil.setupBackNavigation(this, binding.buttonBack);
 
-        binding.addButton.setOnClickListener(v -> addAccount());
+        handleActionLayoutVisibility();
 
         return binding.getRoot();
     }
 
+    private void loadUserIfAvailable() {
+        UserResponse user = (UserResponse) getArguments().getSerializable("user");
+        if (user == null) return;
+        fillFormWithUserData(user);
+        loadUserAvatar(user.getAvatarUrl());
+    }
+    private void handleActionLayoutVisibility() {
+        EditMode mode = (EditMode) getArguments().getSerializable("mode");
+        if (mode == EditMode.UPDATE) {
+            binding.tvTitle.setText("Update Account");
+            binding.layoutActions.setVisibility(View.VISIBLE);
+            binding.addButton.setVisibility(View.GONE);
+            loadUserIfAvailable();
+            binding.btnSave.setOnClickListener(v -> updateAccount());
+            binding.btnDelete.setOnClickListener(v -> deleteAccount());
+        } else {
+            binding.layoutActions.setVisibility(View.GONE);
+            binding.addButton.setOnClickListener(v -> createAccount());
+        }
+    }
+
+    private void fillFormWithUserData(UserResponse user) {
+        binding.editTextFirstName.setText(extractFirstName(user.getFullName()));
+        binding.editTextLastName.setText(extractLastName(user.getFullName()));
+        binding.editTextPhoneNumber.setText(user.getPhone());
+        binding.editUserName.setText(user.getUserName());
+        binding.editTextLocation.setText(user.getLocation());
+
+        EnableStatus status = (user.getEnabled() != null && user.getEnabled())
+                ? EnableStatus.ON
+                : EnableStatus.OFF;
+
+        binding.enable.setText(status.getDisplayText(), false);
+    }
+
+    private void loadUserAvatar(String avatarUrl) {
+        if (avatarUrl != null && !avatarUrl.isEmpty()) {
+            Glide.with(requireContext())
+                    .load(AuthInterceptor.getAuthorizedGlideUrl(Constants.URL_HOST_SERVER + avatarUrl))
+                    .placeholder(R.drawable.avatar_default)
+                    .into(binding.imageButtonAvatar);
+        } else {
+            binding.imageButtonAvatar.setImageResource(R.drawable.avatar_default);
+        }
+    }
+
+    private String extractFirstName(String fullName) {
+        if (fullName == null || fullName.isEmpty()) return "";
+        String[] parts = fullName.trim().split("\\s+");
+        return parts[parts.length - 1];
+    }
+
+    private String extractLastName(String fullName) {
+        if (fullName == null || fullName.isEmpty()) return "";
+        String[] parts = fullName.trim().split("\\s+");
+        return String.join(" ", java.util.Arrays.copyOf(parts, parts.length - 1));
+    }
+
     private void setupDropdownEnable() {
-        String[] options = {"On", "Off"};
+        String[] options = EnableStatus.getDisplayOptions();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, options);
         binding.enable.setAdapter(adapter);
-        binding.enable.setText(options[0], false);
+        binding.enable.setText(EnableStatus.ON.getDisplayText(), false);
     }
 
     private void setupImagePicker() {
@@ -127,7 +189,7 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
         Glide.with(requireContext()).load(uri).placeholder(com.example.foodapp.R.drawable.avatar_default).into(binding.imageButtonAvatar);
     }
 
-    private void addAccount() {
+    private void createAccount() {
         String firstName = binding.editTextFirstName.getText().toString().trim();
         String lastName = binding.editTextLastName.getText().toString().trim();
         String phone = binding.editTextPhoneNumber.getText().toString().trim();
@@ -138,15 +200,11 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
         EnableStatus status = EnableStatus.fromDisplayText(binding.enable.getText().toString().trim());
         boolean enable = (status != null && status.getValue());
 
-        if (TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || TextUtils.isEmpty(phone)
-                || TextUtils.isEmpty(userName) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)
-                || TextUtils.isEmpty(location) || selectedImageUri == null) {
+        if (selectedImageUri == null) {
             Toast.makeText(requireContext(), "Please fill all fields and select an image", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        if (!password.equals(confirmPassword)) {
-            Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+        if (!isFormValid(firstName, lastName, phone, userName, password, confirmPassword, location)) {
             return;
         }
 
@@ -157,7 +215,7 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
                                           String password, String confirmPassword, String location, boolean enable) {
         File file = FileUtil.getFileFromUri(requireContext(), selectedImageUri);
         if (file == null) {
-            Toast.makeText(getContext(), "File not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "File not found", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -188,6 +246,116 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updateAccount() {
+        String firstName = binding.editTextFirstName.getText().toString().trim();
+        String lastName = binding.editTextLastName.getText().toString().trim();
+        String phone = binding.editTextPhoneNumber.getText().toString().trim();
+        String userName = binding.editUserName.getText().toString().trim();
+        String password = binding.editTextPassword.getText().toString().trim();
+        String confirmPassword = binding.editTextConfirmPassword.getText().toString().trim();
+        String location = binding.editTextLocation.getText().toString().trim();
+        EnableStatus status = EnableStatus.fromDisplayText(binding.enable.getText().toString().trim());
+        boolean enable = (status != null && status.getValue());
+
+        if (!isFormValid(firstName, lastName, phone, userName, password, confirmPassword, location)) {
+            return;
+        }
+
+        UserResponse currentUser = (UserResponse) getArguments().getSerializable("user");
+        if (currentUser == null) {
+            Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedImageUri != null) {
+            File file = FileUtil.getFileFromUri(requireContext(), selectedImageUri);
+            if (file == null) {
+                Toast.makeText(requireContext(), "File not found", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            uploadRepository.uploadImage(file, new UploadRepository.UploadCallback() {
+                @Override
+                public void onSuccess(String imageUrl) {
+                    updateAccountData(currentUser.getId(), firstName, lastName, phone, userName,
+                            password, confirmPassword, location, enable, imageUrl);
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Toast.makeText(requireContext(), "Image upload failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            updateAccountData(currentUser.getId(), firstName, lastName, phone, userName,
+                    password, confirmPassword, location, enable, currentUser.getAvatarUrl());
+        }
+    }
+
+    private void updateAccountData(Long userId, String firstName, String lastName, String phone,
+                                   String userName, String password, String confirmPassword,
+                                   String location, boolean enable, String avatarUrl) {
+        CreateUserRequest requestData = new CreateUserRequest(
+                firstName, lastName, userName, phone,
+                password, confirmPassword, location, enable, avatarUrl
+        );
+
+        userRepository.updateUser(userId, requestData, new UserRepository.UpdateUserCallback() {
+            @Override
+            public void onSuccess(UserResponse updatedUser) {
+                Toast.makeText(requireContext(), "Account updated successfully!", Toast.LENGTH_SHORT).show();
+                getParentFragmentManager().popBackStack();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(requireContext(), "Failed to update account: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private boolean isFormValid(String firstName, String lastName, String phone, String userName,
+                                String password, String confirmPassword, String location) {
+        if (TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || TextUtils.isEmpty(phone)
+                || TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)
+                || TextUtils.isEmpty(confirmPassword) || TextUtils.isEmpty(location)) {
+            Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void deleteAccount() {
+        UserResponse user = (UserResponse) getArguments().getSerializable("user");
+        if (user == null) {
+            Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Delete Account")
+                .setMessage("Are you sure you want to delete this account?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    userRepository.deleteUser(user.getId(), new UserRepository.DeleteUserCallback() {
+                        @Override
+                        public void onSuccess(String message) {
+                            Toast.makeText(requireContext(), "Account deleted successfully!", Toast.LENGTH_SHORT).show();
+                            getParentFragmentManager().popBackStack();
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            Toast.makeText(requireContext(), "Failed to delete account: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     private void checkCameraPermission() {

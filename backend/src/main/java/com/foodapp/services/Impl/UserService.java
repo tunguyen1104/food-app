@@ -92,4 +92,27 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
+
+    public UserResponse updateUser(Long id, CreateUserRequest request) {
+
+        User user = findByIdOrThrow(id);
+
+        user.setUserName(request.getUserName());
+        user.setPhone(request.getPhone());
+        user.setFullName(String.format("%s %s", request.getFirstName(), request.getLastName()));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setLocation(request.getLocation());
+        user.setEnabled(request.getEnabled());
+        user.setAvatarUrl(request.getAvatarUrl());
+
+        userRepository.save(user);
+
+        return userMapper.toUserResponse(user);
+    }
+
+    public void deleteUser(Long id) {
+        User user = findByIdOrThrow(id);
+        user.setEnabled(false);
+        userRepository.save(user);
+    }
 }

@@ -103,6 +103,44 @@ public class UserRepository {
         return errorMessage;
     }
 
+    public void updateUser(Long id, CreateUserRequest request, final UpdateUserCallback callback) {
+        Call<ApiResponse<UserResponse>> call = userService.updateUser(id, request);
+        call.enqueue(new Callback<ApiResponse<UserResponse>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<UserResponse>> call, @NonNull Response<ApiResponse<UserResponse>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    callback.onSuccess(response.body().getData());
+                } else {
+                    callback.onError(parseError(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<UserResponse>> call, @NonNull Throwable t) {
+                callback.onError("Connect error: " + t.getMessage());
+            }
+        });
+    }
+
+    public void deleteUser(Long id, final DeleteUserCallback callback) {
+        Call<ApiResponse<Void>> call = userService.deleteUser(id);
+        call.enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    callback.onSuccess("Account deleted successfully!");
+                } else {
+                    callback.onError(parseError(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable t) {
+                callback.onError("Connect error: " + t.getMessage());
+            }
+        });
+    }
+
     // Callbacks
 
     public interface UserProfileCallback {
@@ -117,6 +155,16 @@ public class UserRepository {
 
     public interface CreateUserCallback {
         void onSuccess(UserResponse newUser);
+        void onError(String errorMessage);
+    }
+
+    public interface UpdateUserCallback {
+        void onSuccess(UserResponse updatedUser);
+        void onError(String errorMessage);
+    }
+
+    public interface DeleteUserCallback {
+        void onSuccess(String message);
         void onError(String errorMessage);
     }
 }

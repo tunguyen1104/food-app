@@ -13,6 +13,7 @@ import com.example.foodapp.R;
 import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.ItemAccountBranchBinding;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.listeners.OnAccountClickListener;
 import com.example.foodapp.utils.AuthInterceptor;
 
 import java.util.List;
@@ -21,10 +22,12 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
 
     private final List<UserResponse> userList;
     private final Context context;
+    private final OnAccountClickListener listener;
 
-    public AccountAdapter(Context context, List<UserResponse> userList) {
+    public AccountAdapter(Context context, List<UserResponse> userList, OnAccountClickListener listener) {
         this.context = context;
         this.userList = userList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -58,7 +61,6 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
             binding.branchName.setText(user.getFullName());
             binding.email.setText(user.getUserName());
             binding.phone.setText(user.getPhone());
-
             // Glide load avatar
             if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
                 Glide.with(context)
@@ -79,6 +81,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
             }
 
             binding.location.setText(user.getLocation());
+
+            binding.getRoot().setOnClickListener(v -> listener.onAccountClick(user));
         }
     }
 }

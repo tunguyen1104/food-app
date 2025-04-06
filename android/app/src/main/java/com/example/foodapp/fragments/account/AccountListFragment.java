@@ -17,6 +17,7 @@ import com.example.foodapp.R;
 import com.example.foodapp.adapters.admin.AccountAdapter;
 import com.example.foodapp.databinding.FragmentAccountListBinding;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.enums.EditMode;
 import com.example.foodapp.repositories.UserRepository;
 import com.example.foodapp.utils.NavigationUtil;
 
@@ -28,7 +29,6 @@ public class AccountListFragment extends Fragment {
     private FragmentAccountListBinding binding;
     private AccountAdapter accountAdapter;
     private UserRepository userRepository;
-
     private final List<UserResponse> userList = new ArrayList<>();
 
     @Nullable
@@ -40,22 +40,45 @@ public class AccountListFragment extends Fragment {
         setupRecyclerView();
         fetchAccountList();
 
-        // Handle back button
-        NavigationUtil.setupBackNavigation(this, binding.buttonBack);
-
-        binding.newBranchAccount.setOnClickListener(v -> {
-            FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-            ft.replace(R.id.accountContainer, new UpdateAccountFragment()).addToBackStack(null).commit();
-        });
+        setupListeners();
 
         return binding.getRoot();
     }
 
+    private void setupListeners() {
+        NavigationUtil.setupBackNavigation(this, binding.buttonBack);
+
+        binding.newBranchAccount.setOnClickListener(v -> openCreateAccount());
+    }
+
     private void setupRecyclerView() {
-        accountAdapter = new AccountAdapter(requireContext(), userList);
+        accountAdapter = new AccountAdapter(requireContext(), userList, this::openEditAccount);
         binding.accountRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.accountRecyclerView.setAdapter(accountAdapter);
     }
+
+    private void openEditAccount(UserResponse user) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("mode", EditMode.UPDATE);
+        bundle.putSerializable("user", user);
+
+        UpdateAccountFragment fragment = new UpdateAccountFragment();
+        fragment.setArguments(bundle);
+
+        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+        ft.replace(R.id.accountContainer, fragment).addToBackStack(null).commit();
+    }
+
+    private void openCreateAccount() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("mode", EditMode.CREATE);
+
+        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+        UpdateAccountFragment fragment = new UpdateAccountFragment();
+        fragment.setArguments(bundle);
+        ft.replace(R.id.accountContainer, fragment).addToBackStack(null).commit();
+    }
+
 
     private void fetchAccountList() {
         userRepository.getAllUsers(new UserRepository.UserListCallback() {

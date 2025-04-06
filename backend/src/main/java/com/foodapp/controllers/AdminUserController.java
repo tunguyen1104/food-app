@@ -74,6 +74,27 @@ public class AdminUserController {
         );
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable @NotNull Long id, @RequestBody @Valid CreateUserRequest request) {
+        UserResponse userResponse = userService.updateUser(id, request);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
+                        .data(userResponse)
+                        .build()
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable @NotNull Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
+                        .build()
+        );
+    }
+
     @PutMapping("/settings")
     public ResponseEntity<?> updateSettings(@RequestBody @Valid UserSettingsResponse request) {
         userService.updateUserSettings(request);
