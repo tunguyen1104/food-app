@@ -106,7 +106,7 @@ public class SettingsFragment extends Fragment {
         }
 
         // Set notification group
-        boolean notification = sharedPreferences.getBoolean("reminder_notification", true);
+        boolean notification = sharedPreferences.getBoolean("notification", true);
         notificationGroup.check(notification ? R.id.notification_on : R.id.notification_off);
     }
 }
