@@ -19,5 +19,6 @@ public class CreateUserRequest {
     private String password;
     private String confirmPassword;
     private String location;
-    private String enable;
+    private Boolean enabled;
+    private String avatarUrl;
 }

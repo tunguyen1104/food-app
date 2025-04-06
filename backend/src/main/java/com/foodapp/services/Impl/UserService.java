@@ -86,6 +86,7 @@ public class UserService implements UserDetailsService {
                 .location(request.getLocation())
                 .role(role)
                 .enabled(true)
+                .avatarUrl(request.getAvatarUrl())
                 .build();
 
         userRepository.save(user);

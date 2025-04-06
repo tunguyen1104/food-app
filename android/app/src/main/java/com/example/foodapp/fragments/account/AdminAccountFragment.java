@@ -1,6 +1,7 @@
 package com.example.foodapp.fragments.account;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
+import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.FragmentAccountAdminBinding;
 import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.fragments.setting.SettingsFragment;
 import com.example.foodapp.repositories.UserRepository;
+import com.example.foodapp.utils.AuthInterceptor;
 
 public class AdminAccountFragment extends Fragment {
     private FragmentAccountAdminBinding binding;
@@ -65,10 +68,14 @@ public class AdminAccountFragment extends Fragment {
     private void loadAvatar(String url) {
         if (!isAdded()) return;
 
-        if (url != null && !url.isEmpty()) {
+        if (url != null && !url.trim().isEmpty()) {
+            String fullUrl = Constants.URL_HOST_SERVER + url;
+            Log.d("AvatarURL", fullUrl);
+
             Glide.with(requireContext())
-                    .load(url)
+                    .load(AuthInterceptor.getAuthorizedGlideUrl(fullUrl))
                     .placeholder(R.drawable.avatar_default)
+                    .error(R.drawable.avatar_default)
                     .into(accountAvatarView);
         } else {
             accountAvatarView.setImageResource(R.drawable.avatar_default);

@@ -1,94 +1,108 @@
 package com.example.foodapp.fragments.account;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.activities.MainActivity;
 import com.example.foodapp.databinding.FragmentUpdateInfoBinding;
 import com.example.foodapp.dto.request.CreateUserRequest;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.enums.EnableStatus;
+import com.example.foodapp.repositories.UploadRepository;
 import com.example.foodapp.repositories.UserRepository;
+import com.example.foodapp.utils.FileUtil;
 import com.example.foodapp.utils.NavigationUtil;
 import com.google.android.material.snackbar.Snackbar;
 
-public class UpdateAccountFragment extends Fragment implements MainActivity.PermissionCallback{
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+
+public class UpdateAccountFragment extends Fragment implements MainActivity.PermissionCallback {
 
     private FragmentUpdateInfoBinding binding;
     private UserRepository userRepository;
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-
+    private Uri selectedImageUri;
+    private UploadRepository uploadRepository;
     private boolean isCameraPermitted = false;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentUpdateInfoBinding.inflate(inflater, container, false);
         userRepository = new UserRepository(requireContext());
-        binding.addButton.setOnClickListener(v -> addAccount());
+        uploadRepository = new UploadRepository(requireContext());
 
+        setupDropdownEnable();
+        setupImagePicker();
+        setupCamera();
         NavigationUtil.setupBackNavigation(this, binding.buttonBack);
 
-        // Set listener for ImageButton to open image picker
-        binding.imageButtonAvatar.setOnClickListener(v -> openImagePicker());
-        // Initialize the image picker launcher
-        imagePickerLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == getActivity().RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null && data.getData() != null) {
-                            Uri imageUri = data.getData();
-                            setImageFromUri(imageUri);
-                        }
-                    }
-                }
-        );
+        binding.addButton.setOnClickListener(v -> addAccount());
 
-        // Setup camera launcher to capture an image
-        cameraLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
-                        Bundle bundle = result.getData().getExtras();
-                        Bitmap bitmap = (Bitmap) bundle.get("data");
-                        binding.imageButtonAvatar.setImageBitmap(bitmap);
-                    }
-                }
-        );
+        return binding.getRoot();
+    }
 
-        // Set listener for camera button to open the camera
+    private void setupDropdownEnable() {
+        String[] options = {"On", "Off"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, options);
+        binding.enable.setAdapter(adapter);
+        binding.enable.setText(options[0], false);
+    }
+
+    private void setupImagePicker() {
+        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
+                Uri uri = result.getData().getData();
+                if (uri != null) setImageFromUri(uri);
+            }
+        });
+
+        binding.imageButtonAvatar.setOnClickListener(v -> {
+            requestStoragePermission();
+            openImagePicker();
+        });
+    }
+
+    private void setupCamera() {
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
+                Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
+                binding.imageButtonAvatar.setImageBitmap(bitmap);
+                selectedImageUri = getImageUriFromBitmap(bitmap);
+            }
+        });
+
         checkCameraPermission();
         binding.buttonCamera.setOnClickListener(v -> {
             openCamera();
             Toast.makeText(requireContext(), "Camera opened", Toast.LENGTH_SHORT).show();
         });
-
-        return binding.getRoot();
-    }
-    private void setImageFromUri(Uri imageUri) {
-        Glide.with(requireContext())
-                .load(imageUri)
-                .placeholder(com.example.foodapp.R.drawable.avatar_default)
-                .into(binding.imageButtonAvatar);
     }
 
     private void openImagePicker() {
@@ -96,23 +110,21 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
         imagePickerLauncher.launch(intent);
     }
 
-    private void checkCameraPermission() {
-        ActivityResultLauncher<String> requestPermissionLauncher =
-                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                    onPermissionResult(isGranted);
-                });
-        if (ContextCompat.checkSelfPermission(
-                requireContext(), android.Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_GRANTED) {
-            isCameraPermitted = true;
-        } else {
-            requestPermissionLauncher.launch(android.Manifest.permission.CAMERA);
-        }
-    }
-
     private void openCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraLauncher.launch(cameraIntent);
+    }
+
+    private Uri getImageUriFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(requireContext().getContentResolver(), bitmap, "Title", null);
+        return Uri.parse(path);
+    }
+
+    private void setImageFromUri(Uri uri) {
+        selectedImageUri = uri;
+        Glide.with(requireContext()).load(uri).placeholder(com.example.foodapp.R.drawable.avatar_default).into(binding.imageButtonAvatar);
     }
 
     private void addAccount() {
@@ -123,11 +135,13 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
         String password = binding.editTextPassword.getText().toString().trim();
         String confirmPassword = binding.editTextConfirmPassword.getText().toString().trim();
         String location = binding.editTextLocation.getText().toString().trim();
-        String enable = binding.enable.toString().trim();
+        EnableStatus status = EnableStatus.fromDisplayText(binding.enable.getText().toString().trim());
+        boolean enable = (status != null && status.getValue());
 
-        if (TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || TextUtils.isEmpty(phone) ||
-                TextUtils.isEmpty(userName) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) || TextUtils.isEmpty(location)) {
-            Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || TextUtils.isEmpty(phone)
+                || TextUtils.isEmpty(userName) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)
+                || TextUtils.isEmpty(location) || selectedImageUri == null) {
+            Toast.makeText(requireContext(), "Please fill all fields and select an image", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -136,37 +150,110 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
             return;
         }
 
-        CreateUserRequest request = new CreateUserRequest(
-                firstName,
-                lastName,
-                userName,
-                phone,
-                password,
-                confirmPassword,
-                location,
-                enable
-        );
+        uploadImageAndCreateUser(firstName, lastName, userName, phone, password, confirmPassword, location, enable);
+    }
 
-        userRepository.createUser(request, new UserRepository.CreateUserCallback() {
+    private void uploadImageAndCreateUser(String firstName, String lastName, String userName, String phone,
+                                          String password, String confirmPassword, String location, boolean enable) {
+        File file = FileUtil.getFileFromUri(requireContext(), selectedImageUri);
+        if (file == null) {
+            Toast.makeText(getContext(), "File not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        uploadRepository.uploadImage(file, new UploadRepository.UploadCallback() {
             @Override
-            public void onSuccess(UserResponse newUser) {
-                Toast.makeText(requireContext(), "Account created successfully!", Toast.LENGTH_SHORT).show();
-                requireActivity().getSupportFragmentManager().popBackStack();
+            public void onSuccess(String imageUrl) {
+                CreateUserRequest request = new CreateUserRequest(
+                        firstName, lastName, userName, phone,
+                        password, confirmPassword, location, enable, imageUrl
+                );
+
+                userRepository.createUser(request, new UserRepository.CreateUserCallback() {
+                    @Override
+                    public void onSuccess(UserResponse newUser) {
+                        Toast.makeText(requireContext(), "Account created successfully!", Toast.LENGTH_SHORT).show();
+                        getParentFragmentManager().popBackStack();
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        Toast.makeText(requireContext(), "Failed to create account: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
             public void onError(String errorMessage) {
-                Toast.makeText(requireContext(), "Failed to create account: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void checkCameraPermission() {
+        ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(), this::onPermissionResult);
+
+        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissionLauncher.launch(android.Manifest.permission.CAMERA);
+        } else {
+            isCameraPermitted = true;
+        }
+    }
+
+    private static final int STORAGE_PERMISSION_CODE = 100;
+
+    private void requestStoragePermission() {
+        String[] permissions;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions = new String[]{Manifest.permission.READ_MEDIA_IMAGES};
+        } else {
+            permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+        }
+
+        boolean allGranted = true;
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(requireContext(), permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                allGranted = false;
+                break;
+            }
+        }
+
+        if (!allGranted) {
+            ActivityCompat.requestPermissions(requireActivity(), permissions, STORAGE_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            boolean granted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    granted = false;
+                    break;
+                }
+            }
+
+            if (granted) {
+                Toast.makeText(getContext(), "Permission granted", Toast.LENGTH_SHORT).show();
+                openImagePicker();
+            } else {
+                Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
     public void onPermissionResult(boolean isGranted) {
         isCameraPermitted = isGranted;
         if (!isGranted) {
-            Snackbar snackbar = Snackbar.make(requireView(), "Camera permission denied", Snackbar.LENGTH_SHORT);
-            snackbar.show();
+            Snackbar.make(requireView(), "Camera permission denied", Snackbar.LENGTH_SHORT).show();
         }
     }
 

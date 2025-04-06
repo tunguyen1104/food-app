@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
+import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.ItemAccountBranchBinding;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.utils.AuthInterceptor;
 
 import java.util.List;
 
@@ -60,7 +62,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
             // Glide load avatar
             if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
                 Glide.with(context)
-                        .load(user.getAvatarUrl())
+                        .load(AuthInterceptor.getAuthorizedGlideUrl(Constants.URL_HOST_SERVER + user.getAvatarUrl()))
                         .placeholder(R.drawable.avatar_default)
                         .into(binding.imageProfile);
             } else {
