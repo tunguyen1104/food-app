@@ -41,5 +41,6 @@ public class CreateUserRequest {
 
     @NotBlank(message = "Location is required")
     private String location;
-    private String enable;
+    private Boolean enabled;
+    private String avatarUrl;
 }
