@@ -16,7 +16,7 @@ public class Food extends BaseEntity {
     private Double price;
     private String avatarUrl;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 }
