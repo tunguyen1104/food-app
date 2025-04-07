@@ -12,4 +12,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class BranchStock extends BaseEntity {
+    private String description;
 }
