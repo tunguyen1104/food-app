@@ -1,7 +1,6 @@
 package com.foodapp.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -12,4 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Category extends BaseEntity {
+    private String name;
+    private String description;
 }

@@ -24,6 +24,9 @@ public enum ErrorCode {
     // --- ORDER ERRORS ---
     ORDER_NOT_FOUND(2001, "Order not found", HttpStatus.NOT_FOUND),
 
+    // --- CATEGORY ERRORS ---
+    CATEGORY_NOT_FOUND(1009, "Category Not found", HttpStatus.NOT_FOUND),
+
     // Unexpected error:
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized Exception", HttpStatus.BAD_REQUEST),
     ;
