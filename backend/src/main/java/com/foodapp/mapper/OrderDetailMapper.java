@@ -15,6 +15,13 @@ public class OrderDetailMapper {
                 .id(orderDetail.getId())
                 .unitPrice(orderDetail.getFood() != null ? orderDetail.getFood().getPrice() : null)
                 .quantity(orderDetail.getQuantity())
+                .foodName(orderDetail.getFood() != null ? orderDetail.getFood().getFoodName() : null)
+                .categoryName(
+                        (orderDetail.getFood() != null && orderDetail.getFood().getCategory() != null)
+                                ? orderDetail.getFood().getCategory().getName()
+                                : null
+                )
+                .avatarUrl(orderDetail.getFood() != null ? orderDetail.getFood().getAvatarUrl() : null)
                 .build();
     }
 }
