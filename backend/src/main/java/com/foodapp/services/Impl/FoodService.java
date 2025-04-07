@@ -35,6 +35,13 @@ public class FoodService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public FoodResponse getFoodById(Long id) {
+        Food food = foodRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
+        return foodMapper.toFoodResponse(food);
+    }
+
     @Transactional
     public FoodResponse createFood(FoodRequest foodRequest) {
         Category category = categoryService.getCategoryEntityById(foodRequest.getCategoryId());
