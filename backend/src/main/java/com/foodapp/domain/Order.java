@@ -19,14 +19,13 @@ public class Order extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status;
-    private Date orderDate;
 
     @Enumerated(EnumType.STRING)
     private Platform orderPlatform;
 
     private Double totalPrice;
-    private Timestamp orderTime;
     private Timestamp completionTime;
+    private String description;
 
     public enum Status {
         PROCESSING, COMPLETED, CANCELLED,

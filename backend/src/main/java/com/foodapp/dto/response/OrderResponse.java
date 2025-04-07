@@ -11,9 +11,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponse {
+    private Long id;
     private Order.Status status;
     private Date orderDate;
     private Order.Platform orderPlatform;
     private Double totalPrice;
-    private Timestamp orderTime;
+    private String description;
+    private int quantity;
 }

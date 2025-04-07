@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderDetailService {
 
-    private final OrderRepository orderRepository;
+    OrderRepository orderRepository;
+    OrderDetailMapper orderDetailMapper;
 
     public List<OrderDetailResponse> getDetailsByOrderId(Long orderId) {
         Order order = orderRepository.findById(orderId)
@@ -29,7 +30,7 @@ public class OrderDetailService {
         List<OrderDetail> details = order.getOrderDetails();
 
         return details.stream()
-                .map(OrderDetailMapper::toResponse)
+                .map(orderDetailMapper::toOrderDetailResponse)
                 .collect(Collectors.toList());
     }
 }
