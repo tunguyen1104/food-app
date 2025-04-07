@@ -19,7 +19,7 @@ public class EnumValidatorImpl implements ConstraintValidator<EnumValidator, Str
             return true;
         }
         try {
-            Enum.valueOf((Class) enumClass, value.toUpperCase());
+            Enum.valueOf(enumClass.asSubclass(Enum.class), value.toUpperCase());
             return true;
         } catch (IllegalArgumentException e) {
             return false;

@@ -7,7 +7,6 @@ import com.foodapp.dto.requests.OrderRequest;
 import com.foodapp.dto.response.OrderResponse;
 import com.foodapp.exceptions.AppException;
 import com.foodapp.mapper.OrderMapper;
-import com.foodapp.repositories.FoodRepository;
 import com.foodapp.repositories.OrderDetailRepository;
 import com.foodapp.repositories.OrderRepository;
 import com.foodapp.utils.AuthenticationFacade;
@@ -18,7 +17,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,7 +60,7 @@ public class OrderService {
 
         saveOrderDetails(orderRequest.getOrderDetails(), order);
 
-        return getOrderResponsesById(order.getId());
+        return orderMapper.toOrderResponse(this.getOrderEntityById(order.getId()));
     }
 
     private Order buildOrder(OrderRequest orderRequest) {
@@ -94,20 +92,9 @@ public class OrderService {
         orderDetailRepository.saveAll(orderDetails);
     }
 
-    public OrderResponse getOrderResponsesById(Long orderId) {
-        Optional<Order> orderOpt = orderRepository.findById(orderId);
-
-        if (orderOpt.isEmpty()) {
-            throw new AppException(ErrorCode.ORDER_NOT_FOUND);
-        }
-
-        return orderMapper.toOrderResponse(orderOpt.get());
-    }
-
     @Transactional
     public OrderResponse updateOrder(Long orderId, OrderRequest request) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+        Order order = this.getOrderEntityById(orderId);
 
         order.setStatus(Order.Status.valueOf(request.getStatus()));
         order.setOrderPlatform(Order.Platform.valueOf(request.getOrderPlatform()));
@@ -132,8 +119,7 @@ public class OrderService {
 
     @Transactional
     public void deleteOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+        Order order = this.getOrderEntityById(orderId);
         orderRepository.delete(order);
     }
 }
