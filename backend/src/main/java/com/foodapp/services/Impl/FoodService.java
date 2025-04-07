@@ -35,6 +35,11 @@ public class FoodService {
                 .collect(Collectors.toList());
     }
 
+    public Food getFoodEntityById(Long id) {
+        return foodRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
+    }
+
     @Transactional(readOnly = true)
     public FoodResponse getFoodById(Long id) {
         Food food = foodRepository.findById(id)

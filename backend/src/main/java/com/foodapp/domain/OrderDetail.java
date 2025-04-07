@@ -11,10 +11,13 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class OrderDetail extends BaseEntity {
-    private Double unitPrice;
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "food_id")
+    private Food food;
 }
