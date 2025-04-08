@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodapp.R;
 import com.example.foodapp.databinding.ItemOrderHistoryBinding;
 import com.example.foodapp.dto.response.OrderResponse;
+import com.example.foodapp.listeners.OnOrderClickListener;
 
 import java.util.List;
 
@@ -18,10 +19,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     private final Context context;
     private List<OrderResponse> orders;
+    private final OnOrderClickListener listener;
 
-    public OrderAdapter(Context context, List<OrderResponse> orders) {
+    public OrderAdapter(Context context, List<OrderResponse> orders, OnOrderClickListener listener) {
         this.context = context;
         this.orders = orders;
+        this.listener = listener;
     }
 
     public void updateData(List<OrderResponse> newOrders) {
@@ -47,7 +50,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         return orders.size();
     }
 
-    public static class OrderViewHolder extends RecyclerView.ViewHolder {
+    class OrderViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemOrderHistoryBinding binding;
 
@@ -76,6 +79,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                     binding.tag.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.tag_assignment));
                     break;
             }
+            binding.getRoot().setOnClickListener(v -> listener.onOrderClick(order));
         }
     }
 }

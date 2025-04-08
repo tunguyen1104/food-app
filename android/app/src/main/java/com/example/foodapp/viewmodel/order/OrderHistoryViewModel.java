@@ -1,4 +1,4 @@
-package com.example.foodapp.viewmodel;
+package com.example.foodapp.viewmodel.order;
 
 import android.content.Context;
 import android.util.Log;
