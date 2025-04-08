@@ -5,69 +5,61 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
 import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.FragmentAccountAdminBinding;
-import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.enums.AccountListFunction;
 import com.example.foodapp.fragments.setting.SettingsFragment;
-import com.example.foodapp.repositories.UserRepository;
 import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.viewmodel.account.AdminAccountViewModel;
+import com.example.foodapp.viewmodel.account.AdminAccountViewModelFactory;
 
 public class AdminAccountFragment extends Fragment {
     private FragmentAccountAdminBinding binding;
-    private TextView accountNameView;
-    private ImageView accountAvatarView;
-    private UserRepository userRepository;
+    private AdminAccountViewModel viewModel;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         binding = FragmentAccountAdminBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-        // Initialize views
-        accountAvatarView = binding.accountAvatarView;
-        accountNameView = binding.accountNameView;
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        // Load saved data
-        userRepository = new UserRepository(requireContext());
-        loadAccountInfo();
+        viewModel = new ViewModelProvider(this, new AdminAccountViewModelFactory(requireContext()))
+                .get(AdminAccountViewModel.class);
 
-        // Buttons
+        observeUser();
+        viewModel.fetchUserProfile();
+
         binding.revenueStatistics.setOnClickListener(v -> openRevenueStatistics());
         binding.accountListButton.setOnClickListener(v -> openAccountList());
         binding.ordersHistory.setOnClickListener(v -> openOrdersHistory());
         binding.settingsButton.setOnClickListener(v -> openSettings());
-
-        return binding.getRoot();
     }
 
-    private void loadAccountInfo() {
-        userRepository.getUserProfile(new UserRepository.UserProfileCallback() {
-            @Override
-            public void onSuccess(UserResponse user) {
-                accountNameView.setText(user.getFullName());
+    private void observeUser() {
+        viewModel.getUser().observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
+                binding.accountNameView.setText(user.getFullName());
                 loadAvatar(user.getAvatarUrl());
-            }
-
-            @Override
-            public void onError(String message) {
-                if (isAdded()) Toast.makeText(requireContext(), "Failed to load information: " + message, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "Failed to load user data", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void loadAvatar(String url) {
-        if (!isAdded()) return;
-
         if (url != null && !url.trim().isEmpty()) {
             String fullUrl = Constants.URL_HOST_SERVER + url;
             Log.d("AvatarURL", fullUrl);
@@ -76,13 +68,14 @@ public class AdminAccountFragment extends Fragment {
                     .load(AuthInterceptor.getAuthorizedGlideUrl(fullUrl))
                     .placeholder(R.drawable.avatar_default)
                     .error(R.drawable.avatar_default)
-                    .into(accountAvatarView);
+                    .into(binding.accountAvatarView);
         } else {
-            accountAvatarView.setImageResource(R.drawable.avatar_default);
+            binding.accountAvatarView.setImageResource(R.drawable.avatar_default);
         }
     }
 
     private void openRevenueStatistics() {
+        // TODO: Open revenue statistics screen
     }
 
     private void openAccountList() {
