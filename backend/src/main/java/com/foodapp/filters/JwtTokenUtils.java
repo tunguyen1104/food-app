@@ -78,12 +78,8 @@ public class JwtTokenUtils {
     }
 
     public boolean validateToken(String token, User user) {
-        try {
-            String phone = extractPhone(token);
-            return user.getPhone().equals(phone) && !isTokenExpired(token);
-        } catch (AppException e) {
-            throw e; // Re-throw custom exceptions
-        }
+        String phone = extractPhone(token);
+        return user.getPhone().equals(phone) && !isTokenExpired(token);
     }
 
     public boolean isTokenExpired(String token) {

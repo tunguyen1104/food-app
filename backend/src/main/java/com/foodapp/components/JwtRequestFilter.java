@@ -46,7 +46,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             logger.warn("Missing or invalid Authorization header for request: {}", request.getRequestURI());
-            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header");
+            sendErrorResponse(response, "Missing or invalid Authorization header");
             return;
         }
 
@@ -56,7 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             phone = jwtTokenUtil.extractPhone(token);
         } catch (Exception e) {
             logger.warn("Failed to extract phone from token: {}", e.getMessage());
-            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            sendErrorResponse(response, "Invalid token");
             return;
         }
 
@@ -64,7 +64,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             UserDetails userDetails = userDetailsService.loadUserByUsername(phone);
             if (!jwtTokenUtil.validateToken(token, (com.foodapp.domain.User) userDetails)) {
                 logger.warn("Token validation failed for phone: {}", phone);
-                sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+                sendErrorResponse(response, "Invalid token");
                 return;
             }
 
@@ -86,9 +86,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 .anyMatch(matcher -> matcher.matches(request));
     }
 
-    private void sendErrorResponse(HttpServletResponse response, int status, String message) throws IOException {
+    private void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
         response.setContentType("application/json");
-        response.setStatus(status);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(String.format("{\"error\": \"Unauthorized\", \"message\": \"%s\"}", message));
     }
 }
