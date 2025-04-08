@@ -1,12 +1,18 @@
 package com.example.foodapp.fragments.account;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.foodapp.R;
 import com.example.foodapp.adapters.OrderAdapter;
+import com.example.foodapp.components.OrderTagInfoDialog;
 import com.example.foodapp.databinding.FragmentOrderHistoryBinding;
 import com.example.foodapp.dto.response.OrderResponse;
 import com.example.foodapp.dto.response.UserResponse;
@@ -34,6 +41,8 @@ public class OrderHistoryFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentOrderHistoryBinding.inflate(inflater, container, false);
+
+        binding.infoButton.setOnClickListener(v -> OrderTagInfoDialog.show(requireContext()));
 
         orderHistoryViewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), OrderHistoryViewModel.class))
                 .get(OrderHistoryViewModel.class);
@@ -64,7 +73,6 @@ public class OrderHistoryFragment extends Fragment {
         FragmentTransaction ft = getParentFragmentManager().beginTransaction();
         ft.replace(R.id.accountContainer, fragment).addToBackStack(null).commit();
     }
-
 
     private void loadData() {
         UserResponse user = (UserResponse) getArguments().getSerializable("user");
