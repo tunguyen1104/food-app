@@ -71,7 +71,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void openAccountInfo() {
-        AccountInfoFragment fragment = new AccountInfoFragment();
+        BranchInfoFragment fragment = new BranchInfoFragment();
         if (viewModel.getUserProfile().getValue() != null) {
             Bundle args = new Bundle();
             args.putSerializable("user", viewModel.getUserProfile().getValue());
