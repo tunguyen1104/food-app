@@ -46,55 +46,10 @@
                 android:background="?android:attr/selectableItemBackground"/>
         </FrameLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:padding="5dp"
-            android:background="@drawable/rounded_rectangle"
-            android:backgroundTint="@color/light_medium">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/statusOrderTab"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@color/transparent"
-                app:tabMaxWidth="0dp"
-                app:tabMode="fixed"
-                app:tabGravity="fill"
-                app:tabIndicatorGravity="stretch"
-                app:tabSelectedTextAppearance="@style/heading_s"
-                app:tabTextAppearance="@style/body_s"
-                app:tabIndicator="@drawable/tab_indicator"
-                app:tabIndicatorColor="@color/light_lightest"
-                app:tabSelectedTextColor="@color/dark_darkest"
-                app:tabTextColor="@color/dark_darkest"
-                app:tabRippleColor="@color/light_medium"
-                app:tabIndicatorAnimationMode="elastic">
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="PROCESSING"/>
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="COMPLETED"/>
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="CANCELLED"/>
-
-            </com.google.android.material.tabs.TabLayout>
-        </RelativeLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/orderHistoryRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginHorizontal="20dp"/>
 
     </LinearLayout>
