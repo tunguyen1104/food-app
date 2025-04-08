@@ -1,6 +1,5 @@
 package com.example.foodapp.fragments.account;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -21,8 +19,8 @@ import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.enums.AccountListFunction;
 import com.example.foodapp.enums.EditMode;
 import com.example.foodapp.utils.NavigationUtil;
+import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.account.AccountListViewModel;
-import com.example.foodapp.viewmodel.account.AccountListViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,7 @@ public class AccountListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentAccountListBinding.inflate(inflater, container, false);
 
-        viewModel = new ViewModelProvider(this, new AccountListViewModelFactory(requireContext()))
+        viewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), AccountListViewModel.class))
                 .get(AccountListViewModel.class);
 
         setupListeners();

@@ -18,8 +18,8 @@ import com.example.foodapp.databinding.FragmentAccountAdminBinding;
 import com.example.foodapp.enums.AccountListFunction;
 import com.example.foodapp.fragments.setting.SettingsFragment;
 import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.account.AdminAccountViewModel;
-import com.example.foodapp.viewmodel.account.AdminAccountViewModelFactory;
 
 public class AdminAccountFragment extends Fragment {
     private FragmentAccountAdminBinding binding;
@@ -36,7 +36,7 @@ public class AdminAccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(this, new AdminAccountViewModelFactory(requireContext()))
+        viewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), AdminAccountViewModel.class))
                 .get(AdminAccountViewModel.class);
 
         observeUser();

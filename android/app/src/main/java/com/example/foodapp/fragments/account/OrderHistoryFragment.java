@@ -19,8 +19,9 @@ import com.example.foodapp.dto.response.OrderResponse;
 import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.fragments.order.OrderDetailFragment;
 import com.example.foodapp.utils.NavigationUtil;
+import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.order.OrderHistoryViewModel;
-import com.example.foodapp.viewmodel.order.OrderHistoryViewModelFactory;
+
 import java.util.ArrayList;
 public class OrderHistoryFragment extends Fragment {
 
@@ -34,7 +35,8 @@ public class OrderHistoryFragment extends Fragment {
 
         binding = FragmentOrderHistoryBinding.inflate(inflater, container, false);
 
-        orderHistoryViewModel = new ViewModelProvider(this, new OrderHistoryViewModelFactory(requireContext())).get(OrderHistoryViewModel.class);
+        orderHistoryViewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), OrderHistoryViewModel.class))
+                .get(OrderHistoryViewModel.class);
         NavigationUtil.setupBackNavigation(this, binding.buttonBack);
 
         setupRecyclerView();
