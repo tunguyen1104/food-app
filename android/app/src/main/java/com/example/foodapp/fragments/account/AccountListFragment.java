@@ -1,6 +1,5 @@
 package com.example.foodapp.fragments.account;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.foodapp.R;
@@ -19,8 +18,9 @@ import com.example.foodapp.databinding.FragmentAccountListBinding;
 import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.enums.AccountListFunction;
 import com.example.foodapp.enums.EditMode;
-import com.example.foodapp.repositories.UserRepository;
 import com.example.foodapp.utils.NavigationUtil;
+import com.example.foodapp.viewmodel.BaseViewModelFactory;
+import com.example.foodapp.viewmodel.account.AccountListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,18 +29,21 @@ public class AccountListFragment extends Fragment {
 
     private FragmentAccountListBinding binding;
     private AdminAccountAdapter adminAccountAdapter;
-    private UserRepository userRepository;
     private final List<UserResponse> userList = new ArrayList<>();
+    private AccountListViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentAccountListBinding.inflate(inflater, container, false);
-        userRepository = new UserRepository(requireContext());
+
+        viewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), AccountListViewModel.class))
+                .get(AccountListViewModel.class);
 
         setupListeners();
         setupRecyclerView();
-        fetchAccountList();
+        observeUserList();
+        viewModel.fetchAllUsers();
 
         return binding.getRoot();
     }
@@ -70,6 +73,18 @@ public class AccountListFragment extends Fragment {
         binding.accountRecyclerView.setAdapter(adminAccountAdapter);
     }
 
+    private void observeUserList() {
+        viewModel.getUserList().observe(getViewLifecycleOwner(), users -> {
+            userList.clear();
+            if (users != null) {
+                userList.addAll(users);
+                adminAccountAdapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(requireContext(), "Error loading accounts", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void openEditAccount(UserResponse user) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("mode", EditMode.UPDATE);
@@ -88,7 +103,13 @@ public class AccountListFragment extends Fragment {
         openFragment(fragment);
     }
 
-    private void openFragment(Fragment fragment) {
+    private void openCreateAccount() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("mode", EditMode.CREATE);
+
+        UpdateAccountFragment fragment = new UpdateAccountFragment();
+        fragment.setArguments(bundle);
+
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.accountContainer, fragment)
@@ -96,32 +117,12 @@ public class AccountListFragment extends Fragment {
                 .commit();
     }
 
-    private void openCreateAccount() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("mode", EditMode.CREATE);
-
-        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-        UpdateAccountFragment fragment = new UpdateAccountFragment();
-        fragment.setArguments(bundle);
-        ft.replace(R.id.accountContainer, fragment).addToBackStack(null).commit();
-    }
-
-
-    private void fetchAccountList() {
-        userRepository.getAllUsers(new UserRepository.UserListCallback() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onSuccess(List<UserResponse> users) {
-                userList.clear();
-                userList.addAll(users);
-                adminAccountAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onError(String message) {
-                Toast.makeText(requireContext(), "Error loading accounts: " + message, Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void openFragment(Fragment fragment) {
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.accountContainer, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

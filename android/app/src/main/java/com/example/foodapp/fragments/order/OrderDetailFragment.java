@@ -15,8 +15,8 @@ import com.example.foodapp.adapters.OrderDetailAdapter;
 import com.example.foodapp.databinding.FragmentOrderDetailBinding;
 import com.example.foodapp.dto.response.OrderResponse;
 import com.example.foodapp.utils.NavigationUtil;
+import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.order.OrderDetailViewModel;
-import com.example.foodapp.viewmodel.order.OrderDetailViewModelFactory;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class OrderDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         NavigationUtil.setupBackNavigation(this, binding.buttonBack);
 
-        viewModel = new ViewModelProvider(this, new OrderDetailViewModelFactory(requireContext()))
+        viewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), OrderDetailViewModel.class))
                 .get(OrderDetailViewModel.class);
 
         setupRecyclerView();

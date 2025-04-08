@@ -14,8 +14,8 @@ import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
 import com.example.foodapp.databinding.FragmentAccountBranchBinding;
 import com.example.foodapp.fragments.setting.SettingsFragment;
+import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.account.AccountViewModel;
-import com.example.foodapp.viewmodel.account.AccountViewModelFactory;
 
 public class AccountFragment extends Fragment {
     private FragmentAccountBranchBinding binding;
@@ -32,7 +32,7 @@ public class AccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(this, new AccountViewModelFactory(requireContext()))
+        viewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), AccountViewModel.class))
                 .get(AccountViewModel.class);
 
         observeUserProfile();
