@@ -28,16 +28,12 @@ public class User extends BaseEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Theme theme;
-
-    public enum Theme {
-        LIGHT, DARK
-    }
-
-    private Boolean notification = true;
-
+    private Boolean notification;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -45,9 +41,6 @@ public class User extends BaseEntity implements UserDetails {
         authorityList.add(new SimpleGrantedAuthority("ROLE_" + getRole().getName().toUpperCase()));
         return authorityList;
     }
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orders = new ArrayList<>();
 
     @Override
     public String getPassword() {
@@ -57,5 +50,9 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public String getUsername() {
         return userName;
+    }
+
+    public enum Theme {
+        LIGHT, DARK
     }
 }

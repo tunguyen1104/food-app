@@ -22,21 +22,25 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.foodapp.R;
 import com.example.foodapp.adapters.ScreenSlidePagerAdapter;
 import com.example.foodapp.databinding.ActivityMainBinding;
+import com.example.foodapp.repositories.AuthRepository;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE_POST_NOTIFICATION = 101;
+    private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
     private ViewPager2 viewPager;
     private BottomNavigationView navView;
-    private static final int REQUEST_CODE_POST_NOTIFICATION = 101;
+
+    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        authRepository = new AuthRepository(this);
         initializeViews();
         setupViewPager();
         loadTheme();
@@ -145,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
     }
 
     public interface PermissionCallback {

@@ -21,7 +21,6 @@ public class OrderDetailController {
     @GetMapping("/{orderId}/details")
     public ResponseEntity<?> getOrderDetails(@PathVariable Long orderId) {
         var detailResponses = orderDetailService.getDetailsByOrderId(orderId);
-
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .status(ApiResponse.Status.SUCCESS)

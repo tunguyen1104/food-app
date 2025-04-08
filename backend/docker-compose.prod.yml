@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend-prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./uploads:/uploads
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: mysql-container
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      REDIS_HOST: redis_container
+      REDIS_PORT: 6379
+      JWT_EXPIRATION: 3600
+    networks:
+      - food-app-network
+    depends_on:
+      - mysql-container
+      - redis_container

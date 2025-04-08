@@ -1,0 +1,20 @@
+FROM gradle:8.5-jdk17-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the Gradle wrapper and build files
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
+COPY src src
+
+# Grant execute permission for the Gradle wrapper
+RUN chmod +x gradlew
+
+# Expose the application port
+EXPOSE 8081
+
+# Set the entry point to run the application in development mode
+ENTRYPOINT ["./gradlew", "bootRun", "--no-daemon"]

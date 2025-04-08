@@ -29,7 +29,7 @@ public class OrderController {
         );
     }
 
-    @GetMapping
+    @GetMapping("/history")
     public ResponseEntity<?> getMyOrderHistory() {
         var orders = orderService.getOrdersForCurrentUser();
         return ResponseEntity.ok(

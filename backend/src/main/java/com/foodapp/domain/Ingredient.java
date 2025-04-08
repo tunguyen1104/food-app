@@ -13,5 +13,5 @@ import lombok.*;
 @Builder
 public class Ingredient extends BaseEntity {
     private String name;
-    private String description;
+    private String imageUrl;
 }
