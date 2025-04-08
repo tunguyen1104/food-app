@@ -2,6 +2,7 @@ package com.example.foodapp.network;
 
 import android.content.Context;
 
+import com.example.foodapp.consts.Constants;
 import com.example.foodapp.utils.AuthInterceptor;
 
 import okhttp3.OkHttpClient;
@@ -9,7 +10,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String baseUrl = "http://10.0.2.2:8081";
     private static Retrofit retrofit;
     private static AuthInterceptor authInterceptor;
 
@@ -23,7 +23,7 @@ public class ApiClient {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
+                    .baseUrl(Constants.URL_HOST_SERVER)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();

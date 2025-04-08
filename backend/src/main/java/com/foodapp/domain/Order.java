@@ -2,7 +2,8 @@ package com.foodapp.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -11,9 +12,6 @@ import java.util.Date;
 @Table(name = "tbl_order")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Order extends BaseEntity {
     private Status status;
     private Date orderDate;

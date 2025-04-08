@@ -12,4 +12,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Category extends BaseEntity {
+    private String name;
 }

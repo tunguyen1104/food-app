@@ -6,7 +6,6 @@ import com.foodapp.domain.Role;
 import com.foodapp.domain.User;
 import com.foodapp.dto.requests.UserLogoutRequest;
 import com.foodapp.dto.requests.UserRegistrationRequest;
-import com.foodapp.dto.response.LoginResponse;
 import com.foodapp.dto.response.RegisterResponse;
 import com.foodapp.dto.response.TokenResponse;
 import com.foodapp.exceptions.AppException;
@@ -39,7 +38,7 @@ public class AuthenticationService implements IAuthenticationService {
     RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public LoginResponse authenticate(String phone, String password) {
+    public TokenResponse authenticate(String phone, String password) {
         logger.debug("Entering authenticate, phone={}", phone);
         User user;
         try {
@@ -56,7 +55,7 @@ public class AuthenticationService implements IAuthenticationService {
             logger.info("Event: Account disabled, phone={}, userId={}", phone, user.getId());
             throw new AppException(ErrorCode.ACCOUNT_DISABLED);
         }
-        var token = LoginResponse.builder()
+        var token = TokenResponse.builder()
                 .accessToken(jwtTokenUtils.generateToken(user))
                 .refreshToken(UUID.randomUUID().toString())
                 .build();

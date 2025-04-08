@@ -5,6 +5,7 @@ public class SecurityConstants {
             "/api/healthcheck/health",
             "/api/auth/signIn",
             "/api/auth/signUp",
-            "/api/auth/refresh"
+            "/api/auth/refresh",
+            "/api/food/all"
     };
 }

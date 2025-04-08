@@ -22,11 +22,13 @@ import retrofit2.Response;
 
 public class AuthRepository {
     private final Context context;
+    private final SharedPreferences prefs;
     private final AuthService authService;
     private String refreshToken;
 
     public AuthRepository(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
+        this.prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
         authService = ApiClient.getClient(context).create(AuthService.class);
         loadTokens();
     }
@@ -99,7 +101,6 @@ public class AuthRepository {
     }
 
     private void saveTokens(String accessToken, String refreshToken) {
-        SharedPreferences prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
         prefs.edit()
                 .putString("access_token", accessToken)
                 .putString("refresh_token", refreshToken)
@@ -108,7 +109,6 @@ public class AuthRepository {
     }
 
     public void forceLogout() {
-        SharedPreferences prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
         prefs.edit().clear().apply();
 
         Intent intent = new Intent(context, LoginActivity.class);
@@ -117,7 +117,6 @@ public class AuthRepository {
     }
 
     private void loadTokens() {
-        SharedPreferences prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
         refreshToken = prefs.getString("refresh_token", null);
     }
 
@@ -132,4 +131,5 @@ public class AuthRepository {
 
         void onError(String errorMessage);
     }
+
 }
