@@ -47,6 +47,15 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<OrderResponse> getMyOrdersByStatus(Order.Status status) {
+        Long userId = authenticationFacade.getAuthenticatedUser().getId();
+        List<Order> orders = orderRepository.findAllByUserIdAndStatus(userId, status);
+        return orders.stream()
+                .map(orderMapper::toOrderResponse)
+                .collect(Collectors.toList());
+    }
+
     public Order getOrderEntityById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
