@@ -3,7 +3,6 @@ package com.foodapp.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -12,10 +11,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Food extends BaseEntity {
     private String foodName;
     private String description;
     private Double price;
+    private String avatarUrl;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;

@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,6 +24,11 @@ public class Order extends BaseEntity {
     private Double totalPrice;
     private Timestamp completionTime;
     private String description;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDetail> orderDetails;
 
     public enum Status {
         PROCESSING, COMPLETED, CANCELLED,
@@ -34,12 +37,5 @@ public class Order extends BaseEntity {
     public enum Platform {
         ONLINE, OFFLINE
     }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetail> orderDetails = new ArrayList<>();
 
 }
