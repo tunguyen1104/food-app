@@ -14,9 +14,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.foodapp.R;
-import com.example.foodapp.adapters.admin.AccountAdapter;
+import com.example.foodapp.adapters.AdminAccountAdapter;
 import com.example.foodapp.databinding.FragmentAccountListBinding;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.enums.AccountListFunction;
 import com.example.foodapp.enums.EditMode;
 import com.example.foodapp.repositories.UserRepository;
 import com.example.foodapp.utils.NavigationUtil;
@@ -27,7 +28,7 @@ import java.util.List;
 public class AccountListFragment extends Fragment {
 
     private FragmentAccountListBinding binding;
-    private AccountAdapter accountAdapter;
+    private AdminAccountAdapter adminAccountAdapter;
     private UserRepository userRepository;
     private final List<UserResponse> userList = new ArrayList<>();
 
@@ -37,10 +38,9 @@ public class AccountListFragment extends Fragment {
         binding = FragmentAccountListBinding.inflate(inflater, container, false);
         userRepository = new UserRepository(requireContext());
 
+        setupListeners();
         setupRecyclerView();
         fetchAccountList();
-
-        setupListeners();
 
         return binding.getRoot();
     }
@@ -48,13 +48,26 @@ public class AccountListFragment extends Fragment {
     private void setupListeners() {
         NavigationUtil.setupBackNavigation(this, binding.buttonBack);
 
-        binding.newBranchAccount.setOnClickListener(v -> openCreateAccount());
+        if (getArguments() != null) {
+            AccountListFunction function = (AccountListFunction) getArguments().getSerializable("function");
+            if (function != null) {
+                switch (function) {
+                    case ACCOUNT_LIST:
+                        binding.newBranchAccount.setOnClickListener(v -> openCreateAccount());
+                        adminAccountAdapter = new AdminAccountAdapter(requireContext(), userList, this::openEditAccount);
+                        break;
+                    case ORDER_HISTORY:
+                        binding.newBranchAccount.setVisibility(View.GONE);
+                        adminAccountAdapter = new AdminAccountAdapter(requireContext(), userList, this::openOrderHistory);
+                        break;
+                }
+            }
+        }
     }
 
     private void setupRecyclerView() {
-        accountAdapter = new AccountAdapter(requireContext(), userList, this::openEditAccount);
         binding.accountRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.accountRecyclerView.setAdapter(accountAdapter);
+        binding.accountRecyclerView.setAdapter(adminAccountAdapter);
     }
 
     private void openEditAccount(UserResponse user) {
@@ -64,9 +77,23 @@ public class AccountListFragment extends Fragment {
 
         UpdateAccountFragment fragment = new UpdateAccountFragment();
         fragment.setArguments(bundle);
+        openFragment(fragment);
+    }
 
-        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-        ft.replace(R.id.accountContainer, fragment).addToBackStack(null).commit();
+    private void openOrderHistory(UserResponse user) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", user);
+        OrderHistoryFragment fragment = new OrderHistoryFragment();
+        fragment.setArguments(bundle);
+        openFragment(fragment);
+    }
+
+    private void openFragment(Fragment fragment) {
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.accountContainer, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void openCreateAccount() {
@@ -87,7 +114,7 @@ public class AccountListFragment extends Fragment {
             public void onSuccess(List<UserResponse> users) {
                 userList.clear();
                 userList.addAll(users);
-                accountAdapter.notifyDataSetChanged();
+                adminAccountAdapter.notifyDataSetChanged();
             }
 
             @Override

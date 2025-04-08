@@ -1,4 +1,4 @@
-package com.example.foodapp.adapters.admin;
+package com.example.foodapp.adapters;
 
 
 import android.content.Context;
@@ -18,13 +18,13 @@ import com.example.foodapp.utils.AuthInterceptor;
 
 import java.util.List;
 
-public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountViewHolder> {
+public class AdminAccountAdapter extends RecyclerView.Adapter<AdminAccountAdapter.AccountViewHolder> {
 
     private final List<UserResponse> userList;
     private final Context context;
     private final OnAccountClickListener listener;
 
-    public AccountAdapter(Context context, List<UserResponse> userList, OnAccountClickListener listener) {
+    public AdminAccountAdapter(Context context, List<UserResponse> userList, OnAccountClickListener listener) {
         this.context = context;
         this.userList = userList;
         this.listener = listener;

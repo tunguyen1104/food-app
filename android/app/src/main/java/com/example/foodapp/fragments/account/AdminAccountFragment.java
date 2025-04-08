@@ -11,13 +11,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
 import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.FragmentAccountAdminBinding;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.enums.AccountListFunction;
 import com.example.foodapp.fragments.setting.SettingsFragment;
 import com.example.foodapp.repositories.UserRepository;
 import com.example.foodapp.utils.AuthInterceptor;
@@ -86,16 +86,33 @@ public class AdminAccountFragment extends Fragment {
     }
 
     private void openAccountList() {
-        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-        ft.replace(R.id.accountContainer, new AccountListFragment()).addToBackStack(null).commit();
+        AccountListFragment fragment = new AccountListFragment();
+        fragment.setArguments(createArgs(AccountListFunction.ACCOUNT_LIST));
+        openFragment(fragment);
     }
 
     private void openOrdersHistory() {
+        AccountListFragment fragment = new AccountListFragment();
+        fragment.setArguments(createArgs(AccountListFunction.ORDER_HISTORY));
+        openFragment(fragment);
     }
 
     private void openSettings() {
-        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-        ft.replace(R.id.accountContainer, new SettingsFragment()).addToBackStack(null).commit();
+        openFragment(new SettingsFragment());
+    }
+
+    private Bundle createArgs(AccountListFunction function) {
+        Bundle args = new Bundle();
+        args.putSerializable("function", function);
+        return args;
+    }
+
+    private void openFragment(Fragment fragment) {
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.accountContainer, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
