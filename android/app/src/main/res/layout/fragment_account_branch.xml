@@ -32,6 +32,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/account_name_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -41,7 +42,7 @@
         android:textColor="@color/dark_darkest" />
 
     <LinearLayout
-        android:id="@+id/update_info_button"
+        android:id="@+id/btnBranchInfo"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginHorizontal="20dp"

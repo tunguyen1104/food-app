@@ -43,6 +43,27 @@ public class OrderRepository {
         });
     }
 
+    public void getMyOrderHistory(final OrderHistoryCallback callback) {
+        Call<ApiResponse<List<OrderResponse>>> call = orderService.getMyOrderHistory();
+        call.enqueue(new Callback<ApiResponse<List<OrderResponse>>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<List<OrderResponse>>> call,
+                                   @NonNull Response<ApiResponse<List<OrderResponse>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body().getData());
+                } else {
+                    callback.onError("Error loading orders");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<List<OrderResponse>>> call,
+                                  @NonNull Throwable t) {
+                callback.onError("Connect error: " + t.getMessage());
+            }
+        });
+    }
+
     public interface OrderHistoryCallback {
         void onSuccess(List<OrderResponse> orders);
         void onError(String message);
