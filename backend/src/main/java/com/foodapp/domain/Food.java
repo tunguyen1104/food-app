@@ -1,10 +1,7 @@
 package com.foodapp.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,9 +15,8 @@ import java.util.List;
 public class Food extends BaseEntity {
     private String foodName;
     private String description;
-    private BigDecimal price;
-    private String imageUrl;
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    private Double price;
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 

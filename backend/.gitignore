@@ -39,3 +39,5 @@ out/
 ### Database folders ###
 mysql-data/
 redis-data/
+
+uploads/

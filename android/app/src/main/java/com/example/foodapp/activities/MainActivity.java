@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeViewModels() {
         // ViewModel initialization logic goes here
-        
     }
 
     private void checkAndRequestNotificationPermission() {
@@ -155,5 +154,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
+    }
+
+    public interface PermissionCallback {
+        void onPermissionResult(boolean isGranted);
     }
 }

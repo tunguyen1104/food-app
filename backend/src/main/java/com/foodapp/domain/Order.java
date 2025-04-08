@@ -1,25 +1,31 @@
 package com.foodapp.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_order")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Order extends BaseEntity {
+
+    @Enumerated(EnumType.STRING)
     private Status status;
-    private Date orderDate;
+
+    @Enumerated(EnumType.STRING)
     private Platform orderPlatform;
 
     private Double totalPrice;
-    private Timestamp orderTime;
     private Timestamp completionTime;
+    private String description;
 
     public enum Status {
         PROCESSING, COMPLETED, CANCELLED,
@@ -28,4 +34,12 @@ public class Order extends BaseEntity {
     public enum Platform {
         ONLINE, OFFLINE
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDetail> orderDetails = new ArrayList<>();
+
 }

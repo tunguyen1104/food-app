@@ -12,4 +12,5 @@ import lombok.Setter;
 @Setter
 @Builder
 public class StockImportDetail extends BaseEntity {
+    private String description;
 }
