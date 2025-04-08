@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -32,8 +31,8 @@ public class DataSeeder implements CommandLineRunner {
         }
         if (ingredientRepository.count() == 0 && foodRepository.count() == 0) {
             // Insert Food Categories
-            Category banhMiCategory = new Category("Bánh Mì");
-            Category drinkCategory = new Category("Đồ Uống");
+            Category banhMiCategory = new Category("Bánh Mì", "");
+            Category drinkCategory = new Category("Đồ Uống", "");
             categoryRepository.saveAll(List.of(banhMiCategory, drinkCategory));
 
             // Insert Ingredients for Bánh Mì
@@ -51,7 +50,7 @@ public class DataSeeder implements CommandLineRunner {
             Food banhMiThit = new Food(
                     "Bánh Mì Thịt",
                     "Bánh mì giòn rụm kết hợp với thịt nguội, pate, bơ và salad",
-                    new BigDecimal("20000"),
+                    20000.0,
                     null,
                     banhMiCategory,
                     List.of(bread, ham, pate, butter, cucumber, cabbage, chili)
@@ -60,7 +59,7 @@ public class DataSeeder implements CommandLineRunner {
             Food banhMiChaLua = new Food(
                     "Bánh Mì Chả Lụa",
                     "Bánh mì kẹp chả lụa thơm ngon với dưa leo",
-                    new BigDecimal("18000"),
+                    18000.0,
                     null,
                     banhMiCategory,
                     List.of(bread, ham, butter, cucumber, cabbage)
@@ -69,7 +68,7 @@ public class DataSeeder implements CommandLineRunner {
             Food banhMiPate = new Food(
                     "Bánh Mì Pate",
                     "Bánh mì kết hợp pate béo ngậy với dưa leo và rau mùi.",
-                    new BigDecimal("15000"),
+                    15000.0,
                     null,
                     banhMiCategory,
                     List.of(bread, pate, butter, cucumber, cabbage, chili)
@@ -78,7 +77,7 @@ public class DataSeeder implements CommandLineRunner {
             Food nuocChanh = new Food(
                     "Nước Chanh",
                     "Nước chanh đánh đá",
-                    new BigDecimal("15000"),
+                    15000.0,
                     null,
                     drinkCategory,
                     null

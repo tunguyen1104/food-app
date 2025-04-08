@@ -1,4 +1,4 @@
-package com.foodapp.components;
+package com.foodapp.filters;
 
 import com.foodapp.constants.ErrorCode;
 import com.foodapp.domain.User;
@@ -6,6 +6,7 @@ import com.foodapp.exceptions.AppException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,10 +19,23 @@ import java.util.Date;
 @Component
 public class JwtTokenUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtils.class);
+
     @Value("${application.security.jwt.expiration}")
     private Integer expiration;
+
     @Value("${security.jwt.secret-key}")
     private String secretKey;
+
+    private SecretKey signingKey;
+
+    @PostConstruct
+    public void init() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        if (keyBytes.length < 32) {
+            throw new IllegalArgumentException("JWT secret key must be at least 32 bytes (256 bits) for HS256");
+        }
+        this.signingKey = Keys.hmacShaKeyFor(keyBytes);
+    }
 
     public String generateToken(User user) {
         try {
@@ -33,48 +47,53 @@ public class JwtTokenUtils {
                     .subject(user.getPhone())
                     .expiration(new Date(System.currentTimeMillis() + expiration * 1000L))
                     .issuedAt(Date.from(Instant.now()))
-                    .signWith(getSignKey())
+                    .signWith(signingKey, Jwts.SIG.HS256)
                     .compact();
         } catch (Exception e) {
-            logger.info("Error: {}", e.getMessage());
+            logger.error("Error generating token: {}", e.getMessage(), e);
             throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
     }
 
     public Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .decryptWith(getSignKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(signingKey)  // Changed from decryptWith
+                    .build()
+                    .parseSignedClaims(cleanToken(token))
+                    .getPayload();
+        } catch (ExpiredJwtException e) {
+            throw new AppException(ErrorCode.TOKEN_EXPIRED);
+        } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+            throw new AppException(ErrorCode.TOKEN_INVALID);
+        }
     }
 
     public String extractPhone(String token) {
-        Claims claims = extractAllClaims(token);
-        return claims.getSubject();
+        return extractAllClaims(token).getSubject();
     }
 
     public SecretKey getSignKey() {
-        byte[] bytes = Decoders.BASE64.decode(secretKey);
-        if (bytes.length < 32) {
-            throw new IllegalArgumentException("Invalid secret key: must be at least 32 bytes for HS256.");
-        }
-        return Keys.hmacShaKeyFor(bytes);
+        return signingKey;
     }
 
     public boolean validateToken(String token, User user) {
         try {
             String phone = extractPhone(token);
             return user.getPhone().equals(phone) && !isTokenExpired(token);
-        } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            throw new AppException(ErrorCode.TOKEN_INVALID);
-        } catch (ExpiredJwtException e) {
-            throw new AppException(ErrorCode.TOKEN_EXPIRED);
+        } catch (AppException e) {
+            throw e; // Re-throw custom exceptions
         }
     }
 
     public boolean isTokenExpired(String token) {
-        Date expiration = extractAllClaims(token).getExpiration();
-        return expiration.before(new Date());
+        return extractAllClaims(token).getExpiration().before(new Date());
+    }
+
+    private String cleanToken(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        return token;
     }
 }
