@@ -1,4 +1,4 @@
-package com.example.foodapp.adapters.admin;
+package com.example.foodapp.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

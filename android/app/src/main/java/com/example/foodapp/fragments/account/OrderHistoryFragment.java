@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.foodapp.R;
-import com.example.foodapp.adapters.admin.OrderAdapter;
+import com.example.foodapp.adapters.OrderAdapter;
 import com.example.foodapp.databinding.FragmentOrderHistoryBinding;
 import com.example.foodapp.dto.response.OrderResponse;
 import com.example.foodapp.dto.response.UserResponse;

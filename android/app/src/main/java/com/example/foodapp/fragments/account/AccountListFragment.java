@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.foodapp.R;
-import com.example.foodapp.adapters.admin.AccountAdapter;
+import com.example.foodapp.adapters.AdminAccountAdapter;
 import com.example.foodapp.databinding.FragmentAccountListBinding;
 import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.enums.AccountListFunction;
@@ -28,7 +28,7 @@ import java.util.List;
 public class AccountListFragment extends Fragment {
 
     private FragmentAccountListBinding binding;
-    private AccountAdapter accountAdapter;
+    private AdminAccountAdapter adminAccountAdapter;
     private UserRepository userRepository;
     private final List<UserResponse> userList = new ArrayList<>();
 
@@ -54,11 +54,11 @@ public class AccountListFragment extends Fragment {
                 switch (function) {
                     case ACCOUNT_LIST:
                         binding.newBranchAccount.setOnClickListener(v -> openCreateAccount());
-                        accountAdapter = new AccountAdapter(requireContext(), userList, this::openEditAccount);
+                        adminAccountAdapter = new AdminAccountAdapter(requireContext(), userList, this::openEditAccount);
                         break;
                     case ORDER_HISTORY:
                         binding.newBranchAccount.setVisibility(View.GONE);
-                        accountAdapter = new AccountAdapter(requireContext(), userList, this::openOrderHistory);
+                        adminAccountAdapter = new AdminAccountAdapter(requireContext(), userList, this::openOrderHistory);
                         break;
                 }
             }
@@ -67,7 +67,7 @@ public class AccountListFragment extends Fragment {
 
     private void setupRecyclerView() {
         binding.accountRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.accountRecyclerView.setAdapter(accountAdapter);
+        binding.accountRecyclerView.setAdapter(adminAccountAdapter);
     }
 
     private void openEditAccount(UserResponse user) {
@@ -114,7 +114,7 @@ public class AccountListFragment extends Fragment {
             public void onSuccess(List<UserResponse> users) {
                 userList.clear();
                 userList.addAll(users);
-                accountAdapter.notifyDataSetChanged();
+                adminAccountAdapter.notifyDataSetChanged();
             }
 
             @Override
