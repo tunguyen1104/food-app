@@ -86,4 +86,17 @@ public class OrderController {
                         .build()
         );
     }
+
+    @PatchMapping("/{orderId}/status")
+    public ResponseEntity<?> updateOrderStatus(
+            @PathVariable Long orderId,
+            @RequestParam("status") String statusStr) {
+        OrderResponse updatedOrder = orderService.updateOrderStatus(orderId, statusStr);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
+                        .data(updatedOrder)
+                        .build()
+        );
+    }
 }

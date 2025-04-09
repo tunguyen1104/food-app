@@ -24,6 +24,7 @@ public enum ErrorCode {
     // --- ORDER ERRORS ---
     ORDER_NOT_FOUND(2001, "Order not found", HttpStatus.NOT_FOUND),
 
+    INVALID_ORDER_STATUS(2002, "Invalid order status", HttpStatus.NOT_FOUND),
     // --- FOOD ERRORS ---
     FOOD_NOT_FOUND(3001, "Food not found", HttpStatus.NOT_FOUND),
 

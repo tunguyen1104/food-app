@@ -56,6 +56,23 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public OrderResponse updateOrderStatus(Long orderId, String newStatusStr) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+
+        Order.Status newStatus;
+        try {
+            newStatus = Order.Status.valueOf(newStatusStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new AppException(ErrorCode.INVALID_ORDER_STATUS);
+        }
+
+        order.setStatus(newStatus);
+        Order updatedOrder = orderRepository.save(order);
+
+        return orderMapper.toOrderResponse(updatedOrder);
+    }
+
     public Order getOrderEntityById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
