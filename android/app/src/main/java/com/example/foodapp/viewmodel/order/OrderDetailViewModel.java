@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foodapp.dto.response.OrderDetailResponse;
+import com.example.foodapp.dto.response.OrderResponse;
+import com.example.foodapp.enums.OrderStatus;
 import com.example.foodapp.repositories.OrderDetailRepository;
 
 import java.util.List;
@@ -30,6 +32,19 @@ public class OrderDetailViewModel extends ViewModel {
             public void onSuccess(List<OrderDetailResponse> details) {
                 Log.d("OrderDetailViewModel", "Received items: " + details.size());
                 orderDetails.setValue(details);
+            }
+
+            @Override
+            public void onError(String message) {
+                Log.e("OrderDetailViewModel", "Error processing ID " + orderId + ": " + message);
+            }
+        });
+    }
+
+    public void updateOrderStatus(Long orderId, OrderStatus newStatus) {
+        orderDetailRepository.updateOrderStatus(orderId, newStatus, new OrderDetailRepository.OrderUpdateCallback() {
+            @Override
+            public void onSuccess(OrderResponse updatedOrder) {
             }
 
             @Override

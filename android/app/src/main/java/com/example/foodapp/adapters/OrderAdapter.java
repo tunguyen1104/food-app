@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodapp.R;
 import com.example.foodapp.databinding.ItemOrderHistoryBinding;
 import com.example.foodapp.dto.response.OrderResponse;
+import com.example.foodapp.enums.OrderStatus;
 import com.example.foodapp.listeners.OnOrderClickListener;
 
 import java.util.List;
@@ -68,17 +69,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             binding.location.setText("Location: TBD");
             binding.description.setText(order.getDescription());
 
-            switch (order.getStatus()) {
-                case PROCESSING:
-                    binding.tag.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.tag_other));
-                    break;
-                case COMPLETED:
-                    binding.tag.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.tag_course_material));
-                    break;
-                case CANCELLED:
-                    binding.tag.setBackgroundColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.tag_assignment));
-                    break;
-            }
+            OrderStatus status = order.getStatus();
+            int color = ContextCompat.getColor(binding.getRoot().getContext(), status.getColorResId());
+            binding.tag.setBackgroundColor(color);
             binding.getRoot().setOnClickListener(v -> listener.onOrderClick(order));
         }
     }
