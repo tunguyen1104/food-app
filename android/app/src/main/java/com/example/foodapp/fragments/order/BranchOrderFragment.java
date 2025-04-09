@@ -54,6 +54,8 @@ public class BranchOrderFragment extends Fragment {
 
         branchOrderViewModel.fetchOrdersByStatus(currentStatus);
         observeOrderData();
+
+        binding.newOrder.setOnClickListener(v -> openCreateAccount());
     }
 
     @Override
@@ -139,6 +141,14 @@ public class BranchOrderFragment extends Fragment {
         if (binding.statusTab.getTabAt(tabIndex) != null) {
             binding.statusTab.getTabAt(tabIndex).select();
         }
+    }
+
+    private void openCreateAccount() {
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.orderContainer, new CreateOrderFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     private void observeOrderData() {

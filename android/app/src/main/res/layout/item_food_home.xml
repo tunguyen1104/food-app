@@ -214,6 +214,7 @@
             android:maxLines="2"
             android:text="Deliciously crispy banhmi filled with savory meats, fresh vegetables, herbs, and a hint of spice. The perfect combination of flavors and textures in every bite"
             android:textAppearance="@style/body_s"
+            android:visibility="gone"
             android:textColor="@color/dark_light" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
