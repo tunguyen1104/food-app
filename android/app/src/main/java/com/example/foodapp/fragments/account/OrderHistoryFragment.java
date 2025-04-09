@@ -18,6 +18,7 @@ import com.example.foodapp.components.OrderTagInfoDialog;
 import com.example.foodapp.databinding.FragmentOrderHistoryBinding;
 import com.example.foodapp.dto.response.OrderResponse;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.enums.OrderDetailFunction;
 import com.example.foodapp.fragments.order.OrderDetailFragment;
 import com.example.foodapp.utils.NavigationUtil;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
@@ -61,6 +62,7 @@ public class OrderHistoryFragment extends Fragment {
         bundle.putSerializable("order", order);
 
         OrderDetailFragment fragment = new OrderDetailFragment();
+        bundle.putSerializable("function", OrderDetailFunction.ORDER_DETAIL_HISTORY);
         fragment.setArguments(bundle);
 
         FragmentTransaction ft = getParentFragmentManager().beginTransaction();

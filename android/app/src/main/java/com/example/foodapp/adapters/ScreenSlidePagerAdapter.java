@@ -9,6 +9,7 @@ import com.example.foodapp.fragments.account.AccountContainer;
 import com.example.foodapp.fragments.home.HomeContainer;
 import com.example.foodapp.fragments.message.MessageContainer;
 import com.example.foodapp.fragments.order.BranchOrderFragment;
+import com.example.foodapp.fragments.order.OrderContainer;
 
 public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
     public ScreenSlidePagerAdapter(FragmentActivity fragmentActivity) {
@@ -20,7 +21,7 @@ public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 1:
-                return new BranchOrderFragment();
+                return new OrderContainer();
             case 2:
                 return new MessageContainer();
             case 3:

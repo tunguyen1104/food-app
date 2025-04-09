@@ -37,4 +37,39 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginHorizontal="20dp"/>
+    <LinearLayout
+        android:id="@+id/layoutActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDone"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/tag_other"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Done"
+            android:textAppearance="@style/action_l"
+            android:textColor="@color/light_lightest"
+            app:cornerRadius="15dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/tag_exam"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Cancel"
+            android:textAppearance="@style/action_l"
+            android:textColor="@color/light_lightest"
+            app:cornerRadius="15dp" />
+    </LinearLayout>
 </LinearLayout>
