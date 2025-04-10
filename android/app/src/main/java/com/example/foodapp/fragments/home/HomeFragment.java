@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +15,7 @@ import com.example.foodapp.adapters.FoodHomeAdapter;
 import com.example.foodapp.databinding.FragmentHomeBinding;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.home.HomeViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -30,34 +30,32 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), HomeViewModel.class))
                 .get(HomeViewModel.class);
         setupRecyclerView();
-        setupViewModel();
-        viewModel.getFoodData();
+        loadData();
+        observeFoodData();
+        return binding.getRoot();
     }
 
     private void setupRecyclerView() {
         foodAdapter = new FoodHomeAdapter(new ArrayList<>()); // Initially empty
         binding.foodRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.foodRecyclerView.setAdapter(foodAdapter);
-
     }
 
-    private void setupViewModel() {
+    private void loadData() {
+        viewModel.getFoodData();
+    }
+
+    private void observeFoodData() {
         // Observe food data
         viewModel.getFoodData().observe(getViewLifecycleOwner(), foodItems -> {
             if (foodItems != null) {
                 foodAdapter.updateData(foodItems);
+                Snackbar.make(binding.getRoot(), "Loading Successfully", Snackbar.LENGTH_LONG).show();
             } else {
-                System.out.println("Error loading data");
-                Toast.makeText(getContext(), "Loading...", Toast.LENGTH_LONG).show();
+                Snackbar.make(binding.getRoot(), "Error loading data", Snackbar.LENGTH_LONG).show();
             }
         });
 

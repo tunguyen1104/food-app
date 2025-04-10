@@ -27,7 +27,6 @@ public class FoodController {
 
     @GetMapping
     public ResponseEntity<?> getFoodsByBranch() {
-        logger.info("getFoodsByBranch");
         List<FoodResponse> foods = foodService.getFoods();
         return ResponseEntity.ok(
                 ApiResponse.builder()
