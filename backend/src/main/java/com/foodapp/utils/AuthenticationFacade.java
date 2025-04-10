@@ -18,7 +18,7 @@ public class AuthenticationFacade {
 
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !(authentication.getPrincipal() instanceof UsernamePasswordAuthenticationToken authenticatedUser)) {
+        if (!(authentication instanceof UsernamePasswordAuthenticationToken authenticatedUser)) {
             throw new AppException(ErrorCode.ACCESS_DENIED);
         }
         return (User) authenticatedUser.getPrincipal();

@@ -22,7 +22,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.foodapp.R;
 import com.example.foodapp.adapters.ScreenSlidePagerAdapter;
 import com.example.foodapp.databinding.ActivityMainBinding;
-import com.example.foodapp.repositories.AuthRepository;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,14 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private BottomNavigationView navView;
 
-    private AuthRepository authRepository;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        authRepository = new AuthRepository(this);
         initializeViews();
         setupViewPager();
         loadTheme();

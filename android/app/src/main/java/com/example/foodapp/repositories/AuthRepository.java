@@ -43,6 +43,8 @@ public class AuthRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<AuthResponse> apiResponse = response.body();
                     if (apiResponse.isSuccess()) {
+                        AuthResponse authResponse = response.body().getData();
+                        saveTokens(authResponse.getAccessToken(), authResponse.getRefreshToken());
                         callback.onSuccess(response.body().getData());
                     }
                 } else {

@@ -5,19 +5,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.foodapp.R;
 
 public class HomeContainer extends Fragment {
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.container_home, container, false);
-        // why? https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.add(R.id.homeContainer, new HomeFragment()).commit();
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.container_home, container, false);  // make sure correct layout name
+    }
 
-        return view;
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (savedInstanceState == null) {
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.homeContainer, new HomeFragment())
+                    .commit();
+        }
     }
 }
