@@ -1,20 +1,22 @@
-FROM gradle:8.5-jdk17-alpine
+# Use Gradle with JDK 17 as base image
+FROM gradle:8.13-jdk17-alpine AS builder
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy the Gradle wrapper and build files
+# Copy Gradle configuration files first (for caching)
 COPY gradlew .
 COPY gradle gradle
 COPY build.gradle.kts .
 COPY settings.gradle.kts .
-COPY src src
-
-# Grant execute permission for the Gradle wrapper
+# Grant execute permission for gradlew
 RUN chmod +x gradlew
 
-# Expose the application port
+# Copy source code
+COPY src src
+
+# Expose port
 EXPOSE 8081
 
-# Set the entry point to run the application in development mode
-ENTRYPOINT ["./gradlew", "bootRun", "--no-daemon"]
+# Command to run the application with continuous build
+CMD ["./gradlew", "bootRun", "--continuous", "--no-daemon"]

@@ -3,7 +3,6 @@ package com.foodapp.utils;
 import com.foodapp.constants.ErrorCode;
 import com.foodapp.domain.User;
 import com.foodapp.exceptions.AppException;
-import com.foodapp.repositories.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,13 +15,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationFacade {
-    UserRepository userRepository;
 
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !(authentication.getPrincipal() instanceof UsernamePasswordAuthenticationToken authenticatedUser)) {
             throw new AppException(ErrorCode.ACCESS_DENIED);
         }
-        return userRepository.findUserByPhone(authenticatedUser.getPrincipal().toString());
+        return (User) authenticatedUser.getPrincipal();
     }
 }

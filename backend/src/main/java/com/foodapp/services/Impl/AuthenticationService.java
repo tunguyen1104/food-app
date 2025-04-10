@@ -1,5 +1,6 @@
 package com.foodapp.services.Impl;
 
+import com.foodapp.components.JwtTokenUtils;
 import com.foodapp.constants.ErrorCode;
 import com.foodapp.domain.Role;
 import com.foodapp.domain.User;
@@ -8,7 +9,6 @@ import com.foodapp.dto.requests.UserRegistrationRequest;
 import com.foodapp.dto.response.RegisterResponse;
 import com.foodapp.dto.response.TokenResponse;
 import com.foodapp.exceptions.AppException;
-import com.foodapp.filters.JwtTokenUtils;
 import com.foodapp.repositories.UserRepository;
 import com.foodapp.services.IAuthenticationService;
 import lombok.AccessLevel;
