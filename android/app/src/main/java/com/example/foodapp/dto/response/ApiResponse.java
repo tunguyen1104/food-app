@@ -20,6 +20,8 @@ public class ApiResponse<T> {
     private T data;
     @SerializedName("errors")
     private Map<String, String> errors;
+    @SerializedName("error")
+    private String error;
 
     public boolean isSuccess() {
         return "SUCCESS".equals(status);

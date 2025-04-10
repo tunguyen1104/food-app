@@ -53,6 +53,6 @@ dependencies {
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
     //Glide
-    implementation("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
 }

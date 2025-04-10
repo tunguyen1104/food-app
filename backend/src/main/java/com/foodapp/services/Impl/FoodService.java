@@ -8,7 +8,6 @@ import com.foodapp.dto.response.FoodResponse;
 import com.foodapp.exceptions.AppException;
 import com.foodapp.mapper.FoodMapper;
 import com.foodapp.repositories.FoodRepository;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FoodService {
-
     FoodRepository foodRepository;
     CategoryService categoryService;
     FoodMapper foodMapper;

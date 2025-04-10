@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/light_lightest">
 
     <LinearLayout
@@ -17,13 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_search"
-            app:endIconDrawable="@drawable/ic_search"
-            app:endIconMode="custom"
             app:boxCornerRadiusBottomEnd="15dp"
             app:boxCornerRadiusBottomStart="15dp"
             app:boxCornerRadiusTopEnd="15dp"
             app:boxCornerRadiusTopStart="15dp"
             app:boxStrokeColor="@color/text_input_color"
+            app:endIconDrawable="@drawable/ic_search"
+            app:endIconMode="custom"
             app:hintTextColor="@color/highlight_darkest">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -38,84 +38,87 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
 
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <TextView
                     android:id="@+id/category_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:text="Banh mi"
                     android:textAppearance="@style/heading_s"
-                    android:textColor="@color/dark_medium"
-                    android:gravity="center"/>
+                    android:textColor="@color/dark_medium" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="32dp"
-                    android:background="@color/tag_exam"/>
+                    android:background="@color/tag_exam" />
             </FrameLayout>
 
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:text="Xoi"
                     android:textAppearance="@style/body_m"
-                    android:textColor="@color/dark_medium"
-                    android:gravity="center"/>
+                    android:textColor="@color/dark_medium" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="32dp"
-                    android:background="@color/dark_lightest"/>
+                    android:background="@color/dark_lightest" />
             </FrameLayout>
 
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:text="Pho"
                     android:textAppearance="@style/body_m"
-                    android:textColor="@color/dark_medium"
-                    android:gravity="center"/>
+                    android:textColor="@color/dark_medium" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="32dp"
-                    android:background="@color/dark_lightest"/>
+                    android:background="@color/dark_lightest" />
             </FrameLayout>
 
             <FrameLayout
                 android:layout_width="28dp"
                 android:layout_height="wrap_content"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <ImageView
                     android:id="@+id/btnAllCategory"
@@ -123,16 +126,17 @@
                     android:layout_height="28dp"
                     android:layout_gravity="center"
                     android:background="?android:attr/selectableItemBackground"
-                    android:scaleType="centerCrop"
                     android:contentDescription="@string/all_category_button_desc"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/ic_chevron_down"
                     app:tint="@color/dark_light" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="32dp"
-                    android:background="@color/dark_lightest"/>
+                    android:background="@color/dark_lightest" />
             </FrameLayout>
 
 
@@ -142,8 +146,9 @@
             android:id="@+id/foodRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            tools:listitem="@layout/item_food_home"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:contentDescription="@string/food_recycler_view_name"
+            tools:listitem="@layout/item_food_home" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -56,8 +56,6 @@ public class LoginActivity extends AppCompatActivity {
                 new AuthRepository.LoginCallback() {
                     @Override
                     public void onSuccess(AuthResponse authResponse) {
-                        saveTokens(authResponse.getAccessToken(),
-                                authResponse.getRefreshToken());
                         Toast.makeText(LoginActivity.this,
                                 "Login successful",
                                 Toast.LENGTH_SHORT).show();
@@ -76,16 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void navigateToMain() {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-    }
-
-    private void saveTokens(String accessToken, String refreshToken) {
-        // Implement secure token storage
-        // Recommended: Use EncryptedSharedPreferences
-        getSharedPreferences("auth", MODE_PRIVATE)
-                .edit()
-                .putString("access_token", accessToken)
-                .putString("refresh_token", refreshToken)
-                .apply();
     }
 }
