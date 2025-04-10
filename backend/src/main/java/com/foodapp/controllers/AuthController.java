@@ -29,6 +29,7 @@ public class AuthController {
     @PostMapping("/signIn")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginRequest request) {
         logger.info("Login request received");
+        logger.debug(request.toString());
         var result = authenticationService.authenticate(request.getPhone(), request.getPassword());
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(result)

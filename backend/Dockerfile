@@ -1,5 +1,5 @@
 # First stage: Build the application
-FROM gradle:8.5-jdk17-alpine AS build
+FROM gradle:8.13-jdk17-alpine AS builder
 WORKDIR /app
 
 # Copy everything to the container

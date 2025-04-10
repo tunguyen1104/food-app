@@ -1,4 +1,4 @@
-package com.foodapp.filters;
+package com.foodapp.components;
 
 import com.foodapp.constants.ErrorCode;
 import com.foodapp.domain.User;

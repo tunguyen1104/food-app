@@ -1,7 +1,7 @@
-package com.foodapp.components;
+package com.foodapp.filters;
 
+import com.foodapp.components.JwtTokenUtils;
 import com.foodapp.constants.SecurityConstants;
-import com.foodapp.filters.JwtTokenUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

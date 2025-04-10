@@ -9,8 +9,8 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - ./:/app
       - ./uploads:/uploads
+      - gradle-cache:/root/.gradle
     environment:
       SPRING_PROFILES_ACTIVE: dev
       DB_HOST: mysql-container
@@ -26,3 +26,5 @@ services:
     depends_on:
       - mysql-container
       - redis_container
+volumes:
+  gradle-cache:

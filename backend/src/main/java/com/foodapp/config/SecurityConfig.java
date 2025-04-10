@@ -1,7 +1,7 @@
 package com.foodapp.config;
 
-import com.foodapp.components.JwtRequestFilter;
 import com.foodapp.constants.SecurityConstants;
+import com.foodapp.filters.JwtRequestFilter;
 import com.foodapp.services.Impl.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
