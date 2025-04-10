@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.example.foodapp.dto.response.ApiResponse;
 import com.example.foodapp.dto.response.OrderDetailResponse;
+import com.example.foodapp.dto.response.OrderResponse;
+import com.example.foodapp.enums.OrderStatus;
 import com.example.foodapp.network.ApiClient;
 import com.example.foodapp.services.OrderDetailService;
 import java.util.List;
@@ -42,8 +44,34 @@ public class OrderDetailRepository {
         });
     }
 
+    public void updateOrderStatus(Long orderId, OrderStatus newStatus, final OrderDetailRepository.OrderUpdateCallback callback) {
+        Call<ApiResponse<OrderResponse>> call = orderDetailService.updateOrderStatus(orderId, newStatus.name());
+        call.enqueue(new Callback<ApiResponse<OrderResponse>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<OrderResponse>> call,
+                                   @NonNull Response<ApiResponse<OrderResponse>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    callback.onSuccess(response.body().getData());
+                } else {
+                    callback.onError("Error updating order status");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<OrderResponse>> call,
+                                  @NonNull Throwable t) {
+                callback.onError("Connect error: " + t.getMessage());
+            }
+        });
+    }
+
     public interface OrderHistoryCallback {
         void onSuccess(List<OrderDetailResponse> orders);
+        void onError(String message);
+    }
+
+    public interface OrderUpdateCallback {
+        void onSuccess(OrderResponse updatedOrder);
         void onError(String message);
     }
 }

@@ -25,4 +25,5 @@
     <string name="all_category_button_desc">See all categories</string>
     <string name="clock_desc">Cooking Time</string>
     <string name="food_recycler_view_name">List Food</string>
+    <string name="new_order_description">New Order Description</string>
 </resources>

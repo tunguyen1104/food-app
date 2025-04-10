@@ -1,7 +1,9 @@
 package com.foodapp.controllers;
 
+import com.foodapp.domain.Order;
 import com.foodapp.dto.requests.OrderRequest;
 import com.foodapp.dto.response.ApiResponse;
+import com.foodapp.dto.response.OrderResponse;
 import com.foodapp.services.Impl.OrderService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -9,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -68,6 +72,30 @@ public class OrderController {
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .status(ApiResponse.Status.SUCCESS)
+                        .build()
+        );
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<?> getMyOrdersByStatus(@RequestParam Order.Status status) {
+        List<OrderResponse> orders = orderService.getMyOrdersByStatus(status);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
+                        .data(orders)
+                        .build()
+        );
+    }
+
+    @PatchMapping("/{orderId}/status")
+    public ResponseEntity<?> updateOrderStatus(
+            @PathVariable Long orderId,
+            @RequestParam("status") String statusStr) {
+        OrderResponse updatedOrder = orderService.updateOrderStatus(orderId, statusStr);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(ApiResponse.Status.SUCCESS)
+                        .data(updatedOrder)
                         .build()
         );
     }
