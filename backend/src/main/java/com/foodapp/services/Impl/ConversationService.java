@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,15 +34,16 @@ public class ConversationService implements IConversationService {
 
         sortParticipantIds(participantIds);
 
-        Optional<Conversation> existingConversation = conversationRepository
-                .findByParticipantIdsAllAndSize(participantIds, participantIds.size());
+        List<Conversation> conversations = conversationRepository.findByParticipantIdsAllAndSize(participantIds, participantIds.size());
 
-        if (existingConversation.isPresent()) {
-            return conversationMapper.toConversationResponse(existingConversation.get());
+        Conversation conv;
+        if (!conversations.isEmpty()) {
+            conv = conversations.get(0);
+        } else {
+            conv = createNewConversation(participantIds);
         }
 
-        Conversation newConversation = createNewConversation(participantIds);
-        return conversationMapper.toConversationResponse(newConversation);
+        return conversationMapper.toConversationResponse(conv);
     }
 
     private void validateParticipantIds(List<String> participantIds) {

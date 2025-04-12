@@ -3,9 +3,11 @@ package com.foodapp.services.Impl;
 import com.foodapp.domain.mongo.Message;
 import com.foodapp.dto.requests.ConversationRequest;
 import com.foodapp.dto.requests.MessageRequest;
+import com.foodapp.dto.response.ConversationResponse;
 import com.foodapp.dto.response.MessageResponse;
 import com.foodapp.mapper.MessageMapper;
 import com.foodapp.repositories.MessageRepository;
+import com.foodapp.services.IConversationService;
 import com.foodapp.services.IMessageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class MessageService implements IMessageService {
     MessageRepository messageRepository;
     MessageMapper messageMapper;
     SimpMessagingTemplate messagingTemplate;
+    IConversationService conversationService;
 
     @Override
     public List<MessageResponse> getMessagesByConversation(ConversationRequest conversationRequest) {
@@ -71,11 +74,13 @@ public class MessageService implements IMessageService {
         Message savedMessage = messageRepository.save(messageEntity);
 
         MessageResponse saved = messageMapper.toMessageResponse(savedMessage);
-        // updateLastMessage(saved);
+        conversationService.updateLastMessage(saved);
+        messagingTemplate.convertAndSend("/topic/messages/" + saved.getReceiverId(), saved);
     }
 
     public String createOrFindConversation(List<String> participantIds) {
         // Nếu tin nhắn chưa có conversationId, tạo mới cuộc trò chuyện 1-1
-        return "";
+        ConversationResponse conv = conversationService.createOrFindConversation(participantIds);
+        return conv.getId();
     }
 }
