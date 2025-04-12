@@ -39,5 +39,6 @@ out/
 ### Database folders ###
 mysql-data/
 redis-data/
+mongo-data/
 
 uploads/
