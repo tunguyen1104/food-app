@@ -56,3 +56,12 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
 }
+
+dependencies {
+    // STOMP
+    implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    // JavaWebSocket
+    implementation("org.java-websocket:Java-WebSocket:1.6.0")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+}
