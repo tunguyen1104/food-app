@@ -37,10 +37,10 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="5dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -111,18 +111,18 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/clock_desc"
                         android:src="@drawable/ic_clock"
-                        app:tint="@color/dark_darkest"
-                        android:contentDescription="@string/clock_desc"/>
+                        app:tint="@color/dark_darkest" />
 
                     <TextView
                         android:id="@+id/time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginStart="2dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:layout_marginStart="2dp"
                         android:text="10 minute"
                         android:textAppearance="@style/body_s"
                         android:textColor="@color/dark_darkest" />
@@ -132,80 +132,42 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical|end"
                 android:layout_marginStart="10dp"
+                android:gravity="center_vertical|end"
                 android:orientation="vertical">
 
                 <!-- Order Branch -->
-                <CheckBox
-                    android:id="@+id/checkboxSelect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:textAppearance="@style/body_s"
-                    android:textColor="@color/highlight_darkest"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/quantityInputLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:boxBackgroundColor="@color/light_medium"
-                    app:boxCornerRadiusTopStart="8dp"
-                    app:boxCornerRadiusTopEnd="8dp"
-                    app:boxCornerRadiusBottomStart="8dp"
-                    app:boxCornerRadiusBottomEnd="8dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etQuantity"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:text="1"
-                        android:textAppearance="@style/body_m"
-                        android:gravity="center"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Branch -->
-                <ImageView
-                    android:id="@+id/btnOrder"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="end"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:scaleType="centerCrop"
-                    android:contentDescription="@string/add_to_order_list_desc"
-                    android:src="@drawable/ic_branch_account_add"
-                    android:visibility="gone"
-                    app:tint="@color/black" />
 
                 <!-- Admin -->
                 <ImageView
                     android:id="@+id/btnEdit"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="end"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:scaleType="centerCrop"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/edit_desc"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/ic_edit"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:tint="@color/black" />
 
                 <ImageView
                     android:id="@+id/btnDelete"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="end"
-                    android:layout_marginTop="17dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:scaleType="centerCrop"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/delete_desc"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/ic_delete"
-                    android:visibility="gone"
-                    app:tint="@color/black" />
+                    android:visibility="visible"
+                    app:tint="@color/red" />
+
             </LinearLayout>
         </LinearLayout>
+
         <TextView
             android:id="@+id/desc"
             android:layout_width="360dp"
@@ -214,7 +176,7 @@
             android:maxLines="2"
             android:text="Deliciously crispy banhmi filled with savory meats, fresh vegetables, herbs, and a hint of spice. The perfect combination of flavors and textures in every bite"
             android:textAppearance="@style/body_s"
-            android:visibility="gone"
-            android:textColor="@color/dark_light" />
+            android:textColor="@color/dark_light"
+            android:visibility="visible" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
