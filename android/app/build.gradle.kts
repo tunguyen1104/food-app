@@ -33,6 +33,25 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    /*
+    flavorDimensions += "user"
+
+    productFlavors {
+        create("user1") {
+            dimension = "user"
+            applicationId = "com.example.foodapp.user1"
+            versionNameSuffix = "-user1"
+            resValue("string", "app_name", "FoodApp User1")
+        }
+
+        create("user2") {
+            dimension = "user"
+            applicationId = "com.example.foodapp.user2"
+            versionNameSuffix = "-user2"
+            resValue("string", "app_name", "FoodApp User2")
+        }
+    }*/
 }
 
 dependencies {
