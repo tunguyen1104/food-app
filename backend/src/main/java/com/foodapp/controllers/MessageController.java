@@ -5,7 +5,6 @@ import com.foodapp.dto.requests.MessageRequest;
 import com.foodapp.dto.response.ApiResponse;
 import com.foodapp.dto.response.MessageResponse;
 import com.foodapp.services.IMessageService;
-import com.foodapp.services.Impl.MessageService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
