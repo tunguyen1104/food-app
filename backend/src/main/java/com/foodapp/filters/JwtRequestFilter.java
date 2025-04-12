@@ -91,4 +91,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(String.format("{\"error\": \"Unauthorized\", \"message\": \"%s\"}", message));
     }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.startsWith("/ws")
+                || path.startsWith("/app")
+                || path.startsWith("/topic")
+                || path.startsWith("/sockjs");
+    }
+
 }

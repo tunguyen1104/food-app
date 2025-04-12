@@ -49,6 +49,7 @@ public class SecurityConfig {
                         }))
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers(SecurityConstants.BYPASS_ENDPOINTS).permitAll()
+                        .requestMatchers("/ws/**", "/app/**", "/topic/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

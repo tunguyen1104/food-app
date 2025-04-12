@@ -33,6 +33,9 @@ public enum ErrorCode {
 
     ORDER_DETAIL_NOT_FOUND(1010, "Order Detail Not found", HttpStatus.NOT_FOUND),
 
+    // --- CONVERSATION MONGO ERRORS
+    CONVERSATION_NOT_FOUND(1011, "Conversation not found", HttpStatus.NOT_FOUND),
+
     // Unexpected error:
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized Exception", HttpStatus.BAD_REQUEST),
     ;
