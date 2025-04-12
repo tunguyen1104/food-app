@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.androidx.coordinatorlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -74,9 +75,8 @@ dependencies {
     //Glide
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
-}
-
-dependencies {
+    implementation(libs.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
     // STOMP
     implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
     // JavaWebSocket

@@ -8,5 +8,6 @@ import lombok.Data;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CategoryDto {
+    private Long id;
     private String name;
 }

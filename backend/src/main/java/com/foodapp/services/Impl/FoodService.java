@@ -3,17 +3,22 @@ package com.foodapp.services.Impl;
 import com.foodapp.constants.ErrorCode;
 import com.foodapp.domain.Category;
 import com.foodapp.domain.Food;
+import com.foodapp.domain.Ingredient;
+import com.foodapp.dto.food.FoodDto;
 import com.foodapp.dto.requests.FoodRequest;
 import com.foodapp.dto.response.FoodResponse;
 import com.foodapp.exceptions.AppException;
 import com.foodapp.mapper.FoodMapper;
+import com.foodapp.mapper.IngredientMapper;
 import com.foodapp.repositories.FoodRepository;
+import com.foodapp.repositories.IngredientRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +29,8 @@ public class FoodService {
     FoodRepository foodRepository;
     CategoryService categoryService;
     FoodMapper foodMapper;
+    IngredientRepository integrationRepository;
+    IngredientMapper ingredientMapper;
 
     @Transactional(readOnly = true)
     public List<FoodResponse> getFoods() {
@@ -39,10 +46,10 @@ public class FoodService {
     }
 
     @Transactional(readOnly = true)
-    public FoodResponse getFoodById(Long id) {
+    public FoodDto getFoodById(Long id) {
         Food food = foodRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
-        return foodMapper.toFoodResponse(food);
+        return foodMapper.toFoodDto(food);
     }
 
     @Transactional
@@ -75,6 +82,16 @@ public class FoodService {
         food.setAvatarUrl(foodRequest.getAvatarUrl());
         food.setCategory(category);
 
+        List<Ingredient> updatedIngredients = new ArrayList<>();
+        if (foodRequest.getIngredients() != null) {
+            var ingredientList = foodRequest.getIngredients()
+                    .stream()
+                    .map(dto -> integrationRepository.findById(dto.getId())
+                            .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND)))
+                    .toList();
+            updatedIngredients.addAll(ingredientList);
+        }
+        food.setIngredients(updatedIngredients);
         foodRepository.save(food);
 
         return foodMapper.toFoodResponse(food);

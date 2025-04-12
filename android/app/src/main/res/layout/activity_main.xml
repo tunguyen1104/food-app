@@ -4,24 +4,25 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:backgroundTint="@color/light_lightest">
+    android:backgroundTint="@color/light_lightest"
+    android:orientation="vertical">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:background="?android:attr/windowBackground"
-        app:itemActiveIndicatorStyle="@style/custom_indicator"
-        app:menu="@menu/bottom_nav_menu"
         app:backgroundTint="@color/light_lightest"
-        app:itemTextColor="@color/dark_darkest"
+        app:itemActiveIndicatorStyle="@style/custom_indicator"
+        app:itemIconTint="@color/dark_darkest"
         app:itemRippleColor="@color/transparent"
-        app:itemIconTint="@color/dark_darkest"/>
+        app:itemTextColor="@color/dark_darkest"
+        app:menu="@menu/bottom_nav_menu" />
 </LinearLayout>

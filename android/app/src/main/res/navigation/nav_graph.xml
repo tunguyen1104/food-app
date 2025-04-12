@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.foodapp.fragments.home.HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/edit"
+            app:destination="@id/editFoodFragment" />
+    </fragment>
+
+    <!-- EditFoodFragment: Edits a food item -->
+    <fragment
+        android:id="@+id/editFoodFragment"
+        android:name="com.example.foodapp.fragments.food.EditFoodFragment"
+        tools:layout="@layout/fragment_food_editor">
+        <!-- Argument to pass FoodDto -->
+        <argument
+            android:name="foodItem"
+            app:argType="com.example.foodapp.dto.response.FoodDto"
+            app:nullable="true" />
+    </fragment>
+
+</navigation>

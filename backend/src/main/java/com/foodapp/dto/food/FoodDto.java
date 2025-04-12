@@ -13,6 +13,7 @@ import java.util.List;
 public class FoodDto {
     private Long id;
     private String foodName;
+    private String category;
     private String description;
     private BigDecimal price;
     private String imageUrl;

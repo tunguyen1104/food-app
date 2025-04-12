@@ -3,7 +3,9 @@ package com.example.foodapp.repositories;
 import android.content.Context;
 
 import com.example.foodapp.dto.response.ApiResponse;
+import com.example.foodapp.dto.response.CategoryDto;
 import com.example.foodapp.dto.response.FoodDto;
+import com.example.foodapp.dto.response.IngredientDto;
 import com.example.foodapp.network.ApiClient;
 import com.example.foodapp.services.FoodService;
 
@@ -16,12 +18,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeRepository {
+public class FoodRepository {
     private final Context context;
     private final AuthRepository authRepository;
     private final FoodService foodService;
 
-    public HomeRepository(Context context) {
+    public FoodRepository(Context context) {
         this.context = context;
         this.authRepository = new AuthRepository(context);
         this.foodService = ApiClient.getClient(context).create(FoodService.class);
@@ -58,6 +60,30 @@ public class HomeRepository {
                 callback.onError("Network error: " + t.getMessage());
             }
         });
+    }
+
+    public Call<FoodDto> updateFoodItem(Long id, FoodDto foodDto) {
+        return foodService.updateFoodItem(id, foodDto);
+    }
+
+    public Call<FoodDto> addFoodItem(FoodDto foodDto) {
+        return foodService.addFoodItem(foodDto);
+    }
+
+    public Call<FoodDto> deleteFoodItem(Long id) {
+        return foodService.deleteFoodItem(id);
+    }
+
+    public Call<ApiResponse<List<CategoryDto>>> getCategories() {
+        return foodService.getAllCategories();
+    }
+
+    public Call<ApiResponse<FoodDto>> getFoodDetail(Long foodId) {
+        return foodService.getFoodDetail(foodId);
+    }
+
+    public Call<ApiResponse<List<IngredientDto>>> getAllIngredients() {
+        return foodService.getAllIngredients();
     }
 
     public interface HomeCallback<T> {

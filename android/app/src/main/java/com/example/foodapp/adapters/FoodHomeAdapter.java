@@ -11,15 +11,20 @@ import com.example.foodapp.R;
 import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.ItemFoodHomeBinding;
 import com.example.foodapp.dto.response.FoodDto;
+import com.example.foodapp.listeners.OnFoodClickListener;
 import com.example.foodapp.utils.AuthInterceptor;
 
 import java.util.List;
 
 public class FoodHomeAdapter extends RecyclerView.Adapter<FoodHomeAdapter.FoodViewHolder> {
+    private final OnFoodClickListener editListener;
+    private final OnFoodClickListener deleteListener;
     private List<FoodDto> foodItems;
 
-    public FoodHomeAdapter(List<FoodDto> foodItems) {
+    public FoodHomeAdapter(List<FoodDto> foodItems, OnFoodClickListener editListener, OnFoodClickListener deleteListener) {
         this.foodItems = foodItems;
+        this.editListener = editListener;
+        this.deleteListener = deleteListener;
     }
 
     @NonNull
@@ -33,6 +38,8 @@ public class FoodHomeAdapter extends RecyclerView.Adapter<FoodHomeAdapter.FoodVi
     public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
         FoodDto foodItem = foodItems.get(position);
         holder.bind(foodItem);
+        holder.binding.btnEdit.setOnClickListener(v -> editListener.onClick(foodItem));
+        holder.binding.btnDelete.setOnClickListener(v -> deleteListener.onClick(foodItem));
     }
 
     @Override
@@ -56,7 +63,7 @@ public class FoodHomeAdapter extends RecyclerView.Adapter<FoodHomeAdapter.FoodVi
         public void bind(FoodDto foodItem) {
             binding.name.setText(foodItem.getFoodName());
             binding.desc.setText(String.valueOf(foodItem.getDescription()));
-            binding.price.setText(foodItem.getPrice() + "$");
+            binding.price.setText(foodItem.getPrice() + "");
 
             if (foodItem.getAvatarUrl() != null && !foodItem.getAvatarUrl().isEmpty()) {
                 Glide.with(binding.image.getContext())

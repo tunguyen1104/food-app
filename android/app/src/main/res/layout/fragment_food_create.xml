@@ -24,7 +24,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Edit Food"
+            android:text="Create food"
             android:textAlignment="center"
             android:textAppearance="@style/heading_l"
             android:textColor="@color/dark_darkest" />
@@ -218,7 +218,6 @@
                 app:chipSpacingVertical="8dp"
                 app:selectionRequired="false"
                 app:singleSelection="false" />
-
         </LinearLayout>
     </ScrollView>
 
@@ -230,7 +229,7 @@
         android:backgroundTint="@color/highlight_darkest"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        android:text="Save"
+        android:text="Add"
         android:textAppearance="@style/action_l"
         android:textColor="@color/light_lightest"
         app:cornerRadius="15dp" />
