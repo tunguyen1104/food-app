@@ -17,6 +17,7 @@ import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.FragmentAccountAdminBinding;
 import com.example.foodapp.enums.AccountListFunction;
 import com.example.foodapp.fragments.setting.SettingsFragment;
+import com.example.foodapp.fragments.statistics.ContainerStatistics;
 import com.example.foodapp.utils.AuthInterceptor;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.account.AdminAccountViewModel;
@@ -42,7 +43,7 @@ public class AdminAccountFragment extends Fragment {
         observeUser();
         viewModel.fetchUserProfile();
 
-        binding.revenueStatistics.setOnClickListener(v -> openRevenueStatistics());
+        binding.revenueStatistics.setOnClickListener(this::openRevenueStatistics);
         binding.accountListButton.setOnClickListener(v -> openAccountList());
         binding.ordersHistory.setOnClickListener(v -> openOrdersHistory());
         binding.settingsButton.setOnClickListener(v -> openSettings());
@@ -74,8 +75,9 @@ public class AdminAccountFragment extends Fragment {
         }
     }
 
-    private void openRevenueStatistics() {
-        // TODO: Open revenue statistics screen
+    private void openRevenueStatistics(View v) {
+        ContainerStatistics fragment = new ContainerStatistics();
+        openFragment(fragment);
     }
 
     private void openAccountList() {
