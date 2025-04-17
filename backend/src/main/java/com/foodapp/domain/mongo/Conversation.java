@@ -1,6 +1,8 @@
 package com.foodapp.domain.mongo;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,15 +18,18 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Conversation {
+
     @Id
     private String id;
 
     private List<String> participantIds;
 
     private Date createdAt;
-    private String lastMessage;
-    private Date lastUpdate;
-    private String senderAvatarUrl;
-    private String receiverAvatarUrl;
-    private String receiverName;
+
+    private String lastMessageId;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = new Date();
+    }
 }
