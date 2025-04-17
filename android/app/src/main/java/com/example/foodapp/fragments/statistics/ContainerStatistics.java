@@ -41,7 +41,7 @@ public class ContainerStatistics extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dateViewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), DateSelectionViewModel.class))
+        dateViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(requireContext(), DateSelectionViewModel.class))
                 .get(DateSelectionViewModel.class);
 
         setupMonthSpinner();

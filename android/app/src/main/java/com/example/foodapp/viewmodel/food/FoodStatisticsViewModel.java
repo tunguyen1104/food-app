@@ -12,7 +12,7 @@ import com.example.foodapp.repositories.StatisticsRepository;
 import java.util.List;
 
 public class FoodStatisticsViewModel extends ViewModel {
-    private StatisticsRepository repository;
+    private final StatisticsRepository repository;
 
     public FoodStatisticsViewModel(Context context) {
         repository = new StatisticsRepository(context);

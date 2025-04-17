@@ -14,7 +14,7 @@ import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.ItemAccountBranchBinding;
 import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.listeners.OnAccountClickListener;
-import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.utils.GlideUtils;
 
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class AdminAccountAdapter extends RecyclerView.Adapter<AdminAccountAdapte
             // Glide load avatar
             if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
                 Glide.with(context)
-                        .load(AuthInterceptor.getAuthorizedGlideUrl(Constants.URL_HOST_SERVER + user.getAvatarUrl()))
+                        .load(GlideUtils.getAuthorizedGlideUrl(itemView.getContext(), Constants.URL_HOST_SERVER + user.getAvatarUrl()))
                         .placeholder(R.drawable.avatar_default)
                         .into(binding.imageProfile);
             } else {

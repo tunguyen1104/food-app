@@ -14,7 +14,7 @@ import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.ItemCreateOrderBinding;
 import com.example.foodapp.dto.response.FoodDto;
 import com.example.foodapp.listeners.CreateOrderAdapterListener;
-import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.utils.GlideUtils;
 
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class FoodCreateOrderAdapter extends RecyclerView.Adapter<FoodCreateOrder
 
             if (foodItem.getAvatarUrl() != null && !foodItem.getAvatarUrl().isEmpty()) {
                 Glide.with(binding.image.getContext())
-                        .load(AuthInterceptor.getAuthorizedGlideUrl(Constants.URL_HOST_SERVER + foodItem.getAvatarUrl()))
+                        .load(GlideUtils.getAuthorizedGlideUrl(itemView.getContext(), Constants.URL_HOST_SERVER + foodItem.getAvatarUrl()))
                         .placeholder(R.drawable.avatar_default)
                         .into(binding.image);
             } else {

@@ -145,26 +145,31 @@ public class UserRepository {
 
     public interface UserProfileCallback {
         void onSuccess(UserResponse user);
+
         void onError(String message);
     }
 
     public interface UserListCallback {
         void onSuccess(List<UserResponse> users);
+
         void onError(String message);
     }
 
     public interface CreateUserCallback {
         void onSuccess(UserResponse newUser);
+
         void onError(String errorMessage);
     }
 
     public interface UpdateUserCallback {
         void onSuccess(UserResponse updatedUser);
+
         void onError(String errorMessage);
     }
 
     public interface DeleteUserCallback {
         void onSuccess(String message);
+
         void onError(String errorMessage);
     }
 }

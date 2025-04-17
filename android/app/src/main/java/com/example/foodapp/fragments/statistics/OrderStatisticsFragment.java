@@ -47,9 +47,9 @@ public class OrderStatisticsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), OrderStatisticsViewModel.class))
+        viewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(requireContext(), OrderStatisticsViewModel.class))
                 .get(OrderStatisticsViewModel.class);
-        dateViewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), DateSelectionViewModel.class))
+        dateViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(requireContext(), DateSelectionViewModel.class))
                 .get(DateSelectionViewModel.class);
 
         setupCharts();

@@ -18,7 +18,7 @@ import com.example.foodapp.databinding.FragmentAccountAdminBinding;
 import com.example.foodapp.enums.AccountListFunction;
 import com.example.foodapp.fragments.setting.SettingsFragment;
 import com.example.foodapp.fragments.statistics.ContainerStatistics;
-import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.utils.GlideUtils;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.account.AdminAccountViewModel;
 
@@ -66,7 +66,7 @@ public class AdminAccountFragment extends Fragment {
             Log.d("AvatarURL", fullUrl);
 
             Glide.with(requireContext())
-                    .load(AuthInterceptor.getAuthorizedGlideUrl(fullUrl))
+                    .load(GlideUtils.getAuthorizedGlideUrl(getContext(), fullUrl))
                     .placeholder(R.drawable.avatar_default)
                     .error(R.drawable.avatar_default)
                     .into(binding.accountAvatarView);

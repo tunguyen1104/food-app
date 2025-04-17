@@ -11,15 +11,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static Retrofit retrofit;
-    private static AuthInterceptor authInterceptor;
 
     public static Retrofit getClient(Context context) {
         if (retrofit == null) {
-            authInterceptor = new AuthInterceptor(context);
 
             OkHttpClient client = new OkHttpClient()
                     .newBuilder()
-                    .addInterceptor(authInterceptor)
+                    .addInterceptor(new AuthInterceptor(context))
                     .build();
 
             retrofit = new Retrofit.Builder()
@@ -29,11 +27,5 @@ public class ApiClient {
                     .build();
         }
         return retrofit;
-    }
-
-    public static void updateAccessToken(String newAccessToken) {
-        if (authInterceptor != null) {
-            authInterceptor.updateAccessToken(newAccessToken);
-        }
     }
 }

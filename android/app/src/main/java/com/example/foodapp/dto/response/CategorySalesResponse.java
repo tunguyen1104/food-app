@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategorySalesResponse {
     private String categoryName;
-    private int quantity;
+    private Long quantity;
 }

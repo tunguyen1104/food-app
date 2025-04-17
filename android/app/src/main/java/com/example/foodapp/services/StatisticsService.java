@@ -14,37 +14,37 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface StatisticsService {
-    @GET("/api/orders/revenue/monthly")
+    @GET("/api/statistics/revenue/monthly")
     Call<List<MonthlyRevenueResponse>> getMonthlyRevenue(
             @Query("year") int year,
             @Query("month") int month
     );
 
-    @GET("/api/orders/food-distribution")
+    @GET("/api/statistics/food-distribution")
     Call<List<FoodDistributionResponse>> getFoodDistribution(
             @Query("year") int year,
             @Query("month") int month
     );
 
-    @GET("/api/orders/status-distribution")
+    @GET("/api/statistics/status-distribution")
     Call<List<OrderStatusResponse>> getOrderStatusDistribution(
             @Query("year") int year,
             @Query("month") int month
     );
 
-    @GET("/api/orders/platform-revenue")
+    @GET("/api/statistics/platform-revenue")
     Call<List<PlatformRevenueResponse>> getPlatformRevenue(
             @Query("year") int year,
             @Query("month") int month
     );
 
-    @GET("/api/orders/category-sales")
+    @GET("/api/statistics/category-sales")
     Call<List<CategorySalesResponse>> getCategorySales(
             @Query("year") int year,
             @Query("month") int month
     );
 
-    @GET("/api/orders/daily-volume")
+    @GET("/api/statistics/daily-volume")
     Call<List<DailyVolumeResponse>> getDailyVolume(
             @Query("year") int year,
             @Query("month") int month

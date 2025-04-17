@@ -18,9 +18,8 @@ import com.example.foodapp.R;
 import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.FragmentAccountBranchBinding;
 import com.example.foodapp.dto.response.UserResponse;
-import com.example.foodapp.enums.AccountListFunction;
 import com.example.foodapp.fragments.setting.SettingsFragment;
-import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.utils.GlideUtils;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.account.BranchAccountViewModel;
 
@@ -65,7 +64,7 @@ public class BranchAccountFragment extends Fragment {
             Log.d("AvatarURL", fullUrl);
 
             Glide.with(requireContext())
-                    .load(AuthInterceptor.getAuthorizedGlideUrl(fullUrl))
+                    .load(GlideUtils.getAuthorizedGlideUrl(getContext(), fullUrl))
                     .placeholder(R.drawable.avatar_default)
                     .error(R.drawable.avatar_default)
                     .into(binding.accountAvatarView);

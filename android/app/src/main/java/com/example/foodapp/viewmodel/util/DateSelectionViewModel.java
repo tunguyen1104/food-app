@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModel;
 import java.time.LocalDate;
 
 public class DateSelectionViewModel extends ViewModel {
-    private MutableLiveData<Integer> selectedYear = new MutableLiveData<>();
-    private MutableLiveData<Integer> selectedMonth = new MutableLiveData<>();
+    private final MutableLiveData<Integer> selectedYear = new MutableLiveData<>();
+    private final MutableLiveData<Integer> selectedMonth = new MutableLiveData<>();
 
     public DateSelectionViewModel(Context context) {
         LocalDate currentDate = LocalDate.now();

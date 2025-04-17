@@ -29,14 +29,13 @@ import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.enums.MessageStatus;
 import com.example.foodapp.enums.NotificationType;
 import com.example.foodapp.network.StompManager;
-import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.utils.GlideUtils;
 import com.example.foodapp.utils.NavigationUtil;
 import com.example.foodapp.utils.NotificationUtil;
 import com.example.foodapp.utils.UserManager;
 import com.example.foodapp.utils.Utils;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.message.SingleChatViewModel;
-import com.example.foodapp.viewmodel.order.BranchOrderViewModel;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -204,7 +203,7 @@ public class SingleChatFragment extends Fragment {
         // Cập nhật avatar
         if (conversation.getReceiverAvatarUrl() != null && !conversation.getReceiverAvatarUrl().isEmpty()) {
             Glide.with(binding.imageProfile.getContext())
-                    .load(AuthInterceptor.getAuthorizedGlideUrl(Constants.URL_HOST_SERVER
+                    .load(GlideUtils.getAuthorizedGlideUrl(getContext(), Constants.URL_HOST_SERVER
                             + conversation.getReceiverAvatarUrl()))
                     .placeholder(R.drawable.avatar_default)
                     .into(binding.imageProfile);

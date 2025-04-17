@@ -44,7 +44,7 @@ public class FoodStatisticsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), FoodStatisticsViewModel.class))
                 .get(FoodStatisticsViewModel.class);
-        dateViewModel = new ViewModelProvider(this, new BaseViewModelFactory<>(requireContext(), DateSelectionViewModel.class))
+        dateViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(requireContext(), DateSelectionViewModel.class))
                 .get(DateSelectionViewModel.class);
 
         setupCharts();
