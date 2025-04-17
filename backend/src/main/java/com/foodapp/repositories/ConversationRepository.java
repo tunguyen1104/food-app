@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ConversationRepository extends MongoRepository<Conversation, String> {
-    @Query("{ 'participantIds': { $all: ?0 }, 'participantIds': { $size: ?1 } }")
+    @Query("{ 'participantIds': { $all: ?0, $size: ?1 } }")
     List<Conversation> findByParticipantIdsAllAndSize(List<String> participantIds, int size);
 
     List<Conversation> findAllByParticipantIds(String participantId);
