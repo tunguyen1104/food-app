@@ -1,6 +1,6 @@
 package com.example.foodapp.fragments.message;
 
-import static com.example.foodapp.consts.Constants.ID_ADMIN_DEFAULT;
+import static com.example.foodapp.consts.Constants.ADMIN;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +21,7 @@ public class MessageContainer extends Fragment {
         // why? https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         UserResponse currentUser = UserManager.getUser(requireContext());
-        if(currentUser != null && currentUser.getId().toString().equals(ID_ADMIN_DEFAULT)) {
+        if (currentUser != null && currentUser.getId().toString().equals(ADMIN)) {
             ft.add(R.id.messageContainer, new AdminListContactFragment()).commit();
         } else ft.add(R.id.messageContainer, new SingleChatFragment()).commit();
 

@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
 import com.example.foodapp.databinding.FragmentAccountBranchBinding;
 import com.example.foodapp.fragments.setting.SettingsFragment;
+import com.example.foodapp.utils.GlideUtils;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.account.AccountViewModel;
 
@@ -62,7 +63,7 @@ public class AccountFragment extends Fragment {
             Log.d("AvatarURL", fullUrl);
 
             Glide.with(requireContext())
-                    .load(com.example.foodapp.utils.AuthInterceptor.getAuthorizedGlideUrl(fullUrl))
+                    .load(GlideUtils.getAuthorizedGlideUrl(getContext(), fullUrl))
                     .placeholder(R.drawable.avatar_default)
                     .error(R.drawable.avatar_default)
                     .into(binding.accountAvatarView);

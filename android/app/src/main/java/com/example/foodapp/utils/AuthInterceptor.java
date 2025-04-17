@@ -2,12 +2,10 @@ package com.example.foodapp.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 import java.io.IOException;
 
@@ -16,45 +14,55 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class AuthInterceptor implements Interceptor {
-    private static String accessToken;
     private final Context context;
 
     public AuthInterceptor(Context context) {
         this.context = context;
-        loadTokens();
     }
 
     @NonNull
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request originalRequest = chain.request();
-
-        if (accessToken == null) {
-            return chain.proceed(originalRequest);
+        Request.Builder requestBuilder = originalRequest.newBuilder();
+        String accessToken = getAccessToken();
+        if (accessToken != null && !accessToken.isEmpty()) {
+            requestBuilder.header("Authorization", "Bearer " + accessToken);
         }
-
-        Request authenticatedRequest = originalRequest.newBuilder()
-                .header("Authorization", "Bearer " + accessToken)
-                .build();
-
-        return chain.proceed(authenticatedRequest);
+        Response response = chain.proceed(requestBuilder.build());
+        if (response.code() == 401) {
+            // Attempt to refresh token
+            String newAccessToken = refreshToken();
+            if (newAccessToken != null) {
+                // Retry request with new token
+                requestBuilder.header("Authorization", "Bearer " + newAccessToken);
+                return chain.proceed(requestBuilder.build());
+            }
+        }
+        return response;
     }
 
-    private void loadTokens() {
-        SharedPreferences prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
-        accessToken = prefs.getString("access_token", null);
+    private String getAccessToken() {
+        try {
+            SharedPreferences prefs = EncryptedSharedPreferences.create(
+                    "auth",
+                    MasterKey.DEFAULT_MASTER_KEY_ALIAS,
+                    context,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+            return prefs.getString("access_token", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Fallback to regular SharedPreferences
+            return context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+                    .getString("access_token", null);
+        }
     }
 
-    public void updateAccessToken(String newAccessToken) {
-        accessToken = newAccessToken;
-        SharedPreferences prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
-        prefs.edit().putString("access_token", newAccessToken).apply();
-    }
-
-    public static GlideUrl getAuthorizedGlideUrl(String url) {
-        Log.e("TokenCheck", "Token = " + accessToken);
-        return new GlideUrl(url, new LazyHeaders.Builder()
-                .addHeader("Authorization", "Bearer " + accessToken)
-                .build());
+    private String refreshToken() {
+        // Implement refresh token logic using AuthRepository
+        // Return new access token or null if refresh fails
+        return null;
     }
 }

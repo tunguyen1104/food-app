@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/accountAdminFragment">
+
+    <!-- Account Admin Fragment -->
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.foodapp.fragments.home.HomeFragment"
-        tools:layout="@layout/fragment_home">
+        android:id="@+id/accountAdminFragment"
+        android:name="com.example.foodapp.fragments.account.AdminAccountFragment"
+        android:label="Account Admin">
         <action
-            android:id="@+id/edit"
-            app:destination="@id/editFoodFragment" />
+            android:id="@+id/action_accountAdminFragment_to_statisticsContainerFragment"
+            app:destination="@id/statisticsContainerFragment" />
     </fragment>
 
-    <!-- EditFoodFragment: Edits a food item -->
+    <!-- Statistics Container Fragment -->
     <fragment
-        android:id="@+id/editFoodFragment"
-        android:name="com.example.foodapp.fragments.food.EditFoodFragment"
-        tools:layout="@layout/fragment_food_editor">
-        <!-- Argument to pass FoodDto -->
-        <argument
-            android:name="foodItem"
-            app:argType="com.example.foodapp.dto.response.FoodDto"
-            app:nullable="true" />
-    </fragment>
+        android:id="@+id/statisticsContainerFragment"
+        android:name="com.example.foodapp.fragments.statistics.ContainerStatistics"
+        android:label="Statistics" />
 
 </navigation>

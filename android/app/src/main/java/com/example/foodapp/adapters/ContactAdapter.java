@@ -13,11 +13,12 @@ import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.ItemChatUserBinding;
 import com.example.foodapp.dto.response.ConversationResponse;
 import com.example.foodapp.listeners.OnContactClickListener;
-import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.utils.GlideUtils;
 import com.example.foodapp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
 
     private List<ConversationResponse> contacts = new ArrayList<>();
@@ -71,7 +72,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
             if (conversation.getReceiverAvatarUrl() != null && !conversation.getReceiverAvatarUrl().isEmpty()) {
                 Glide.with(binding.imageProfile.getContext())
-                        .load(AuthInterceptor.getAuthorizedGlideUrl(Constants.URL_HOST_SERVER + conversation.getReceiverAvatarUrl()))
+                        .load(GlideUtils.getAuthorizedGlideUrl(itemView.getContext(), Constants.URL_HOST_SERVER + conversation.getReceiverAvatarUrl()))
                         .placeholder(R.drawable.avatar_default)
                         .into(binding.imageProfile);
             } else {

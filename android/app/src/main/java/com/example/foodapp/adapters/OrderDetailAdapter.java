@@ -11,7 +11,7 @@ import com.example.foodapp.R;
 import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.ItemOrderDetailBinding;
 import com.example.foodapp.dto.response.OrderDetailResponse;
-import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.utils.GlideUtils;
 
 import java.util.List;
 
@@ -61,7 +61,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
             if (detail.getAvatarUrl() != null && !detail.getAvatarUrl().isEmpty()) {
                 Glide.with(binding.imageProfile.getContext())
-                        .load(AuthInterceptor.getAuthorizedGlideUrl(Constants.URL_HOST_SERVER + detail.getAvatarUrl()))
+                        .load(GlideUtils.getAuthorizedGlideUrl(itemView.getContext(), Constants.URL_HOST_SERVER + detail.getAvatarUrl()))
                         .placeholder(R.drawable.avatar_default)
                         .into(binding.imageProfile);
             } else {

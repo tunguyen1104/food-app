@@ -9,14 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -24,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
@@ -37,8 +34,8 @@ import com.example.foodapp.enums.EditMode;
 import com.example.foodapp.enums.EnableStatus;
 import com.example.foodapp.repositories.UploadRepository;
 import com.example.foodapp.repositories.UserRepository;
-import com.example.foodapp.utils.AuthInterceptor;
 import com.example.foodapp.utils.FileUtil;
+import com.example.foodapp.utils.GlideUtils;
 import com.example.foodapp.utils.NavigationUtil;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -47,6 +44,7 @@ import java.io.File;
 
 public class UpdateAccountFragment extends Fragment implements MainActivity.PermissionCallback {
 
+    private static final int STORAGE_PERMISSION_CODE = 100;
     private FragmentUpdateInfoBinding binding;
     private UserRepository userRepository;
     private ActivityResultLauncher<Intent> cameraLauncher;
@@ -78,6 +76,7 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
         fillFormWithUserData(user);
         loadUserAvatar(user.getAvatarUrl());
     }
+
     private void handleActionLayoutVisibility() {
         EditMode mode = (EditMode) getArguments().getSerializable("mode");
         if (mode == EditMode.UPDATE) {
@@ -110,7 +109,7 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
     private void loadUserAvatar(String avatarUrl) {
         if (avatarUrl != null && !avatarUrl.isEmpty()) {
             Glide.with(requireContext())
-                    .load(AuthInterceptor.getAuthorizedGlideUrl(Constants.URL_HOST_SERVER + avatarUrl))
+                    .load(GlideUtils.getAuthorizedGlideUrl(getContext(), Constants.URL_HOST_SERVER + avatarUrl))
                     .placeholder(R.drawable.avatar_default)
                     .into(binding.imageButtonAvatar);
         } else {
@@ -369,8 +368,6 @@ public class UpdateAccountFragment extends Fragment implements MainActivity.Perm
             isCameraPermitted = true;
         }
     }
-
-    private static final int STORAGE_PERMISSION_CODE = 100;
 
     private void requestStoragePermission() {
         String[] permissions;

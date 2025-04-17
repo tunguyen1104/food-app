@@ -22,7 +22,7 @@ public class BaseViewModelFactory<T extends ViewModel> implements ViewModelProvi
             try {
                 return (V) viewModelClass.getDeclaredConstructor(Context.class).newInstance(context);
             } catch (Exception e) {
-                throw new RuntimeException("Cannot create an instance of " + modelClass.getName(), e);
+                throw new RuntimeException("Cannot create an instance of " + modelClass.getName() + " " + e.getCause());
             }
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());

@@ -15,7 +15,7 @@ import com.example.foodapp.R;
 import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.FragmentBranchInfoBinding;
 import com.example.foodapp.dto.response.UserResponse;
-import com.example.foodapp.utils.AuthInterceptor;
+import com.example.foodapp.utils.GlideUtils;
 import com.example.foodapp.utils.NavigationUtil;
 
 public class BranchInfoFragment extends Fragment {
@@ -62,7 +62,7 @@ public class BranchInfoFragment extends Fragment {
             String fullUrl = Constants.URL_HOST_SERVER + url;
             Log.d("BranchInfoFragment", "Avatar URL: " + fullUrl);
             Glide.with(requireContext())
-                    .load(AuthInterceptor.getAuthorizedGlideUrl(fullUrl))
+                    .load(GlideUtils.getAuthorizedGlideUrl(getContext(), fullUrl))
                     .placeholder(R.drawable.avatar_default)
                     .error(R.drawable.avatar_default)
                     .into(binding.accountAvatarView);

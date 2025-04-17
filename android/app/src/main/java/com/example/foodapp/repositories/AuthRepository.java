@@ -1,12 +1,10 @@
 package com.example.foodapp.repositories;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
-import com.example.foodapp.activities.LoginActivity;
 import com.example.foodapp.dto.request.LoginRequest;
 import com.example.foodapp.dto.request.RefreshTokenRequest;
 import com.example.foodapp.dto.response.ApiResponse;
@@ -43,8 +41,6 @@ public class AuthRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<AuthResponse> apiResponse = response.body();
                     if (apiResponse.isSuccess()) {
-                        AuthResponse authResponse = response.body().getData();
-                        saveTokens(authResponse.getAccessToken(), authResponse.getRefreshToken());
                         callback.onSuccess(response.body().getData());
                     }
                 } else {
@@ -75,7 +71,6 @@ public class AuthRepository {
 
     public void refreshToken(final RefreshCallback callback) {
         if (refreshToken == null) {
-            forceLogout();
             callback.onFailure();
             return;
         }
@@ -85,37 +80,17 @@ public class AuthRepository {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Response<ApiResponse<AuthResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    saveTokens(response.body().getData().getAccessToken(), response.body().getData().getRefreshToken());
-                    ApiClient.updateAccessToken(response.body().getData().getAccessToken());
                     callback.onSuccess(response.body().getData().getAccessToken());
                 } else {
-                    forceLogout();
                     callback.onFailure();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Throwable t) {
-                forceLogout();
                 callback.onFailure();
             }
         });
-    }
-
-    private void saveTokens(String accessToken, String refreshToken) {
-        prefs.edit()
-                .putString("access_token", accessToken)
-                .putString("refresh_token", refreshToken)
-                .apply();
-        this.refreshToken = refreshToken;
-    }
-
-    public void forceLogout() {
-        prefs.edit().clear().apply();
-
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        context.startActivity(intent);
     }
 
     private void loadTokens() {
