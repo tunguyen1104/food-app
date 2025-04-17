@@ -27,7 +27,9 @@ public enum ErrorCode {
     INVALID_ORDER_STATUS(2002, "Invalid order status", HttpStatus.NOT_FOUND),
     // --- FOOD ERRORS ---
     FOOD_NOT_FOUND(3001, "Food not found", HttpStatus.NOT_FOUND),
-
+    // --- STATISTICAL ERRORS ---
+    INVALID_YEAR_REQUEST(4001, "Invalid year request", HttpStatus.BAD_REQUEST),
+    INVALID_MONTH_REQUEST(4002, "Invalid month request", HttpStatus.BAD_REQUEST),
     // --- CATEGORY ERRORS ---
     CATEGORY_NOT_FOUND(1009, "Category Not found", HttpStatus.NOT_FOUND),
 

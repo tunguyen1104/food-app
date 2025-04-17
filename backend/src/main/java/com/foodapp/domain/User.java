@@ -29,7 +29,7 @@ public class User extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Theme theme;
     private Boolean notification;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

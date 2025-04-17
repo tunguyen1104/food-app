@@ -17,6 +17,6 @@ import lombok.Setter;
 public class Role extends BaseEntity {
     public static String MANAGER = "MANAGER";
     public static String EMPLOYEE = "EMPLOYEE";
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     public String name;
 }
