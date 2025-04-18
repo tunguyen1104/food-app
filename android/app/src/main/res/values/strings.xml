@@ -26,4 +26,5 @@
     <string name="clock_desc">Cooking Time</string>
     <string name="food_recycler_view_name">List Food</string>
     <string name="new_order_description">New Order Description</string>
+    <string name="last_update_format">Last update: %1$s</string>
 </resources>

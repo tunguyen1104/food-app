@@ -1,7 +1,5 @@
 package com.example.foodapp.fragments.message;
 
-import static com.example.foodapp.consts.Constants.ID_ADMIN_DEFAULT;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.foodapp.R;
 import com.example.foodapp.adapters.ContactAdapter;
+import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.FragmentContactListAdminBinding;
 import com.example.foodapp.dto.response.ConversationResponse;
-import com.example.foodapp.fragments.order.OrderDetailFragment;
+import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.listeners.OnContactClickListener;
+import com.example.foodapp.utils.UserManager;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.message.ContactListViewModel;
-import com.example.foodapp.viewmodel.message.SingleChatViewModel;
+
+import java.util.Optional;
 
 public class AdminListContactFragment extends Fragment {
     private FragmentContactListAdminBinding binding;
@@ -42,7 +43,7 @@ public class AdminListContactFragment extends Fragment {
             @Override
             public void onContactClick(ConversationResponse conversation) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("conversation", conversation);
+                bundle.putSerializable(Constants.ARG_CONVERSATION, conversation);
                 SingleChatFragment fragment = new SingleChatFragment();
                 fragment.setArguments(bundle);
 
@@ -58,7 +59,10 @@ public class AdminListContactFragment extends Fragment {
                 new BaseViewModelFactory<>(requireContext(), ContactListViewModel.class))
                 .get(ContactListViewModel.class);
 
-        contactListViewModel.loadAllConversationsForAdmin(ID_ADMIN_DEFAULT);
+        UserResponse user = Optional.ofNullable(UserManager.getUser(requireContext()))
+                .orElseThrow(() -> new IllegalStateException("User is not logged in"));
+        String currentUserId = String.valueOf(user.getId());
+        contactListViewModel.loadAllConversationsForAdmin(currentUserId);
 
         // Quan sát LiveData danh sách conversation và cập nhật adapter
         contactListViewModel.getContacts().observe(getViewLifecycleOwner(), conversations -> {

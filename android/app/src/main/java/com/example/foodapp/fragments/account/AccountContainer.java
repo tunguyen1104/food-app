@@ -1,7 +1,5 @@
 package com.example.foodapp.fragments.account;
 
-import static com.example.foodapp.consts.Constants.ADMIN;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.foodapp.R;
 import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.enums.Role;
 import com.example.foodapp.utils.UserManager;
 
 public class AccountContainer extends Fragment {
@@ -21,7 +20,7 @@ public class AccountContainer extends Fragment {
         // why? https://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         UserResponse currentUser = UserManager.getUser(requireContext());
-        if (currentUser != null && currentUser.getRole().equals(ADMIN)) {
+        if(currentUser != null && currentUser.getRole().equals(Role.MANAGER.toString())) {
             ft.add(R.id.accountContainer, new AdminAccountFragment()).commit();
         } else ft.add(R.id.accountContainer, new BranchAccountFragment()).commit();
 
