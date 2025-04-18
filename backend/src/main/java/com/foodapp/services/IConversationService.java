@@ -13,6 +13,8 @@ public interface IConversationService {
 
     Conversation createNewConversation(List<String> participantIds);
 
+    String findConversation(List<String> participantIds);
+
     List<ConversationResponse> getAllConversationForAdmin(String adminId);
 
     void updateLastMessage(MessageResponse messageResponse);

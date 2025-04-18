@@ -91,6 +91,21 @@ public class ConversationService implements IConversationService {
     }
 
     @Override
+    public String findConversation(List<String> participantIds) {
+        validateParticipantIds(participantIds);
+
+        sortParticipantIds(participantIds);
+
+        Conversation conversation = conversationRepository
+                .findByParticipantIdsAllAndSize(participantIds, participantIds.size())
+                .stream()
+                .findFirst()
+                .orElseGet(() -> createNewConversation(participantIds));
+
+        return conversation.getId();
+    }
+
+    @Override
     public List<ConversationResponse> getAllConversationForAdmin(String adminId) {
         List<Conversation> conversations = conversationRepository.findAllByParticipantIds(adminId);
         if (conversations == null || conversations.isEmpty()) {
