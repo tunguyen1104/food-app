@@ -29,7 +29,7 @@ public class MessageService implements IMessageService {
 
     @Override
     public List<MessageResponse> getMessagesByConversation(ConversationRequest conversationRequest) {
-        String conversationId = createOrFindConversation(conversationRequest.getParticipantIds());
+        String conversationId = conversationService.findConversation(conversationRequest.getParticipantIds());
 
         List<Message> messages = messageRepository.findByConversationIdOrderByTimestampAsc(conversationId);
 
@@ -65,7 +65,7 @@ public class MessageService implements IMessageService {
 
         if (messageRequest.getConversationId() == null) {
             List<String> participantIds = Arrays.asList(messageRequest.getSenderId(), messageRequest.getReceiverId());
-            String conversations = this.createOrFindConversation(participantIds);
+            String conversations = conversationService.findConversation(participantIds);
             messageRequest.setConversationId(conversations);
         }
 
@@ -78,9 +78,4 @@ public class MessageService implements IMessageService {
         messagingTemplate.convertAndSend("/topic/messages/" + saved.getReceiverId(), saved);
     }
 
-    public String createOrFindConversation(List<String> participantIds) {
-        // Nếu tin nhắn chưa có conversationId, tạo mới cuộc trò chuyện 1-1
-        ConversationResponse conv = conversationService.createOrFindConversation(participantIds);
-        return conv.getId();
-    }
 }

@@ -17,7 +17,6 @@ public class ConversationResponse implements Serializable {
     private Date createdAt;
     private String lastMessage;
     private Date lastUpdate;
-    private String senderAvatarUrl;
     private String receiverAvatarUrl;
     private String receiverName;
 }

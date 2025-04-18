@@ -10,6 +10,7 @@ import com.foodapp.exceptions.AppException;
 import com.foodapp.mapper.UserMapper;
 import com.foodapp.repositories.RoleRepository;
 import com.foodapp.repositories.UserRepository;
+import com.foodapp.services.IConversationService;
 import com.foodapp.utils.AuthenticationFacade;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class UserService implements UserDetailsService {
     RoleRepository roleRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    IConversationService conversationService;
 
     @Override
     public User loadUserByUsername(String phone) throws UsernameNotFoundException {
@@ -89,8 +91,17 @@ public class UserService implements UserDetailsService {
                 .avatarUrl(request.getAvatarUrl())
                 .build();
 
-        userRepository.save(user);
-        return userMapper.toUserResponse(user);
+        User savedUser = userRepository.save(user);
+        User adminUser = authenticationFacade.getAuthenticatedUser();
+
+        List<String> participantIds = List.of(
+                adminUser.getId().toString(),
+                savedUser.getId().toString()
+        );
+
+        //Create a conversation between Manager and new User
+        conversationService.createNewConversation(participantIds);
+        return userMapper.toUserResponse(savedUser);
     }
 
     public UserResponse updateUser(Long id, CreateUserRequest request) {
