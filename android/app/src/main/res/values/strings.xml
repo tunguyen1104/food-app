@@ -27,4 +27,6 @@
     <string name="food_recycler_view_name">List Food</string>
     <string name="new_order_description">New Order Description</string>
     <string name="last_update_format">Last update: %1$s</string>
+    <string name="perm_noti_granted">Notification permission granted</string>
+    <string name="perm_noti_denied">Notification permission denied</string>
 </resources>

@@ -1,7 +1,5 @@
 package com.example.foodapp.fragments.message;
 
-import static com.example.foodapp.consts.Constants.ID_ADMIN_DEFAULT;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

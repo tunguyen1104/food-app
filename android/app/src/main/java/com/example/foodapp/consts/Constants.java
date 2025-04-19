@@ -7,4 +7,5 @@ public class Constants {
     public static final String ID_ADMIN_DEFAULT = "1";
     public static final String ARG_USER = "user";
     public static final String ARG_CONVERSATION = "conversation";
+    public static final int REQUEST_CODE_POST_NOTIFICATION = 101;
 }

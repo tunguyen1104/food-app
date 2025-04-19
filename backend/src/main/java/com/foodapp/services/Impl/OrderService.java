@@ -2,11 +2,13 @@ package com.foodapp.services.Impl;
 
 import com.foodapp.constants.ErrorCode;
 import com.foodapp.domain.*;
+import com.foodapp.domain.mongo.Notification;
 import com.foodapp.dto.requests.OrderDetailRequest;
 import com.foodapp.dto.requests.OrderRequest;
 import com.foodapp.dto.response.OrderResponse;
 import com.foodapp.exceptions.AppException;
 import com.foodapp.mapper.OrderMapper;
+import com.foodapp.repositories.NotificationRepository;
 import com.foodapp.repositories.OrderDetailRepository;
 import com.foodapp.repositories.OrderRepository;
 import com.foodapp.utils.AuthenticationFacade;
@@ -14,10 +16,12 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +36,8 @@ public class OrderService {
     OrderDetailRepository orderDetailRepository;
     OrderMapper orderMapper;
     UserService userService;
+    SimpMessagingTemplate messagingTemplate;
+    NotificationRepository notificationRepository;
 
     @Transactional
     public List<OrderResponse> getOrdersForCurrentUser() {
@@ -89,7 +95,34 @@ public class OrderService {
 
         saveOrderDetails(orderRequest.getOrderDetails(), order);
 
+        Notification noti = Notification.builder()
+                .userId(orderRequest.getUserId().toString())
+                .title(String.format("New %s order #%d",
+                        orderRequest.getOrderPlatform(), order.getId()))
+                .message(buildOrderMessage(orderRequest))
+                .type(Notification.NotificationType.ORDER)
+                .read(false)
+                .timestamp(new Date())
+                .build();
+
+        Notification saved = notificationRepository.save(noti);
+
+        messagingTemplate.convertAndSend("/topic/notifications/" + orderRequest.getUserId(), saved);
+
         return orderMapper.toOrderResponse(this.getOrderEntityById(order.getId()));
+    }
+
+    private String buildOrderMessage(OrderRequest req) {
+        int items = req.getOrderDetails().size();
+        return String.format(
+                "Total: %,.0f đ • Items: %d • Status: %s%s",
+                req.getTotalPrice(),
+                items,
+                req.getStatus(),
+                req.getDescription() != null && !req.getDescription().isBlank()
+                        ? " • " + req.getDescription()
+                        : ""
+        );
     }
 
     private Order buildOrder(OrderRequest req) {

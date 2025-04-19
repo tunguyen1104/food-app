@@ -3,10 +3,16 @@ package com.example.foodapp.network;
 import static com.example.foodapp.consts.Constants.SOCKET_URL;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 
+import com.example.foodapp.dto.response.NotificationResponse;
 import com.example.foodapp.listeners.StompMessageListener;
+import com.example.foodapp.utils.NotificationUtil;
+import com.google.gson.Gson;
 
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
@@ -14,7 +20,7 @@ import ua.naiksoftware.stomp.StompClient;
 
 public class StompManager {
     private static StompManager instance;
-    private StompClient stompClient;
+    private final StompClient stompClient;
 
     private StompManager() {
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, SOCKET_URL);
@@ -59,5 +65,24 @@ public class StompManager {
                 }, throwable -> {
                     Log.e("STOMP", "Error in subscription to " + destination, throwable);
                 });
+    }
+
+    @SuppressLint("CheckResult")
+    public Disposable subscribeToNotifications(Context context, String userId) {
+        String topic = "/topic/notifications/" + userId;
+
+        return stompClient.topic(topic)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stompMsg -> {
+                            try {
+                                NotificationResponse noti = new Gson()
+                                        .fromJson(stompMsg.getPayload(), NotificationResponse.class);
+                                NotificationUtil.showNotification(context, noti);
+                            } catch (Exception e) {
+                                Log.e("STOMP_NOTIFICATION", "Parse error: " + e.getMessage());
+                            }
+                        }, thr ->
+                                Log.e("STOMP_NOTIFICATION", "Subscribe error", thr)
+                );
     }
 }
