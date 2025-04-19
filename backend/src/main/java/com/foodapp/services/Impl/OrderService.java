@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +31,7 @@ public class OrderService {
     FoodService foodService;
     OrderDetailRepository orderDetailRepository;
     OrderMapper orderMapper;
+    UserService userService;
 
     @Transactional
     public List<OrderResponse> getOrdersForCurrentUser() {
@@ -89,13 +92,18 @@ public class OrderService {
         return orderMapper.toOrderResponse(this.getOrderEntityById(order.getId()));
     }
 
-    private Order buildOrder(OrderRequest orderRequest) {
-        User user = authenticationFacade.getAuthenticatedUser();
+    private Order buildOrder(OrderRequest req) {
+        User user = userService.findByIdOrThrow(req.getUserId());
+
+        Timestamp completion = Timestamp.valueOf(
+                LocalDateTime.now().plusMinutes(30));
+
         return Order.builder()
-                .orderPlatform(Order.Platform.valueOf(orderRequest.getOrderPlatform()))
-                .status(Order.Status.valueOf(orderRequest.getStatus()))
-                .totalPrice(orderRequest.getTotalPrice())
-                .description(orderRequest.getDescription())
+                .orderPlatform(Order.Platform.valueOf(req.getOrderPlatform()))
+                .status(Order.Status.valueOf(req.getStatus()))
+                .totalPrice(req.getTotalPrice())
+                .completionTime(completion)
+                .description(req.getDescription())
                 .user(user)
                 .build();
     }
