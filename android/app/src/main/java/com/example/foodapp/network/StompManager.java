@@ -5,8 +5,13 @@ import static com.example.foodapp.consts.Constants.SOCKET_URL;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.example.foodapp.dto.response.NotificationResponse;
+import com.example.foodapp.listeners.NotificationListener;
 import com.example.foodapp.listeners.StompMessageListener;
+import com.google.gson.Gson;
 
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
@@ -14,7 +19,7 @@ import ua.naiksoftware.stomp.StompClient;
 
 public class StompManager {
     private static StompManager instance;
-    private StompClient stompClient;
+    private final StompClient stompClient;
 
     private StompManager() {
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, SOCKET_URL);
@@ -59,5 +64,28 @@ public class StompManager {
                 }, throwable -> {
                     Log.e("STOMP", "Error in subscription to " + destination, throwable);
                 });
+    }
+
+    @SuppressLint("CheckResult")
+    public Disposable subscribeToNotifications(String userId, NotificationListener listener) {
+        String topic = "/topic/notifications/" + userId;
+
+        return stompClient.topic(topic)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stompMsg -> {
+                            try {
+                                NotificationResponse noti = new Gson()
+                                        .fromJson(stompMsg.getPayload(), NotificationResponse.class);
+
+                                if (listener != null) {
+                                    listener.onNotificationReceived(noti);
+                                }
+
+                            } catch (Exception e) {
+                                Log.e("STOMP_NOTIFICATION", "Parse error: " + e.getMessage());
+                            }
+                        }, thr ->
+                                Log.e("STOMP_NOTIFICATION", "Subscribe error", thr)
+                );
     }
 }

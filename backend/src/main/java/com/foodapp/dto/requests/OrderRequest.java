@@ -13,6 +13,10 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderRequest {
+
+    @NotNull(message = "Id Branch cannot be null")
+    private Long userId;
+
     @NotNull(message = "Status cannot be null")
     @EnumValidator(enumClass = Order.Status.class, message = "Invalid status value")
     private String status;

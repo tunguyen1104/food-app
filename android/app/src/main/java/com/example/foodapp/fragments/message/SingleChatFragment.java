@@ -2,7 +2,6 @@ package com.example.foodapp.fragments.message;
 
 import static com.example.foodapp.consts.Constants.ARG_CONVERSATION;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresPermission;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +21,6 @@ import com.example.foodapp.databinding.FragmentSingleChatBinding;
 import com.example.foodapp.dto.request.ConversationRequest;
 import com.example.foodapp.dto.response.ConversationResponse;
 import com.example.foodapp.dto.response.MessageResponse;
-import com.example.foodapp.dto.response.NotificationResponse;
 import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.enums.MessageStatus;
 import com.example.foodapp.enums.NotificationType;
@@ -44,13 +41,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import io.reactivex.disposables.Disposable;
+
 public class SingleChatFragment extends Fragment {
 
     private FragmentSingleChatBinding binding;
     private SingleChatViewModel viewModel;
     private ChatAdapter chatAdapter;
 
-    private StompManager stompManager;
+    private Disposable msgDisp;
 
     private UserResponse currentUser;
     private String receiverId = Constants.ID_ADMIN_DEFAULT;
@@ -62,7 +61,6 @@ public class SingleChatFragment extends Fragment {
         return binding.getRoot();
     }
 
-    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     @Override
     public void onViewCreated(@NonNull View v, Bundle savedState) {
         super.onViewCreated(v, savedState);
@@ -103,20 +101,12 @@ public class SingleChatFragment extends Fragment {
         binding.chatRecyclerView.setAdapter(chatAdapter);
     }
 
-    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private void initStomp() {
-        stompManager = StompManager.getInstance();
-        stompManager.connect();
-
-        stompManager.subscribeTo("/topic/messages/" + currentUser.getId().toString(), payload -> {
-            MessageResponse msg = new Gson().fromJson(payload, MessageResponse.class);
-            viewModel.addMessage(msg);
-        });
-
-        stompManager.subscribeTo("/topic/notifications/" + currentUser.getId().toString(), payload -> {
-            NotificationResponse notify = new Gson().fromJson(payload, NotificationResponse.class);
-            NotificationUtil.showNotification(requireContext(), notify);
-        });
+        msgDisp = StompManager.getInstance()
+                .subscribeTo("/topic/messages/" + currentUser.getId(), payload -> {
+                    MessageResponse msg = new Gson().fromJson(payload, MessageResponse.class);
+                    viewModel.addMessage(msg);
+                });
     }
 
     private ConversationResponse fetchOrCreateConversation() {
@@ -180,7 +170,7 @@ public class SingleChatFragment extends Fragment {
             messageJson.put("senderId",  currentUser.getId().toString());
             messageJson.put("receiverId", receiverId);
             messageJson.put("content",   text);
-            stompManager.sendMessage("/app/send", messageJson.toString());
+            StompManager.getInstance().sendMessage("/app/send", messageJson.toString());
         } catch (JSONException e) {
             Toast.makeText(getContext(), "Invalid message payload", Toast.LENGTH_SHORT).show();
             return;
@@ -193,7 +183,7 @@ public class SingleChatFragment extends Fragment {
             notifyJson.put("title",   "You have a new message");
             notifyJson.put("message", text);
             notifyJson.put("type",    NotificationType.MESSAGE);
-            stompManager.sendMessage("/app/notify", notifyJson.toString());
+            StompManager.getInstance().sendMessage("/app/notify", notifyJson.toString());
         } catch (JSONException ignore) {}
 
         // Add local copy to RecyclerView
@@ -240,6 +230,7 @@ public class SingleChatFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (msgDisp != null && !msgDisp.isDisposed()) msgDisp.dispose();
         binding = null;
     }
 }
