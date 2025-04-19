@@ -19,10 +19,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.foodapp.R;
 import com.example.foodapp.adapters.ScreenSlidePagerAdapter;
+import com.example.foodapp.consts.Constants;
 import com.example.foodapp.databinding.ActivityMainBinding;
 import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.network.StompManager;
 import com.example.foodapp.utils.NotificationPermissionHelper;
+import com.example.foodapp.utils.NotificationUtil;
 import com.example.foodapp.utils.UserManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int code, @NonNull String[] p, @NonNull int[] r) {
         super.onRequestPermissionsResult(code, p, r);
-        if (code == NotificationPermissionHelper.REQ_POST_NOTI) {
+        if (code == Constants.REQUEST_CODE_POST_NOTIFICATION) {
             boolean granted = r.length > 0 && r[0] == PackageManager.PERMISSION_GRANTED;
             Toast.makeText(this,
                     granted ? R.string.perm_noti_granted : R.string.perm_noti_denied,
@@ -136,7 +138,9 @@ public class MainActivity extends AppCompatActivity {
         StompManager.getInstance().connect();
 
         notifDisp = StompManager.getInstance()
-                .subscribeToNotifications(this, String.valueOf(user.getId()));
+                .subscribeToNotifications(String.valueOf(user.getId()), notification -> {
+                    NotificationUtil.showNotification(this, notification);
+                });
     }
 
     @Override

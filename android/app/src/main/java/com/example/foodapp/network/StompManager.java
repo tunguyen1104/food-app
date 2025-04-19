@@ -3,12 +3,11 @@ package com.example.foodapp.network;
 import static com.example.foodapp.consts.Constants.SOCKET_URL;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.util.Log;
 
 import com.example.foodapp.dto.response.NotificationResponse;
+import com.example.foodapp.listeners.NotificationListener;
 import com.example.foodapp.listeners.StompMessageListener;
-import com.example.foodapp.utils.NotificationUtil;
 import com.google.gson.Gson;
 
 
@@ -68,7 +67,7 @@ public class StompManager {
     }
 
     @SuppressLint("CheckResult")
-    public Disposable subscribeToNotifications(Context context, String userId) {
+    public Disposable subscribeToNotifications(String userId, NotificationListener listener) {
         String topic = "/topic/notifications/" + userId;
 
         return stompClient.topic(topic)
@@ -77,7 +76,11 @@ public class StompManager {
                             try {
                                 NotificationResponse noti = new Gson()
                                         .fromJson(stompMsg.getPayload(), NotificationResponse.class);
-                                NotificationUtil.showNotification(context, noti);
+
+                                if (listener != null) {
+                                    listener.onNotificationReceived(noti);
+                                }
+
                             } catch (Exception e) {
                                 Log.e("STOMP_NOTIFICATION", "Parse error: " + e.getMessage());
                             }

@@ -16,19 +16,27 @@ import com.example.foodapp.adapters.OrderAdapter;
 import com.example.foodapp.components.OrderTagInfoDialog;
 import com.example.foodapp.databinding.FragmentOrderBranchBinding;
 import com.example.foodapp.dto.response.OrderResponse;
+import com.example.foodapp.dto.response.UserResponse;
+import com.example.foodapp.enums.NotificationType;
 import com.example.foodapp.enums.OrderDetailFunction;
 import com.example.foodapp.enums.OrderStatus;
+import com.example.foodapp.network.StompManager;
+import com.example.foodapp.utils.UserManager;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.order.BranchOrderViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+
+import io.reactivex.disposables.Disposable;
+
 public class BranchOrderFragment extends Fragment {
     private FragmentOrderBranchBinding binding;
     private OrderAdapter orderAdapter;
     private BranchOrderViewModel branchOrderViewModel;
     private OrderStatus currentStatus = OrderStatus.PROCESSING;
     private static final String KEY_CURRENT_STATUS = "currentStatus";
+    private Disposable notiDisp;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +64,8 @@ public class BranchOrderFragment extends Fragment {
         observeOrderData();
 
         binding.newOrder.setOnClickListener(v -> openCreateAccount());
+
+        subscribeOrderNotifications();
     }
 
     @Override
@@ -159,5 +169,27 @@ public class BranchOrderFragment extends Fragment {
                 orderAdapter.updateData(new ArrayList<>());
             }
         });
+    }
+
+    private void subscribeOrderNotifications() {
+        UserResponse user = UserManager.getUser(requireContext());
+        if (user == null) return;
+
+        notiDisp = StompManager.getInstance()
+                .subscribeToNotifications(user.getId().toString(), notification -> {
+                    if (NotificationType.ORDER.equals(notification.getType())) {
+                        requireActivity().runOnUiThread(() ->
+                                branchOrderViewModel.fetchOrdersByStatus(currentStatus));
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (notiDisp != null && !notiDisp.isDisposed()) {
+            notiDisp.dispose();
+        }
+        binding = null;
     }
 }
