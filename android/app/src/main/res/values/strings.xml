@@ -29,4 +29,5 @@
     <string name="last_update_format">Last update: %1$s</string>
     <string name="perm_noti_granted">Notification permission granted</string>
     <string name="perm_noti_denied">Notification permission denied</string>
+    <string name="select_invoice_image">Select Invoice Image</string>
 </resources>
