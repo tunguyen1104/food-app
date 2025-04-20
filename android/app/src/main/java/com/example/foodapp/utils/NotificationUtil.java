@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -55,4 +56,13 @@ public class NotificationUtil {
         NotificationManagerCompat.from(ctx)
                 .notify((int) System.currentTimeMillis(), builder.build());
     }
+
+    public static void playNotificationSound(Context context) {
+        MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.notification_sound);
+        if (mediaPlayer != null) {
+            mediaPlayer.setOnCompletionListener(MediaPlayer::release);
+            mediaPlayer.start();
+        }
+    }
+
 }

@@ -21,6 +21,7 @@ import com.example.foodapp.enums.NotificationType;
 import com.example.foodapp.enums.OrderDetailFunction;
 import com.example.foodapp.enums.OrderStatus;
 import com.example.foodapp.network.StompManager;
+import com.example.foodapp.utils.NotificationUtil;
 import com.example.foodapp.utils.UserManager;
 import com.example.foodapp.viewmodel.BaseViewModelFactory;
 import com.example.foodapp.viewmodel.order.BranchOrderViewModel;
@@ -63,7 +64,7 @@ public class BranchOrderFragment extends Fragment {
         branchOrderViewModel.fetchOrdersByStatus(currentStatus);
         observeOrderData();
 
-        binding.newOrder.setOnClickListener(v -> openCreateAccount());
+        binding.newOrder.setOnClickListener(v -> openCreateOrder());
 
         subscribeOrderNotifications();
     }
@@ -153,7 +154,7 @@ public class BranchOrderFragment extends Fragment {
         }
     }
 
-    private void openCreateAccount() {
+    private void openCreateOrder() {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.orderContainer, new CreateOrderFragment())
@@ -178,6 +179,8 @@ public class BranchOrderFragment extends Fragment {
         notiDisp = StompManager.getInstance()
                 .subscribeToNotifications(user.getId().toString(), notification -> {
                     if (NotificationType.ORDER.equals(notification.getType())) {
+                        NotificationUtil.playNotificationSound(requireContext());
+
                         requireActivity().runOnUiThread(() ->
                                 branchOrderViewModel.fetchOrdersByStatus(currentStatus));
                     }
