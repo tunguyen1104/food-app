@@ -22,4 +22,9 @@ public class UserResponse implements Serializable {
     private String role;
     private String avatarUrl;
     private String location;
+
+    @Override
+    public String toString() {
+        return fullName + " - " + location;
+    }
 }
