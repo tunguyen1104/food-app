@@ -20,6 +20,7 @@ import com.example.foodapp.dto.response.UserResponse;
 import com.example.foodapp.enums.NotificationType;
 import com.example.foodapp.enums.OrderDetailFunction;
 import com.example.foodapp.enums.OrderStatus;
+import com.example.foodapp.enums.Role;
 import com.example.foodapp.network.StompManager;
 import com.example.foodapp.utils.NotificationUtil;
 import com.example.foodapp.utils.UserManager;
@@ -64,7 +65,13 @@ public class BranchOrderFragment extends Fragment {
         branchOrderViewModel.fetchOrdersByStatus(currentStatus);
         observeOrderData();
 
-        binding.newOrder.setOnClickListener(v -> openCreateOrder());
+        binding.newOrder.setOnClickListener(v -> {
+            if (isAdminRole()) {
+                openCreateOrderForAdmin();
+            } else {
+                openCreateOrder();
+            }
+        });
 
         subscribeOrderNotifications();
     }
@@ -154,10 +161,23 @@ public class BranchOrderFragment extends Fragment {
         }
     }
 
+    private boolean isAdminRole() {
+        UserResponse currentUser = UserManager.getUser(requireContext());
+        return currentUser != null && currentUser.getRole().equals(Role.MANAGER.toString());
+    }
+
     private void openCreateOrder() {
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.orderContainer, new CreateOrderFragment())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void openCreateOrderForAdmin() {
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.orderContainer, new AdminCreateOrderFragment())
                 .addToBackStack(null)
                 .commit();
     }
