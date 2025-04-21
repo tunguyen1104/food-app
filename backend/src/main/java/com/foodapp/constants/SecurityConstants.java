@@ -7,6 +7,13 @@ public class SecurityConstants {
             "/api/auth/signUp",
             "/api/auth/refresh",
             "/api/food/all",
-            "/api/statistics/*"
+            "/api/statistics/*",
+
+            // Swagger endpoints (OpenAPI 3 with springdoc)
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/swagger-resources/**",
+            "/webjars/**"
     };
 }
